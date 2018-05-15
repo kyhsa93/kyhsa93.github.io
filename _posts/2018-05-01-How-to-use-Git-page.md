@@ -3,7 +3,7 @@ layout: post
 title: 블로그 시작하기
 date: 2018-05-01 +0900
 author: kyhsa93
-categories: jekyll
+categories: Jekyll
 tags: blog
 cover: "/assets/jekyll.png"
 ---

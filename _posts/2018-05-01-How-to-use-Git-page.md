@@ -4,11 +4,8 @@ title: 블로그 시작하기
 date: 2018-05-01 +0900
 author: kyhsa93
 categories: Jekyll
-tags: blog
 cover: "/assets/jekyll.png"
 ---
-
-![Image](../images/jekyll.png){: width="100%" height="20%"}
 
 블로그를 해야지 해야지 생각만 계속하다가 Git page를 보고 이거면 괜찮게 할 수 있겠다 싶어서 만들어 봤다.
 

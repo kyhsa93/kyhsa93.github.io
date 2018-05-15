@@ -1,8 +1,10 @@
 ---
+layout: post
 title: async/await
 date: 2018-05-04 +0900
-tags:
-  - javascript
+author: kyhsa93
+categories: javascript
+cover: "/assets/asyncawait.png"
 ---
 
 Node는 7.6 버전부터 async/await를 지원하기 시작했다.
@@ -40,3 +42,10 @@ Function chaining으로 처리할 수 있지만, `try/catch`가 훨씬 간결하
 async/await를 설명할때 보통 Promise와 비교하여 많이 설명하는 글 들이 많이 보인다.
 
 확실한건 Promise보다 훨씬 간결하고 사용하기 쉬우며 가독성이 좋다는 것이다.
+
+<div style="text-align: right">
+  Image source by
+  <a href="https://start.jcolemorrison.com/5-tips-and-thoughts-on-async-await-functions/">
+    here
+  </a>
+</div>

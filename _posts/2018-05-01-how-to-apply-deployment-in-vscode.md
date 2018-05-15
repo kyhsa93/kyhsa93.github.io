@@ -1,8 +1,10 @@
 ---
+layout: post
 title: VScode에 deploy 설정하기
 date: 2018-05-01 +0900
-tags:
-  - vscode
+author: kyhsa93
+categories: vscode
+cover: "/assets/vscode.png"
 ---
 
 VScode를 사용하면서 가끔 deploy를 사용한다.
@@ -50,3 +52,10 @@ VScode를 실행시키고 `command + p`를 누르고, `>setting`을 입력하여
 AWS EC2에 deploy 하는데 `deployOnChange`, `deployOnSave` 모두 써봤는데 file을 수정하고 저장했을 때 자동으로 deploy 되지 않는 현상이 있었다.
 
 설정을 뭘 빼먹었던 건지 아직 잘 모르겠으나 거의 사용하지 않는 기능이라서 그냥 file 수정하고 저장한 다음 `command + p`하고 `>deploy`해서 쓰고 있다.
+
+<div style="text-align: right">
+  Image source by
+  <a href="http://kimstar.kr/7754/">
+    here
+  </a>
+</div>

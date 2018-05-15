@@ -1,8 +1,10 @@
 ---
+layout: post
 title: JSDoc으로 문서 만들기
 date: 2018-05-01 +0900
-tags:
-  - javascript
+author: kyhsa93
+categories: javascript
+cover: "/assets/jsdoc.png"
 ---
 
 문서화에 대한 고민은 모든 개발자가 하는 고민 중 하나가 아닐까 생각한다.
@@ -59,3 +61,10 @@ project root path에 jsdoc.conf file을 만들고 아래 코드를 추가한다.
 ```
   jsdoc -c jsdoc.conf
 ```
+
+<div style="text-align: right">
+  Image source by
+  <a href="https://medium.com/4thought-studios/documenting-javascript-projects-f72429da2eea">
+    here
+  </a>
+</div>

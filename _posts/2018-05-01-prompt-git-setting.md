@@ -1,8 +1,10 @@
 ---
+layout: post
 title: Prompt에 Git branch 표시하기
 date: 2018-05-01 +0900
-tags:
-  - git
+author: kyhsa93
+categories: git
+cover: "/assets/git.png"
 ---
 
 Git을 터미널에서 사용하다보면 branch를 확인하기위해 `git branch`라는 명령어를 사용해야하는데 prompt에 branch를 표시해주는 설정이다.
@@ -35,3 +37,10 @@ Git을 터미널에서 사용하다보면 branch를 확인하기위해 `git bran
 ```
 
 그 밖에 다양한 prompt 설정들을 할 수 있으니 한번씩 찾아보는 것도 나쁘지 않을듯하다.
+
+<div style="text-align: right">
+  Image source by
+  <a href="https://steemit.com/kr/@stunstunstun/git-1-git-flow">
+    here
+  </a>
+</div>

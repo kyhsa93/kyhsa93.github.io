@@ -1,8 +1,10 @@
 ---
+layout: post
 title: 많이 쓰는 Git 명령어 정리
 date: 2018-05-02 +0900
-tags:
-- git
+author: kyhsa93
+categories: git
+cover: "/assets/git.png"
 ---
 
 Git은 아마 가장 많이 쓰이는 코드 관리 도구 중 하나이지 않을까 싶다.
@@ -143,3 +145,10 @@ file을 이동할 수도 있다는 이야기를 들었는데 그렇게는 사용
 명령어마다 여러 옵션이 있고 더 좋은 사용법들이 있으니 시간 날 때마다 한 번씩 들여다보는 것도 많은 도움이 될 듯하다.
 
 자세한 내용은 [Git-scm](https://git-scm.com)에 잘 설명되어 있다.
+
+<div style="text-align: right">
+  Image source by
+  <a href="https://steemit.com/kr/@stunstunstun/git-1-git-flow">
+    here
+  </a>
+</div>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>블로그 시작하기</title>
+  <meta name="description" content="블로그를 해야지 해야지 생각만 계속하다가 Git page를 보고 이거면 괜찮게 할 수 있겠다 싶어서 만들어 봤다.">
+  
+  <meta name="author" content="Young">
+  <meta name="copyright" content="&copy; Young 2018">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+  <!-- Facebook OGP cards -->
+  <meta property="og:description" content="블로그를 해야지 해야지 생각만 계속하다가 Git page를 보고 이거면 괜찮게 할 수 있겠다 싶어서 만들어 봤다." />
+  <meta property="og:url" content="http://kyhsa93.github.io" />
+  <meta property="og:site_name" content="Young's blog" />
+  <meta property="og:title" content="블로그 시작하기" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="http://kyhsa93.github.io/assets/jekyll.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="612" />
+  <meta property="og:image:height" content="605" />
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="블로그 시작하기">
+  <meta name="twitter:description" content="블로그를 해야지 해야지 생각만 계속하다가 Git page를 보고 이거면 괜찮게 할 수 있겠다 싶어서 만들어 봤다.">
+  <meta name="twitter:image" content="http://kyhsa93.github.io/assets/jekyll.png">
+  <meta name="twitter:url" content="http://kyhsa93.github.io">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://kyhsa93.github.io/jekyll/2018/05/01/How-to-use-Git-page.html">
+  <link rel="alternate" type="application/rss+xml" title="Young's blog" href="http://kyhsa93.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="Young's blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        
+          
+          <li class="nav-link"><a href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <li class="nav-link"><a href="/posts/">Posts</a>
+          
+        
+          
+          <li class="nav-link"><a href="/category/dummy/">Dummy</a>
+          
+        
+          
+          <li class="nav-link"><a href="/category/jekyll/">Jekyll</a>
+          
+        
+          
+          <li class="nav-link"><a href="/category/node-js/">node.js</a>
+          
+        
+          
+          <li class="nav-link"><a href="/category/vscode/">vscode</a>
+          
+        
+          
+          <li class="nav-link"><a href="/category/javascript/">javascript</a>
+          
+        
+          
+          <li class="nav-link"><a href="/category/git/">git</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container has-cover" style="background-image: url(/assets/jekyll.png);">
+  <div class="scrim has-cover">
+    <header class="post-header">
+      <h1 class="title">블로그 시작하기</h1>
+      <p class="info">by <strong>kyhsa93</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+
+
+<section class="post-meta">
+  <div class="post-date">May 1, 2018</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/Jekyll">Jekyll</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <p>블로그를 해야지 해야지 생각만 계속하다가 Git page를 보고 이거면 괜찮게 할 수 있겠다 싶어서 만들어 봤다.</p>
+
+<p>어떻게, 얼마나 할지는 미래의 나에게 물어봐야겠지만…</p>
+
+<p>주로 작업할 때 쓰는 것들에 관해 기술하게 될 거 같지만 사실 아직 확실하게 정해놓은 것이 아무것도 없어서 일단 목표는 꾸준히만 하자는 생각이다.</p>
+
+<p>자세한 작성방법, 세팅방법 등은 나중에 따로 정리하겠다.</p>
+
+<p>일단 이 블로그는 Git page, Jekyll을 이용해서 만들었고 theme은 <a href="https://junhobaik.github.io/jekyll-apply-theme/#_posts-_draft-%ED%8F%B4%EB%8D%94-%EC%83%9D%EC%84%B1">Junho Baik</a>님의 글을 보고 쉽게 따라 할 수 있었다.(좋은 글 감사합니다.)</p>
+
+<p>사실 hexo와 jekyll 중 뭘 사용할지 많이 고민했었는데, Jekyll을 선택한 이유는 Git page에서 Jekyll을 지원한다고 해서 좀 더 괜찮겠지라는 생각이었다.</p>
+
+<p>뭘 쓰던지 큰 차이는 없는 것 같고, 자신이 원하는 걸 사용하면 될 거 같다.</p>
+
+<p>Github repository page에서도 작업을 할 수 있는거 같은데 난 local에서 하는게 더 마음에 들어서 local에서 작업후 push하는 방식으로 작업하고 있다.</p>
+
+<p>만약 테마를 바꾸고 싶다면 zip file을 다운받거나 Git에서 clone 받아서 <code class="highlighter-rouge">/_posts/</code>, <code class="highlighter-rouge">/_data/</code>, <code class="highlighter-rouge">/_pages/</code>, <code class="highlighter-rouge">/_config.yml</code> 정도만 수정해주면 사용할 수 있을듯하다.</p>
+
+<p>Jekyll은 brew로 설치하면 간단하게 할 수 있었다.</p>
+
+<p>Jekyll이 Ruby로 되어있다는 게 조금 걱정이긴 하지만 큰 문제는 없을 거 같다.</p>
+
+<p>기본적인 설정들이 <code class="highlighter-rouge">/_config.yml</code>에 주석이랑 같이 잘 작성되어 있어서 따로 쭉 읽어봐야겠다.</p>
+
+<p>navigation 설정은 <code class="highlighter-rouge">/_data/navigation.yml</code>에서 작성하고, page는 <code class="highlighter-rouge">/_pages</code>에 생성한다.</p>
+
+<p>Post file 작성 규칙</p>
+<ol>
+  <li>file 위치는 <code class="highlighter-rouge">/_posts/</code>에 작성한다.</li>
+  <li>file name은 <code class="highlighter-rouge">YYYY-MM-DD-title.md</code>로 작성한다.</li>
+  <li>file 내용은 MARKDOWN으로 작성한다.</li>
+</ol>
+
+<p>기본적으로 file을 수정한 후 <code class="highlighter-rouge">jekyll serve</code> 명령어를 사용하면 <code class="highlighter-rouge">/_site/</code>에 빌드되고 <code class="highlighter-rouge">localhost:4000</code>으로 브라우저에서 확인할 수 있다.</p>
+
+<p><code class="highlighter-rouge">/_config.yml</code>은 수정한 후 다시 빌드 해줘야 한다는걸 잊지말자.</p>
+
+<p>livereload를 사용하려면 <code class="highlighter-rouge">jekyll serve --live</code>를 사용하면 file을 수정하고 저장하면 자동으로 브라우저에 반영된다.</p>
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section>
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'youngs-blog';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">Young's blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+        
+        
+          <li class="nav-link"><a href="/about/">About</a>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          <li class="nav-link"><a href="/posts/">Posts</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/dummy/">Dummy</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/jekyll/">Jekyll</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/node-js/">node.js</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/vscode/">vscode</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/javascript/">javascript</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/git/">git</a>
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:kyhsa93@naver.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">kyhsa93@naver.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/kyhsa93" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">kyhsa93</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text">I am web developer younghoon.
+</p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-119146423-1', 'auto');
+  ga('send', 'pageview', {
+    'page': '/jekyll/2018/05/01/How-to-use-Git-page.html',
+    'title': '블로그 시작하기'
+  });
+</script>
+
+
+
+  </body>
+
+</html>

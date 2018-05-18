@@ -19,7 +19,7 @@ Node는 7.6 버전부터 async/await를 지원하기 시작했다.
 
 async/await의 Error handling은 `try/catch`를 이용한다.
 
-Function chaining으로 처리할 수 있지만, `try/catch`가 훨씬 간결하고 사용하기 편하다.
+Method chaining으로 처리할 수 있지만, `try/catch`가 훨씬 간결하고 사용하기 편하다.
 
 ```js
   try {

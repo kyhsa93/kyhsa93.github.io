@@ -7,11 +7,17 @@ category: docker
 cover: "/assets/docker.png"
 ---
 
-`Docker`는 application을 신속하게 구축, test 및 배포할 수 있는 software platform이다.
+`Docker`는 application을 신속하게 구축, test 및 배포할 수 있는 컨테이너 기반의 오픈소스 가상화 플랫폼이다.
 
 `Docker`는 software를 container라는 표준화된 유닛으로 packging하며, 이 container에는 library, system tool, code, runtime 등 software를 실행하는데 필요한 모든 것이 포함되어 있다.
 
-`Docker`를 사용하면 environment에 구애받지 않고 application을 신속하게 배포 및 확장할 수 있으며 code가 문제없이 실행될 것임을 확신할 수 있다.
+`Docker`는 다양한 프로그램, 실행환경을 컨테이너로 추상화하고 동일한 인터페이스를 제공하여 프로그램의 배포 및 관리를 단순하게 해준다.
+
+백엔드 프로그램, 데이터베이스 서버, 메시지 큐등 어떤 프로그램도 컨테이너로 추상화할 수 있고 local, AWS, Azure, Google cloud등 어디에서든 실행할 수 있다.
+
+`Docker`는 기존의 운영체제 안에서 process만 격리하여 VM과 같은 효과를 낸다.
+
+VM은 OS를 통째로 install하고 CPU와 Memory를 쪼개서 사용하여 속도가 느리고 크기가 크지만, `Docker`는 real machine의 시스템 자원을 공유해서 사용하므로 가볍고 빠르다.
 
 How docker works
 ---

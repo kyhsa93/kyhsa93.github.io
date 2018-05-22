@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to use git fork
+title: How to use git fork in team
 date: 2018-05-20 +0900
 author: kyhsa93
 categories: git
@@ -40,7 +40,7 @@ forked repository와 local 사이의 화살표가 양방향인 이유는 두 저
 
 merge, rebase 등 작업은 모두 local에서 이루어진 후 push되어야하고 organization repository에는 merge commit 등은 없도록 실제 작업 내용에 대한 commit만 있도록 하는것이다.
 
-organization repository를 깔끔하게 관리할 수도 있지만 더 중요한 것은 organization repository로 들어오는 모든 내용은 pul request로 들어온다는 것에 더 의미가 있는거 같다.
+organization repository를 깔끔하게 관리할 수도 있지만 더 중요한 것은 organization repository로 들어오는 모든 내용은 pull request로 들어온다는 것에 더 의미가 있는거 같다.
 
 물론 hotfix 같은 것은 충분한 code review를 받지 못하고 반영될 수 있겠지만 이것은 팀원들과의 협의를 통해 최소한의 approve 수를 정한 다거나, hotfix가 필요할때 따로 요청을 한다던지 하는 방법을 사용하면 될 것이다.
 

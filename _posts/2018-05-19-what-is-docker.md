@@ -136,6 +136,13 @@ stop되어 있는 container를 전부 삭제한다.
 
 마찬가지로 실행되고 있는 container는 stop을 먼저 해야한다.
 
+```
+  docker stats
+  docker stats $(docker ps --format=)
+```
+
+container의 CPU, Memory, Network IO를 보여준다
+
 Dockerfile을 작성하는 법은 따로 post를 작성해보겠다.
 
 image를 만들때 이름을 부여하지 않으면 \<none>으로 만들어 지고,

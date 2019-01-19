@@ -37,10 +37,3 @@ Git을 터미널에서 사용하다보면 branch를 확인하기위해 `git bran
 ```
 
 그 밖에 다양한 prompt 설정들을 할 수 있으니 한번씩 찾아보는 것도 나쁘지 않을듯하다.
-
-<div style="text-align: right">
-  Image source by
-  <a href="https://steemit.com/kr/@stunstunstun/git-1-git-flow">
-    here
-  </a>
-</div>

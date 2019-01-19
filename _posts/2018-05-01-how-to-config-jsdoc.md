@@ -61,10 +61,3 @@ project root path에 jsdoc.conf file을 만들고 아래 코드를 추가한다.
 ```
   jsdoc -c jsdoc.conf
 ```
-
-<div style="text-align: right">
-  Image source by
-  <a href="https://medium.com/4thought-studios/documenting-javascript-projects-f72429da2eea">
-    here
-  </a>
-</div>

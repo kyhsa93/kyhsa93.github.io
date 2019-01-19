@@ -116,10 +116,3 @@ Modify `index.js` again.
 ```
 
 Now run your server, send http POST request on localhost:3000 you can receive your requested data.
-
-<div style="text-align: right">
-  Image source by
-  <a href="https://www.npmjs.com/package/express">
-    here
-  </a>
-</div>

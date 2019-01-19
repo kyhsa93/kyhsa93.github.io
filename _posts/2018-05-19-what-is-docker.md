@@ -154,11 +154,3 @@ image를 만들때 image 이름이 같으면 image를 덮어쓰지만,
 container를 만들때 container의 이름이 같으면 만들수 없다.
 
 Dockerfile을 작성하는 법은 따로 post를 작성하도록 하겠다.
-
-<div style="text-align: right">
-  Image source by
-  <a href="https://docs.docker.com/">
-    here
-  </a>
-</div>
-

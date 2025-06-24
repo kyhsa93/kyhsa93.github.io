@@ -10,5 +10,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxtjs/tailwindcss'
-  ]
+  ],
+  css: ['@/assets/css/tailwind.css']
 })

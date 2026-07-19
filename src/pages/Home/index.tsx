@@ -13,21 +13,21 @@ const latestPosts = [
     summary: '복잡한 요구사항을 Aggregate와 Bounded Context로 정리하는 사고 과정을 기록합니다.',
     date: '2026.07.19',
     tags: ['DDD', 'Architecture'],
-    href: '/posts/finding-domain-boundaries',
+    href: '#/posts/finding-domain-boundaries',
   },
   {
     title: '이벤트 기반 시스템의 신뢰성',
     summary: '메시지 전달 실패와 중복 처리에 대응하는 실용적인 패턴을 정리합니다.',
     date: '2026.07.19',
     tags: ['Event-driven', 'Backend'],
-    href: '/posts/reliable-event-driven-systems',
+    href: '#/posts/reliable-event-driven-systems',
   },
   {
     title: '컨테이너 환경의 개발 경험',
     summary: '로컬 개발부터 배포까지, 팀이 반복 가능한 환경을 만드는 방법을 다룹니다.',
     date: '2026.07.19',
     tags: ['Docker', 'Developer experience'],
-    href: '/posts/containerized-development-experience',
+    href: '#/posts/containerized-development-experience',
   },
 ];
 
@@ -37,16 +37,21 @@ const sideProjects = [
     description: '사주팔자와 mbti를 기반으로 한 운세 테스트 웹앱입니다.',
     status: 'Live',
     href: 'https://kyhsa93.github.io/fove',
+    repository: 'https://github.com/kyhsa93/fove',
   },
   {
     title: 'Event Flow Visualizer',
     description: '이벤트 기반 시스템의 흐름을 더 쉽게 이해하기 위한 시각화 실험입니다.',
     status: 'In progress',
+    href: undefined,
+    repository: undefined,
   },
   {
     title: 'Service Architecture Notes',
     description: '서비스 설계 과정에서 얻은 패턴과 의사결정을 축적하는 개인 지식 베이스입니다.',
     status: 'In progress',
+    href: undefined,
+    repository: undefined,
   },
 ];
 

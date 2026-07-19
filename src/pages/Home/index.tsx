@@ -7,6 +7,40 @@ const expertise = [
   'Event-driven architecture',
 ];
 
+const latestPosts = [
+  {
+    title: '도메인 경계를 찾는 방법',
+    summary: '복잡한 요구사항을 Aggregate와 Bounded Context로 정리하는 사고 과정을 기록합니다.',
+    date: 'Coming soon',
+    tags: ['DDD', 'Architecture'],
+  },
+  {
+    title: '이벤트 기반 시스템의 신뢰성',
+    summary: '메시지 전달 실패와 중복 처리에 대응하는 실용적인 패턴을 정리합니다.',
+    date: 'Coming soon',
+    tags: ['Event-driven', 'Backend'],
+  },
+  {
+    title: '컨테이너 환경의 개발 경험',
+    summary: '로컬 개발부터 배포까지, 팀이 반복 가능한 환경을 만드는 방법을 다룹니다.',
+    date: 'Coming soon',
+    tags: ['Docker', 'Developer experience'],
+  },
+];
+
+const sideProjects = [
+  {
+    title: 'Event Flow Visualizer',
+    description: '이벤트 기반 시스템의 흐름을 더 쉽게 이해하기 위한 시각화 실험입니다.',
+    status: 'In progress',
+  },
+  {
+    title: 'Service Architecture Notes',
+    description: '서비스 설계 과정에서 얻은 패턴과 의사결정을 축적하는 개인 지식 베이스입니다.',
+    status: 'In progress',
+  },
+];
+
 export default function Home() {
   return (
     <main className="home-page">
@@ -125,6 +159,43 @@ export default function Home() {
             </div>
           </div>
         </article>
+      </section>
+
+      <section className="latest-section" id="latest">
+        <div className="latest-heading">
+          <div>
+            <p className="section-kicker">Latest</p>
+            <h2>기록하고, 실험합니다.</h2>
+          </div>
+          <p>설계 과정에서 배운 점과 작은 실험들을 이곳에 차곡차곡 쌓아갑니다.</p>
+        </div>
+
+        <div className="latest-grid">
+          <div className="post-column">
+            <div className="content-label"><span>Writing</span><span>Latest posts</span></div>
+            {latestPosts.map((post) => (
+              <article className="post-item" key={post.title}>
+                <div className="post-meta"><time>{post.date}</time><span>{post.tags.join(' · ')}</span></div>
+                <h3>{post.title}</h3>
+                <p>{post.summary}</p>
+              </article>
+            ))}
+            <span className="coming-link">블로그 아카이브 준비 중</span>
+          </div>
+          <div className="side-project-column">
+            <div className="content-label"><span>Lab</span><span>Side projects</span></div>
+            {sideProjects.map((project, index) => (
+              <article className="side-project" key={project.title}>
+                <div className={`project-orb orb-${index + 1}`} aria-hidden="true"><span /></div>
+                <div>
+                  <p className="project-status"><i />{project.status}</p>
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
       <footer>

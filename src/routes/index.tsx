@@ -1,5 +1,5 @@
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
 } from 'react-router-dom';
@@ -11,7 +11,7 @@ import ContainerizedDevelopmentExperience from '../pages/Post/ContainerizedDevel
 
 export default function Router() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route
           path="/"
@@ -30,6 +30,6 @@ export default function Router() {
           element={<ContainerizedDevelopmentExperience />}
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

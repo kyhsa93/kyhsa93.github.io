@@ -85,7 +85,7 @@ async function publishOutbox() {
         </div>
         <footer className="post-footer">
           <Link to="/">← 메인으로 돌아가기</Link>
-          <a href="https://github.com/kyhsa93/backend-service-playbook" target="_blank" rel="noreferrer">Backend Service Playbook ↗</a>
+          <a href="https://github.com/kyhsa93/backend-service-playbook" target="_blank" rel="noreferrer">Backend Service Playbook </a>
         </footer>
       </article>
     </main>

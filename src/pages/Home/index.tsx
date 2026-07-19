@@ -37,21 +37,18 @@ const sideProjects = [
     description: '사주팔자와 mbti를 기반으로 한 운세 테스트 웹앱입니다.',
     status: 'Live',
     href: 'https://kyhsa93.github.io/fove',
-    repository: 'https://github.com/kyhsa93/fove',
   },
   {
     title: 'Event Flow Visualizer',
     description: '이벤트 기반 시스템의 흐름을 더 쉽게 이해하기 위한 시각화 실험입니다.',
     status: 'In progress',
     href: undefined,
-    repository: undefined,
   },
   {
     title: 'Service Architecture Notes',
     description: '서비스 설계 과정에서 얻은 패턴과 의사결정을 축적하는 개인 지식 베이스입니다.',
     status: 'In progress',
     href: undefined,
-    repository: undefined,
   },
 ];
 
@@ -67,7 +64,7 @@ export default function Home() {
           <a href="#work">Work</a>
           <a href="#about">About</a>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
-            GitHub <span aria-hidden="true">↗</span>
+            GitHub <span aria-hidden="true"></span>
           </a>
         </div>
       </nav>
@@ -88,7 +85,7 @@ export default function Home() {
           <div className="cta-row">
             <a className="primary-link" href="#work">프로젝트 보기 <span aria-hidden="true">↓</span></a>
             <a className="text-link" href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
-              GitHub 방문 <span aria-hidden="true">↗</span>
+              GitHub 방문 <span aria-hidden="true"></span>
             </a>
           </div>
         </div>
@@ -134,7 +131,7 @@ export default function Home() {
             <h2>Backend Service Playbook</h2>
           </div>
           <a className="all-link" href="https://github.com/kyhsa93/backend-service-playbook" target="_blank" rel="noreferrer">
-            GitHub에서 보기 <span aria-hidden="true">↗</span>
+            GitHub에서 보기 <span aria-hidden="true"></span>
           </a>
         </div>
         <article className="playbook-card">
@@ -148,7 +145,7 @@ export default function Home() {
               특정 프레임워크에 갇히지 않고, 팀이 일관된 구조로 서비스를 만들 수 있도록 돕습니다.
             </p>
             <a className="playbook-link" href="https://github.com/kyhsa93/backend-service-playbook" target="_blank" rel="noreferrer">
-              저장소 열기 <span aria-hidden="true">↗</span>
+              저장소 열기 <span aria-hidden="true"></span>
             </a>
           </div>
           <div className="playbook-details">
@@ -190,7 +187,7 @@ export default function Home() {
             {latestPosts.map((post) => (
               <article className={`post-item${post.href ? ' published' : ''}`} key={post.title}>
                 <div className="post-meta"><time>{post.date}</time><span>{post.tags.join(' · ')}</span></div>
-                <h3>{post.href ? <a href={post.href}>{post.title}<span aria-hidden="true">↗</span></a> : post.title}</h3>
+                <h3>{post.href ? <a href={post.href}>{post.title}<span aria-hidden="true"></span></a> : post.title}</h3>
                 <p>{post.summary}</p>
               </article>
             ))}
@@ -203,9 +200,8 @@ export default function Home() {
                 <div className={`project-orb orb-${index + 1}`} aria-hidden="true"><span /></div>
                 <div>
                   <p className="project-status"><i />{project.status}</p>
-                  <h3>{project.href ? <a href={project.href} target="_blank" rel="noreferrer">{project.title} <span aria-hidden="true">↗</span></a> : project.title}</h3>
+                  <h3>{project.href ? <a href={project.href} target="_blank" rel="noreferrer">{project.title} <span aria-hidden="true"></span></a> : project.title}</h3>
                   <p>{project.description}</p>
-                  {project.repository && <a className="repository-link" href={project.repository} target="_blank" rel="noreferrer">GitHub repository ↗</a>}
                 </div>
               </article>
             ))}
@@ -215,7 +211,7 @@ export default function Home() {
 
       <footer>
         <p>Let’s build something resilient.</p>
-        <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">github.com/kyhsa93 ↗</a>
+        <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">github.com/kyhsa93 </a>
       </footer>
     </main>
   );

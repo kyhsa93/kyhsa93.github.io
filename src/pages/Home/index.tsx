@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 const expertise = [
   'TypeScript · Node.js',
   'Go',
@@ -52,7 +54,28 @@ const sideProjects = [
   },
 ];
 
+const getInitialTheme = () => {
+  if (typeof window === 'undefined') {
+    return 'light';
+  }
+
+  const savedTheme = window.localStorage.getItem('theme');
+
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    return savedTheme;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
 export default function Home() {
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    window.localStorage.setItem('theme', theme);
+  }, [theme]);
+
   return (
     <main className="home-page">
       <nav className="site-nav" aria-label="Main navigation">
@@ -63,6 +86,16 @@ export default function Home() {
         <div className="nav-links">
           <a href="#work">Work</a>
           <a href="#about">About</a>
+          <button
+            className="theme-toggle"
+            type="button"
+            aria-label="Switch theme"
+            aria-pressed={theme === 'dark'}
+            onClick={() => setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'))}
+          >
+            <span aria-hidden="true">{theme === 'dark' ? '☀️' : '🌙'}</span>
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             GitHub <span aria-hidden="true"></span>
           </a>

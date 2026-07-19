@@ -1,0 +1,23 @@
+{
+  "$schema": "https://oxc.rs/schema/oxlint.json",
+  "plugins": [
+    "react",
+    "typescript",
+    "import"
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-key": "error",
+    "typescript/no-unused-vars": "error",
+    "typescript/no-explicit-any": "warn",
+    "import/no-unassigned-import": "off"
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules"
+  ]
+}

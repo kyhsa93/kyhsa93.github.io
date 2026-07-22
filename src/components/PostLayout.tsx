@@ -44,6 +44,7 @@ export default function PostLayout({
       description: meta?.summary ?? lede,
       datePublished: toIsoDate(date),
       author: { '@type': 'Person', name: 'younghoon' },
+      image: 'https://kyhsa93.github.io/og-image.png',
       url: `https://kyhsa93.github.io${path}`,
     },
   });

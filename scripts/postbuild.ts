@@ -3,6 +3,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { posts, postsByDate as sortedPosts } from '../src/data/posts.ts';
+import { renderOgImage } from './og-image.ts';
 
 const SITE_URL = 'https://kyhsa93.github.io';
 const SITE_NAME = 'younghoon';
@@ -153,6 +154,7 @@ interface PageMeta {
   description: string;
   path: string;
   type: 'website' | 'article';
+  image?: string;
   publishedTime?: string;
   jsonLd?: Record<string, unknown>;
 }
@@ -162,6 +164,7 @@ function injectMeta(template: string, meta: PageMeta): string {
   const fullTitle = meta.path === '/' ? meta.title : `${meta.title} · ${SITE_NAME}`;
   const title = xmlEscape(meta.title);
   const description = xmlEscape(meta.description);
+  const image = meta.image ?? DEFAULT_IMAGE;
 
   let html = template
     .replace(/<title>.*?<\/title>/, `<title>${xmlEscape(fullTitle)}</title>`)
@@ -183,6 +186,7 @@ function injectMeta(template: string, meta: PageMeta): string {
       `<meta property="og:description" content="${description}" />`
     )
     .replace(/<meta property="og:url" content="[^"]*"\s*\/>/, `<meta property="og:url" content="${url}" />`)
+    .replace(/<meta property="og:image" content="[^"]*"\s*\/>/, `<meta property="og:image" content="${image}" />`)
     .replace(
       /<meta name="twitter:title" content="[^"]*"\s*\/>/,
       `<meta name="twitter:title" content="${title}" />`
@@ -190,7 +194,8 @@ function injectMeta(template: string, meta: PageMeta): string {
     .replace(
       /<meta name="twitter:description" content="[^"]*"\s*\/>/,
       `<meta name="twitter:description" content="${description}" />`
-    );
+    )
+    .replace(/<meta name="twitter:image" content="[^"]*"\s*\/>/, `<meta name="twitter:image" content="${image}" />`);
 
   const extraTags: string[] = [];
   if (meta.publishedTime) {
@@ -213,8 +218,15 @@ function writeRoute(template: string, routePath: string, meta: PageMeta): void {
   writeFileSync(resolve(dir, 'index.html'), injectMeta(template, meta));
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const template = readFileSync(resolve(DIST_DIR, 'index.html'), 'utf-8');
+
+  const ogDir = resolve(DIST_DIR, 'og');
+  mkdirSync(ogDir, { recursive: true });
+  for (const post of posts) {
+    const png = await renderOgImage(post);
+    writeFileSync(resolve(ogDir, `${post.slug}.png`), png);
+  }
 
   writeRoute(template, '/', {
     title: SITE_TITLE,
@@ -239,11 +251,13 @@ function main(): void {
 
   for (const post of posts) {
     const path = `/posts/${post.slug}`;
+    const image = `${SITE_URL}/og/${post.slug}.png`;
     writeRoute(template, path, {
       title: post.title,
       description: post.summary,
       path,
       type: 'article',
+      image,
       publishedTime: toIsoDate(post.date),
       jsonLd: {
         '@context': 'https://schema.org',
@@ -252,7 +266,7 @@ function main(): void {
         description: post.summary,
         datePublished: toIsoDate(post.date),
         author: { '@type': 'Person', name: SITE_NAME },
-        image: DEFAULT_IMAGE,
+        image,
         url: `${SITE_URL}${path}`,
       },
     });
@@ -263,7 +277,7 @@ function main(): void {
   writeFileSync(resolve(DIST_DIR, 'sitemap.xml'), generateSitemap());
 
   console.log(
-    `postbuild: wrote rss.xml, atom.xml, sitemap.xml, and static <head> tags for ${posts.length + 2} routes`
+    `postbuild: wrote rss.xml, atom.xml, sitemap.xml, ${posts.length} OG images, and static <head> tags for ${posts.length + 2} routes`
   );
 }
 

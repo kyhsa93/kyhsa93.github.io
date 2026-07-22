@@ -7,8 +7,6 @@ export default function AggregateDesign() {
       kicker="DDD · Tactical Design"
       title={<>Designing Aggregates:<br /><em>Transaction Boundaries and Invariants</em></>}
       lede="An Aggregate isn't a folder for related data — it's the boundary of a transaction and the owner of an invariant. Get the boundary wrong, and every save becomes a negotiation between models that shouldn't know about each other."
-      date="2026.07.22"
-      readMinutes={13}
     >
       <p>Once you've settled a Bounded Context's boundary, the next question is what happens inside it. This is where tactical design lives: Aggregate, Entity, Value Object, Domain Event. Of these, the Aggregate Root decision matters most, because it's the one thing that quietly determines your transaction size, your lock contention, and how many other objects a single save has to know about.</p>
       <h2>The Aggregate Root's Job</h2>

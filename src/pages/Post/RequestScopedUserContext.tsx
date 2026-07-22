@@ -7,8 +7,6 @@ export default function RequestScopedUserContext() {
       kicker="Cross-cutting Concerns · Backend"
       title={<>Request-Scoped Context:<br /><em>Why req.user Is an Anti-Pattern</em></>}
       lede="Reading the authenticated user off the request object looks completely harmless the first time you write it. It's also the single easiest way to quietly wire your business logic to the fact that an HTTP request is currently in flight."
-      date="2026.07.22"
-      readMinutes={13}
     >
       <p>Authentication has a clear place in a layered architecture: the Interface layer, and only the Interface layer. The Domain and Application layers never depend on the authentication context — a Command or Query includes whatever it needs, like a plain <code>userId</code> string, and nothing about how that ID was established.</p>
       <pre><code>{`// forbidden — verifying the token directly in an Application Service

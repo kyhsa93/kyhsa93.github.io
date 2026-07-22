@@ -7,8 +7,6 @@ export default function SameArchitectureFiveLanguages() {
       kicker="Comparative · Architecture"
       title={<>Same Architecture,<br /><em>Five Languages</em></>}
       lede="The same Repository/Query separation, implemented independently in NestJS, Go, Java, Kotlin, and FastAPI, produces five genuinely different-looking pieces of code. What's worth noticing is exactly how much of the underlying decision stays identical anyway."
-      date="2026.07.22"
-      readMinutes={14}
     >
       <p>One way to test whether an architectural principle is actually language-agnostic, rather than accidentally TypeScript-shaped, is to implement it independently in enough languages that the accidental parts fall away and only the real decision is left. This repo does that for the same Account domain across five backends: NestJS (TypeScript), Go, Spring Boot in both Java and Kotlin, and FastAPI (Python). The Repository/Query split is the clearest single place to see what's essential and what's just syntax.</p>
       <h2>TypeScript: An Abstract Class as the Interface</h2>

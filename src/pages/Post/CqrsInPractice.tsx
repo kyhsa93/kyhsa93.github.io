@@ -7,8 +7,6 @@ export default function CqrsInPractice() {
       kicker="CQRS · Architecture"
       title={<>CQRS in Practice:<br /><em>Why a Query Can't Use a Repository</em></>}
       lede="CQRS sounds like an architecture decision you make once, up front. In practice it's a boundary you have to keep re-enforcing — because the easiest possible way to satisfy a new read requirement is always to reach for the write-side Repository that's already sitting right there."
-      date="2026.07.22"
-      readMinutes={13}
     >
       <p>CQRS — Command Query Responsibility Segregation — separates the responsibilities of writing and reading. It keeps the same underlying principles as the base architecture: the Domain layer stays independent, an Aggregate encapsulates business rules, and the Repository pattern holds. What changes is that use cases get split into an independent Command side and Query side, each with its own model.</p>
       <h2>Two Levels of CQRS</h2>

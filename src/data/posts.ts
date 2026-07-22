@@ -7,6 +7,7 @@ export interface PostMeta {
   readMinutes: number;
 }
 
+// Not necessarily in date order — see `postsByDate` for that.
 export const posts: PostMeta[] = [
   {
     slug: 'aggregate-design',
@@ -20,7 +21,7 @@ export const posts: PostMeta[] = [
     slug: 'domain-services-across-aggregates',
     title: "Domain Services: When a Rule Doesn't Belong to One Aggregate",
     summary: 'A real RefundEligibilityService example for logic that has to read two Aggregates at once.',
-    date: '2026.07.22',
+    date: '2026.07.18',
     tags: ['DDD', 'Tactical Design'],
     readMinutes: 13,
   },
@@ -28,7 +29,7 @@ export const posts: PostMeta[] = [
     slug: 'talking-across-bounded-contexts',
     title: 'Talking Across Bounded Contexts',
     summary: 'Choosing between a synchronous Adapter and an asynchronous Integration Event, with a real compensating-transaction example.',
-    date: '2026.07.22',
+    date: '2026.07.11',
     tags: ['DDD', 'Integration'],
     readMinutes: 12,
   },
@@ -36,7 +37,7 @@ export const posts: PostMeta[] = [
     slug: 'cqrs-in-practice',
     title: "CQRS in Practice: Why a Query Can't Use a Repository",
     summary: 'A real cross-language bug where a Query Handler used a write-capable Repository — and the docs agreed it was fine.',
-    date: '2026.07.22',
+    date: '2026.07.12',
     tags: ['CQRS', 'Architecture'],
     readMinutes: 13,
   },
@@ -44,7 +45,7 @@ export const posts: PostMeta[] = [
     slug: 'repository-naming-convention',
     title: 'The Naming Rule That Caught Real Bugs',
     summary: 'How a boring find/save/delete naming convention, once automated, immediately found violations nobody had noticed.',
-    date: '2026.07.22',
+    date: '2026.07.21',
     tags: ['Repository Pattern', 'Conventions'],
     readMinutes: 12,
   },
@@ -68,7 +69,7 @@ export const posts: PostMeta[] = [
     slug: 'graceful-shutdown',
     title: 'Graceful Shutdown: The Reliability Feature Nobody Tests',
     summary: 'Getting the order right between readiness, in-flight requests, and resource cleanup during SIGTERM.',
-    date: '2026.07.22',
+    date: '2026.07.11',
     tags: ['Reliability', 'Operations'],
     readMinutes: 11,
   },
@@ -76,7 +77,7 @@ export const posts: PostMeta[] = [
     slug: 'scheduling-and-task-outbox',
     title: 'Scheduling and the Task Outbox Pattern',
     summary: 'Why a Scheduler should only enqueue, and the real bugs multi-instance Cron jobs surfaced.',
-    date: '2026.07.22',
+    date: '2026.07.21',
     tags: ['Scheduling', 'Backend'],
     readMinutes: 13,
   },
@@ -84,7 +85,7 @@ export const posts: PostMeta[] = [
     slug: 'typed-errors-and-response-schemas',
     title: 'Typed Errors and a Consistent Response Schema',
     summary: 'Why an error-message enum key has to equal its value, and the four-field error response shape.',
-    date: '2026.07.22',
+    date: '2026.07.11',
     tags: ['API Design', 'Conventions'],
     readMinutes: 12,
   },
@@ -100,7 +101,7 @@ export const posts: PostMeta[] = [
     slug: 'can-an-ai-agent-follow-your-architecture',
     title: 'Can an AI Agent Follow Your Architecture?',
     summary: 'Reusing an architecture-compliance harness as an AI benchmark, across five difficulty levels and five languages.',
-    date: '2026.07.22',
+    date: '2026.07.21',
     tags: ['AI Agents', 'Benchmark'],
     readMinutes: 15,
   },
@@ -108,7 +109,7 @@ export const posts: PostMeta[] = [
     slug: 'from-docs-to-runnable-code',
     title: 'From Docs to Runnable Code in One Command',
     summary: 'Turning a written reference template into a scaffolding generator, and the bugs found by actually running it.',
-    date: '2026.07.22',
+    date: '2026.07.17',
     tags: ['Tooling', 'Developer Experience'],
     readMinutes: 12,
   },
@@ -116,7 +117,7 @@ export const posts: PostMeta[] = [
     slug: 'same-architecture-five-languages',
     title: 'Same Architecture, Five Languages',
     summary: 'Comparing the same Repository/Query split as implemented independently in TypeScript, Go, Python, Java, and Kotlin.',
-    date: '2026.07.22',
+    date: '2026.07.21',
     tags: ['Comparative', 'Architecture'],
     readMinutes: 14,
   },
@@ -145,3 +146,7 @@ export const posts: PostMeta[] = [
     readMinutes: 11,
   },
 ];
+
+export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>
+  a.date === b.date ? 0 : a.date < b.date ? 1 : -1,
+);

@@ -7,8 +7,6 @@ export default function RepositoryNamingConvention() {
       kicker="Repository Pattern · Conventions"
       title={<>The Naming Rule<br /><em>That Caught Real Bugs</em></>}
       lede="A method-naming convention feels like the most boring possible thing to standardize. Then you write a tool that actually checks it, run it once, and it finds three real violations nobody had noticed across four different codebases."
-      date="2026.07.22"
-      readMinutes={12}
     >
       <p>The Repository pattern itself is a settled idea — one Aggregate Root, one Repository interface in the Domain layer, one implementation in Infrastructure. What's less obvious is how much drift is possible in the method names on that interface, and how much that drift actually costs once several people (or several independently-written language ports) are writing against the same convention.</p>
       <h2>The Rule</h2>

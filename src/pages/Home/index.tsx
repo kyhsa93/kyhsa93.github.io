@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { posts } from '../../data/posts';
+import { postsByDate } from '../../data/posts';
 import { useSeo } from '../../hooks/useSeo';
 
 const expertise = [
@@ -12,7 +12,7 @@ const expertise = [
   'Event-driven architecture',
 ];
 
-const latestPosts = posts.slice(0, 3);
+const latestPosts = postsByDate.slice(0, 3);
 
 const sideProjects = [
   {

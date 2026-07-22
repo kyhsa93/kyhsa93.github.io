@@ -7,8 +7,6 @@ export default function SchedulingAndTaskOutbox() {
       kicker="Scheduling · Backend"
       title={<>Scheduling and the<br /><em>Task Outbox Pattern</em></>}
       lede="A Cron job that runs business logic directly works fine right up until you have two instances of your service, both running it at the same moment. Scheduling done properly is really a story about who's allowed to do what, in what order."
-      date="2026.07.22"
-      readMinutes={13}
     >
       <p>Periodic work and batch processing come with three requirements that are easy to skip when you're prototyping and expensive to retrofit later: the Scheduler belongs in the Infrastructure layer, never the Application layer where business logic lives; a Task handler is idempotent, since a message queue is at-least-once delivery and the same Task can run twice; and if you use a message queue at all, a Dead Letter Queue is the default, not an afterthought — it stops infinite retries and isolates a poison message before it blocks everything behind it.</p>
       <h2>The Scheduler Only Enqueues</h2>

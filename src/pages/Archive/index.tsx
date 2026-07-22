@@ -24,12 +24,21 @@ export default function Archive() {
       <section className="archive-section">
         <p className="section-kicker">Writing</p>
         <h1 className="archive-heading">All posts</h1>
-        <div className="content-label"><span>Writing</span><span>{posts.length} posts</span></div>
+        <div className="content-label">
+          <span>Writing</span>
+          <span>{posts.length} posts</span>
+        </div>
         {posts.map((post) => (
           <article className="post-item published" key={post.slug}>
-            <div className="post-meta"><time>{post.date}</time><span>{post.tags.join(' · ')}</span></div>
+            <div className="post-meta">
+              <time>{post.date}</time>
+              <span>{post.tags.join(' · ')}</span>
+            </div>
             <h3>
-              <Link to={`/posts/${post.slug}`}>{post.title}<span aria-hidden="true">→</span></Link>
+              <Link to={`/posts/${post.slug}`}>
+                {post.title}
+                <span aria-hidden="true">→</span>
+              </Link>
             </h3>
             <p>{post.summary}</p>
           </article>
@@ -38,7 +47,12 @@ export default function Archive() {
 
       <footer>
         <p>Let’s build something resilient.</p>
-        <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">github.com/kyhsa93 →</a>
+        <div className="footer-links">
+          <Link to="/privacy-policy">Privacy</Link>
+          <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
+            github.com/kyhsa93 →
+          </a>
+        </div>
       </footer>
     </main>
   );

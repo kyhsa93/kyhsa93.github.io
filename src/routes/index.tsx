@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 
 import Home from '../pages/Home';
+import Archive from '../pages/Archive';
 import FindingDomainBoundaries from '../pages/Post/FindingDomainBoundaries';
 import ReliableEventDrivenSystems from '../pages/Post/ReliableEventDrivenSystems';
 import ContainerizedDevelopmentExperience from '../pages/Post/ContainerizedDevelopmentExperience';
@@ -16,6 +17,10 @@ export default function Router() {
         <Route
           path="/"
           element={<Home />}
+        />
+        <Route
+          path="/posts"
+          element={<Archive />}
         />
         <Route
           path="/posts/finding-domain-boundaries"

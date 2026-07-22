@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { AdConsentProvider } from '../lib/adConsent';
 import { ConsentBanner } from '../components/ConsentBanner';
+import { ScrollToTop } from '../components/ScrollToTop';
 import Home from '../pages/Home';
 import Archive from '../pages/Archive';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
@@ -27,6 +28,7 @@ export default function Router() {
   return (
     <BrowserRouter>
       <AdConsentProvider>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<Archive />} />

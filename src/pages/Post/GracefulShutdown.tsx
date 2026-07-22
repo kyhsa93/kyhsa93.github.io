@@ -46,6 +46,42 @@ CMD ["node", "dist/main.js"]
 # wrong — npm sits in between and delays SIGTERM delivery
 CMD ["npm", "run", "start:prod"]`}</code></pre>
       <p>If npm or yarn sits in between as a wrapper, SIGTERM is delivered to that wrapper process, not directly to the application — delivery to the actual app may be delayed, or in some setups may never happen at all before SIGKILL arrives. Running the application directly gives it PID 1 inside the container, so it receives SIGTERM the moment the orchestrator sends it, with nothing standing between the signal and the code that's supposed to react to it.</p>
+      <h2>A Framework Flag vs. Writing the Sequence by Hand</h2>
+      <p>How much of the sequence above you have to write yourself depends entirely on whether the framework already has an opinion about it. Spring Boot turns almost the whole thing into a single config line:</p>
+      <pre><code>{`server:
+  shutdown: graceful
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s`}</code></pre>
+      <p><code>server.shutdown: graceful</code> makes Spring itself stop accepting new requests and wait for in-flight ones to finish before closing, and Actuator's liveness/readiness probes already exist as separate endpoints out of the box — the six-step sequence is mostly the framework's problem, not the application code's.</p>
+      <p>Go has no framework playing that role, so every step in the sequence is explicit, in the exact order the doc prescribes:</p>
+      <pre><code>{`ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
+defer stop()
+
+go func() {
+	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		slog.Error("server error", "error", err)
+		os.Exit(1)
+	}
+}()
+
+<-ctx.Done() // blocks until SIGTERM/SIGINT is received
+
+// Must be called before srv.Shutdown(ctx) — the orchestrator only cuts off new traffic
+// after readiness flips to 503, so readiness must fail first, before the HTTP server
+// actually stops, for a seamless cutover.
+healthHandler.StartShutdown()
+
+shutdownCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+defer cancel()
+
+// Waits for in-flight requests to finish while rejecting new connections.
+if err := srv.Shutdown(shutdownCtx); err != nil {
+	slog.Error("graceful shutdown failed", "error", err)
+}
+// DB connections are cleaned up only after the HTTP server is fully closed`}</code></pre>
+      <p>Nothing here is Go-specific wisdom — it's the same six steps from the top of this post, just with no framework hiding the ordering from you. <code>ctx</code> being cancelled on SIGTERM is also what stops every other background loop in the process — the Outbox poller, the Task Queue consumer, the schedulers — all watching the same context, so one signal cleanly unwinds everything without a separate shutdown hook per component.</p>
       <h2>Cleanup Order, and What Not to Do During It</h2>
       <p>Resource cleanup — releasing DB connections, closing message-queue clients — runs <em>after</em> the HTTP server has closed, never before. In-flight requests still need to reach the database while they're finishing up; releasing the connection pool first pulls the floor out from under exactly the requests you were trying to let finish gracefully in the first place.</p>
       <pre><code>{`✓ Shut down the HTTP server → release the DB connection   (correct order)

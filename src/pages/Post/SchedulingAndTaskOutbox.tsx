@@ -42,6 +42,53 @@ export class AccountInterestScheduler {
   }
 }`}</code></pre>
       <p>The date-stamped <code>dedupId</code> is what makes this safe across multiple running instances. If three instances all fire this handler within the same FIFO dedup window, all three attempts carry the identical <code>dedupId</code> — only one actually enters the queue. And the explicit try-catch around the enqueue call is there for a reason called out directly in the comment: the scheduling library used here silently swallows exceptions thrown inside a Cron handler, so without that catch-and-log, a failed enqueue would simply vanish with no trace at all.</p>
+      <h2>The Same Scheduler, With and Without a Cron Decorator</h2>
+      <p>Spring Boot's version reaches for the identical cron-expression idiom, just with a standard library annotation instead of a NestJS one:</p>
+      <pre><code>{`@Component
+@RequiredArgsConstructor
+public class InterestPaymentScheduler {
+    private static final String TASK_TYPE = "account.pay-interest";
+    private static final String GROUP_ID = "account.interest";
+    private final TaskOutboxWriter taskOutboxWriter;
+
+    @Scheduled(cron = "0 0 3 * * *") // Every day at 3 AM
+    public void enqueueDailyInterestPayment() {
+        try {
+            LocalDate today = LocalDate.now();
+            String dedupId = TASK_TYPE + "-" + today;
+            taskOutboxWriter.enqueue(TASK_TYPE, new Payload(today), GROUP_ID, dedupId);
+        } catch (Exception e) {
+            log.error("Failed to enqueue the interest-payment Task", e);
+        }
+    }
+}`}</code></pre>
+      <p>Go has no scheduling library at all to decorate a method with, so the same idea is a plain goroutine running its own ticker loop, watching the same shutdown context every other background loop in the process watches:</p>
+      <pre><code>{`func (s *InterestScheduler) Run(ctx context.Context) {
+	ticker := time.NewTicker(24 * time.Hour)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			if err := s.EnqueueDailyInterest(ctx, time.Now().UTC()); err != nil {
+				// Many scheduling libraries silently swallow Cron exceptions — this one
+				// always logs it explicitly. Retried on the next tick 24 hours later,
+				// so it is not re-thrown here.
+				slog.ErrorContext(ctx, "interest payment task enqueue failed", "error", err)
+			}
+		}
+	}
+}
+
+func (s *InterestScheduler) EnqueueDailyInterest(ctx context.Context, today time.Time) error {
+	date := today.Format("2006-01-02")
+	dedupID := "account.apply-interest-" + date
+	payload := []byte(\`{"date":"\` + date + \`"}\`)
+	return s.taskQueue.Enqueue(ctx, "account.apply-interest", payload, dedupID)
+}`}</code></pre>
+      <p>Three implementations, three different amounts of framework support — a decorator, an annotation, a hand-rolled ticker — and all three land on the identical shape underneath: enqueue only, log the failure explicitly because something in the stack tends to swallow it silently, and let a date-based dedup ID absorb the multi-instance case rather than trying to coordinate instances directly.</p>
       <h2>Enqueuing Must Be Atomic With the DB Change</h2>
       <p>Calling <code>SendMessage</code> directly on a message queue from inside a Command Service creates the same dual-write problem covered in reliable event-driven design generally — the DB commits but the message send fails, or the message sends but the DB rolls back, and now there's an inconsistency nobody's watching for. The fix is the same Outbox pattern used for Domain Events: write to a <code>task_outbox</code> table inside the same transaction as the DB change, and let a separate Relay poll that table and publish once the transaction has actually committed.</p>
       <pre><code>{`// An Application Service — the DB change and enqueuing the Task happen in the same transaction

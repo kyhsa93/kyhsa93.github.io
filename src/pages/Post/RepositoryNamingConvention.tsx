@@ -28,6 +28,33 @@ if (!order) throw new Error(OrderErrorMessage['Order not found.'])`}</code></pre
       <h2>Turning the Rule Into a Regression Guard</h2>
       <p>The fix that actually stuck wasn't a fifth manual pass — it was writing one harness rule per language that mechanically flags the violating shapes: a blocklist of <code>findBy*</code>, bare <code>findAll</code>, bare <code>save</code>, bare <code>delete</code>, and anything without the expected noun suffix. Every language already had its own harness (a TypeScript AST walk, a Go program, bash-plus-grep, a Python AST walk — the mechanism differs, the rule doesn't), so this was additive, not a new tool.</p>
       <p>Run against the newly-fixed code, it passed everywhere, as expected. Run against a different domain nobody had thought to re-check — the authentication domain, in three of the five languages — it immediately found three more real violations that had never been part of any prior audit's scope, because prior audits had all been scoped to the two business domains everyone kept thinking about. A rule this cheap to write turned out to be the actual fix; the manual audits before it were finding symptoms one at a time.</p>
+      <h2>The Same Three Names, in Five Different Type Systems</h2>
+      <p>Once fixed, the interface reads almost identically across every language — only the surrounding syntax changes, never the three method-name patterns themselves:</p>
+      <pre><code>{`// Go
+type Repository interface {
+	FindAccounts(ctx context.Context, q FindQuery) ([]*Account, int, error)
+	SaveAccount(ctx context.Context, account *Account) error
+}
+
+// Java
+public interface AccountRepository {
+    AccountsWithCount findAccounts(AccountFindQuery query);
+    void saveAccount(Account account);
+    void deleteAccount(String accountId);
+}
+
+// Kotlin
+interface AccountRepository {
+    fun findAccounts(query: AccountFindQuery): Pair<List<Account>, Long>
+    fun saveAccount(account: Account)
+    fun deleteAccount(accountId: String)
+}
+
+// Python (FastAPI)
+class AccountRepository(AccountQuery, ABC):
+    @abstractmethod
+    async def save_account(self, account: Account) -> None: ...`}</code></pre>
+      <p>Go returns a slice plus a count plus an error, Kotlin reaches for a <code>Pair</code>, Python leans on <code>ABC</code> and <code>async</code> — every one of those differences is a language idiom, not an architecture decision. What a harness rule for this convention actually has to check is language-agnostic almost by definition: strip the syntax away, and it's asking whether the method is spelled <code>find&lt;Noun&gt;s</code>/<code>save&lt;Noun&gt;</code>/<code>delete&lt;Noun&gt;</code>, full stop. That's exactly why the same blocklist logic (flag <code>findBy*</code>, bare <code>findAll</code>, bare <code>save</code>) ported cleanly into five completely different static-analysis mechanisms — a TypeScript AST walk, a Go program, bash-plus-grep, a Kotlin/Java AST walk, a Python AST walk — without any of them needing a fundamentally different rule.</p>
       <h2>What the Rule Deliberately Doesn't Check</h2>
       <p>It doesn't check whether the noun is spelled correctly for the domain, whether the return shape is right, or whether the query logic inside the method is correct — that's business logic, and a naming-convention harness rule staying out of business logic is exactly the discipline this repo's harness design keeps to everywhere. It checks one narrow, mechanically-verifiable thing: does the method name on a Repository-shaped interface match one of three patterns. That narrowness is what makes it cheap enough to actually run on every commit instead of every few months.</p>
       <div className="article-note"><strong>Further reading in the repo</strong><p>

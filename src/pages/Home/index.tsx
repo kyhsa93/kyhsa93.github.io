@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { posts } from '../../data/posts';
 
 const expertise = [
   'TypeScript · Node.js',
@@ -9,29 +11,7 @@ const expertise = [
   'Event-driven architecture',
 ];
 
-const latestPosts = [
-  {
-    title: '도메인 경계를 찾는 방법',
-    summary: '복잡한 요구사항을 Aggregate와 Bounded Context로 정리하는 사고 과정을 기록합니다.',
-    date: '2026.07.19',
-    tags: ['DDD', 'Architecture'],
-    href: '#/posts/finding-domain-boundaries',
-  },
-  {
-    title: '이벤트 기반 시스템의 신뢰성',
-    summary: '메시지 전달 실패와 중복 처리에 대응하는 실용적인 패턴을 정리합니다.',
-    date: '2026.07.19',
-    tags: ['Event-driven', 'Backend'],
-    href: '#/posts/reliable-event-driven-systems',
-  },
-  {
-    title: '컨테이너 환경의 개발 경험',
-    summary: '로컬 개발부터 배포까지, 팀이 반복 가능한 환경을 만드는 방법을 다룹니다.',
-    date: '2026.07.19',
-    tags: ['Docker', 'Developer experience'],
-    href: '#/posts/containerized-development-experience',
-  },
-];
+const latestPosts = posts.slice(0, 3);
 
 const sideProjects = [
   {
@@ -218,13 +198,13 @@ export default function Home() {
           <div className="post-column">
             <div className="content-label"><span>Writing</span><span>Latest posts</span></div>
             {latestPosts.map((post) => (
-              <article className={`post-item${post.href ? ' published' : ''}`} key={post.title}>
+              <article className="post-item published" key={post.slug}>
                 <div className="post-meta"><time>{post.date}</time><span>{post.tags.join(' · ')}</span></div>
-                <h3>{post.href ? <a href={post.href}>{post.title}<span aria-hidden="true"></span></a> : post.title}</h3>
+                <h3><Link to={`/posts/${post.slug}`}>{post.title}<span aria-hidden="true">→</span></Link></h3>
                 <p>{post.summary}</p>
               </article>
             ))}
-            <span className="coming-link">블로그 아카이브 준비 중</span>
+            <Link to="/posts" className="coming-link">전체 글 보기 →</Link>
           </div>
           <div className="side-project-column">
             <div className="content-label"><span>Lab</span><span>Side projects</span></div>

@@ -9,6 +9,7 @@ import Home from '../pages/Home';
 import Archive from '../pages/Archive';
 
 const PrivacyPolicy = lazy(() => import('../pages/PrivacyPolicy'));
+const NotFound = lazy(() => import('../pages/NotFound'));
 const AggregateDesign = lazy(() => import('../pages/Post/AggregateDesign'));
 const DomainServicesAcrossAggregates = lazy(
   () => import('../pages/Post/DomainServicesAcrossAggregates'),
@@ -131,6 +132,7 @@ export default function Router() {
               path="/posts/containerized-development-experience"
               element={<ContainerizedDevelopmentExperience />}
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
         <ConsentBanner />

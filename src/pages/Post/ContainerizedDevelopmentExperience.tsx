@@ -4,19 +4,19 @@ export default function ContainerizedDevelopmentExperience() {
   return (
     <PostLayout
       kicker="Docker · Developer experience"
-      title={<>컨테이너 환경의<br /><em>개발 경험</em></>}
-      lede="컨테이너의 가치는 배포 환경을 맞추는 데서 끝나지 않습니다. 새로 합류한 개발자도 짧은 시간 안에 실행하고, 안전하게 실험하고, 같은 방식으로 검증할 수 있게 만드는 것이 더 큰 가치입니다."
+      title={<>Developer Experience<br /><em>in Containerized Environments</em></>}
+      lede="The value of containers doesn't end at matching deployment environments. The bigger value is letting even a newly joined developer run the system quickly, experiment safely, and verify it the same way as everyone else."
       date="2026.07.19"
       readMinutes={11}
     >
-      <p>“제 로컬에서는 되는데요”라는 말은 대개 코드보다 환경의 계약이 문서화되지 않았다는 신호입니다. 런타임 버전, 데이터베이스 설정, 의존 서비스, 초기 데이터, 실행 순서가 사람의 기억에만 있으면 팀의 개발 속도는 가장 익숙하지 않은 사람의 환경에 맞춰집니다.</p>
-      <p>컨테이너는 이 계약을 코드로 옮길 수 있는 좋은 도구입니다. 다만 모든 것을 Dockerfile에 넣는다고 개발 경험이 좋아지는 것은 아닙니다. 빠른 시작, 빠른 변경 반영, 예측 가능한 데이터, 명확한 실패 메시지까지 함께 설계해야 컨테이너 환경이 팀의 마찰을 줄입니다.</p>
-      <h2>좋은 로컬 환경의 기준</h2>
-      <p>좋은 개발 환경은 문서의 긴 설치 절차보다 하나의 명령에 가깝습니다. 저장소를 받은 뒤 <code>docker compose up</code>으로 애플리케이션과 필수 의존성이 실행되고, 헬스 체크가 통과하면 API를 호출할 수 있어야 합니다. 실패했을 때도 어떤 서비스가 준비되지 않았는지 로그와 상태에서 바로 알 수 있어야 합니다.</p>
-      <p>여기서 ‘필수’라는 말이 중요합니다. 로컬에서 운영 환경의 모든 인프라를 복제할 필요는 없습니다. 개발 중인 기능에 필요한 데이터베이스, 메시지 브로커, 캐시처럼 계약을 검증하는 데 필요한 요소를 우선 포함하고, 관측 플랫폼이나 대용량 분석 시스템은 mock이나 공유 개발 환경으로 대체할 수 있습니다.</p>
-      <h2>1. Compose를 실행 설명서로 만든다</h2>
-      <p>Compose 파일은 컨테이너 목록이 아니라 서비스 간의 관계를 설명하는 실행 가능한 문서입니다. 포트, 환경 변수, 볼륨뿐 아니라 기동 순서와 준비 상태를 드러내야 합니다. 단순히 컨테이너가 시작됐다는 사실보다, 실제로 요청을 받을 준비가 됐는지가 더 중요합니다.</p>
-      <h3>예제: 의존성과 헬스 체크를 명시한 Compose</h3>
+      <p>“It works on my machine” is usually a sign that the environment's contract, not the code, was never documented. If the runtime version, database settings, dependent services, seed data, and startup order live only in someone's memory, the team's development speed ends up bottlenecked by whoever is least familiar with the environment.</p>
+      <p>Containers are a good tool for moving that contract into code. But putting everything into a Dockerfile doesn't automatically improve the developer experience. You need to design for fast startup, fast reflection of code changes, predictable data, and clear failure messages together, for a containerized environment to actually reduce friction for the team.</p>
+      <h2>What Makes a Good Local Environment</h2>
+      <p>A good development environment is closer to a single command than a long installation guide in a document. After cloning the repository, <code>docker compose up</code> should start the application and its required dependencies, and once the health checks pass, the API should be callable. Even on failure, you should be able to tell immediately from the logs and status which service isn't ready.</p>
+      <p>The word “required” matters here. You don't need to replicate every piece of production infrastructure locally. Prioritize including whatever is needed to validate the contract — a database, message broker, or cache the feature under development actually needs — and things like an observability platform or a large-scale analytics system can be replaced with a mock or a shared development environment.</p>
+      <h2>1. Make Compose an Executable Runbook</h2>
+      <p>A Compose file isn't a list of containers — it's an executable document that describes the relationships between services. It should expose not just ports, environment variables, and volumes, but also startup order and readiness. Whether a container actually started matters less than whether it's really ready to accept requests.</p>
+      <h3>Example: A Compose File That Declares Dependencies and Health Checks</h3>
       <pre><code>{`services:
   api:
     build:
@@ -58,30 +58,30 @@ export default function ContainerizedDevelopmentExperience() {
 
 volumes:
   node_modules:`}</code></pre>
-      <p>애플리케이션이 데이터베이스의 포트를 열기만 기다리는 대신, 실제 연결 가능한 상태를 기다리게 했습니다. 개발 중 의존 서비스가 늦게 시작되어도 불필요한 재실행을 줄일 수 있습니다. 단, 애플리케이션 자체도 연결 실패를 재시도할 수 있어야 합니다. Compose의 기동 순서는 런타임 복구 전략을 대체하지 않습니다.</p>
-      <h2>2. 개발 이미지와 배포 이미지를 분리한다</h2>
-      <p>개발 컨테이너는 코드 변경을 즉시 반영하고 디버거와 테스트 도구를 포함해야 합니다. 반면 배포 이미지는 작고, 재현 가능하며, 실행에 필요한 것만 담아야 합니다. 하나의 이미지를 두 목적에 억지로 맞추면 로컬은 느리고 운영 이미지는 불필요하게 커집니다.</p>
-      <p>멀티 스테이지 빌드를 사용하면 의존성 설치와 빌드는 재사용하면서도 최종 이미지를 작게 유지할 수 있습니다. 로컬에서는 development target을 선택하고, CI와 운영에서는 production target만 사용합니다. 런타임 사용자와 파일 권한도 이 단계에서 명시해 두면 개발 환경과 운영 환경의 차이를 줄일 수 있습니다.</p>
-      <div className="article-note"><strong>피드백 루프</strong><p>컨테이너를 도입한 뒤에도 코드 한 줄을 바꿨을 때 결과를 확인하는 시간이 길어지면 실패입니다. 소스 볼륨 마운트, 파일 감시 제외 규칙, 의존성 캐시를 통해 로컬 피드백 시간을 먼저 측정하세요.</p></div>
-      <h2>3. 데이터는 버전 관리되는 초기화 과정으로 만든다</h2>
-      <p>개발 데이터베이스가 사람마다 다르면 같은 버그를 재현하기 어렵습니다. 스키마 변경은 마이그레이션으로, 최소한의 참조 데이터는 seed 스크립트로 관리하는 것이 좋습니다. ‘누군가의 덤프 파일’에 의존하면 민감 정보 노출 위험도 커지고, 시간이 지날수록 환경을 새로 만드는 비용도 커집니다.</p>
-      <p>초기화는 멱등하게 만들어야 합니다. 컨테이너 볼륨을 지웠을 때뿐 아니라 기존 데이터 위에서도 안전하게 실행할 수 있어야 합니다. 테스트용 데이터와 로컬 수동 검증용 데이터는 목적이 다르므로, 빠르고 작은 fixture와 읽기 쉬운 sample 데이터를 분리하는 편이 좋습니다.</p>
-      <h2>4. 시크릿은 이미지와 저장소 밖에 둔다</h2>
-      <p>개발 편의를 위해 API 키를 Compose 파일이나 Dockerfile에 넣으면 이미지 레이어와 Git 기록에 오래 남습니다. 기본값이 안전한 <code>.env.example</code>을 제공하고, 실제 개인 키는 로컬 환경 변수나 비밀 관리 도구에서 주입하세요. 로컬용 키도 권한과 사용량이 제한된 별도 키를 쓰는 편이 좋습니다.</p>
-      <p>같은 원칙은 빌드에도 적용됩니다. private package registry 토큰처럼 빌드 시에만 필요한 값은 BuildKit secret으로 전달하면 최종 이미지에 남기지 않을 수 있습니다. 시크릿 관리의 목표는 개발자가 불편해지는 것이 아니라, 안전한 경로가 가장 쉬운 경로가 되게 만드는 것입니다.</p>
-      <h2>5. CI에서 같은 계약을 다시 검증한다</h2>
-      <p>로컬 Compose 환경은 CI에서도 가치가 있습니다. 애플리케이션을 단위 테스트만으로 검증하는 데 그치지 않고, 실제 데이터베이스와 메시지 브로커를 포함한 통합 테스트를 같은 설정으로 실행할 수 있습니다. 단, CI는 속도도 중요하므로 모든 테스트를 컨테이너로 돌릴 필요는 없습니다.</p>
-      <p>권장하는 흐름은 빠른 단위 테스트를 먼저 실행하고, 변경된 계약에 영향을 받는 통합 테스트를 이어서 실행하는 것입니다. 이미지 빌드와 취약점 검사는 배포 전 단계에서 수행합니다. 로컬·CI·운영의 파일을 완전히 동일하게 만들기보다, 공통된 계약을 공유하고 환경별 차이는 명시적으로 드러내는 것이 핵심입니다.</p>
-      <h2>개발 환경 체크리스트</h2>
+      <p>Instead of waiting only for the database's port to open, the application waits for it to actually be connectable. This reduces unnecessary restarts when a dependent service starts up slowly during development. That said, the application itself must still be able to retry a failed connection — Compose's startup ordering doesn't replace a runtime recovery strategy.</p>
+      <h2>2. Separate the Development Image from the Deployment Image</h2>
+      <p>A development container should reflect code changes immediately and include debuggers and testing tools. A deployment image, on the other hand, should be small, reproducible, and contain only what's needed to run. Forcing a single image to serve both purposes makes local development slow and the production image unnecessarily large.</p>
+      <p>A multi-stage build lets you reuse dependency installation and the build step while keeping the final image small. Locally you pick the development target; CI and production use only the production target. Declaring the runtime user and file permissions at this stage too helps narrow the gap between development and production environments.</p>
+      <div className="article-note"><strong>Feedback Loop</strong><p>If it still takes a long time to see the result of changing a single line of code after adopting containers, that's a failure. Measure your local feedback time first, using source volume mounts, file-watch exclusion rules, and dependency caching.</p></div>
+      <h2>3. Make Data a Version-Controlled Initialization Process</h2>
+      <p>If every developer's database looks different, the same bug becomes hard to reproduce. It's best to manage schema changes through migrations and minimal reference data through seed scripts. Relying on “someone's dump file” increases the risk of exposing sensitive data, and the cost of recreating the environment only grows over time.</p>
+      <p>Initialization should be made idempotent. It needs to run safely not only after wiping a container volume, but also on top of existing data. Because test data and data for local manual verification serve different purposes, it's best to keep small, fast fixtures separate from readable sample data.</p>
+      <h2>4. Keep Secrets Outside the Image and the Repository</h2>
+      <p>Putting an API key into a Compose file or Dockerfile for convenience leaves it lingering in image layers and Git history for a long time. Provide a <code>.env.example</code> whose defaults are safe, and inject real personal keys from local environment variables or a secrets manager. It's also best to use a separate, permission- and usage-limited key just for local development.</p>
+      <p>The same principle applies to builds. Values needed only at build time — like a private package registry token — can be passed as a BuildKit secret so they never end up in the final image. The goal of secrets management isn't to make things inconvenient for developers, but to make the safe path the easiest one.</p>
+      <h2>5. Re-Verify the Same Contract in CI</h2>
+      <p>A local Compose environment is valuable in CI too. Instead of validating the application with unit tests alone, you can run integration tests — including a real database and message broker — with the same configuration. That said, speed matters in CI too, so you don't need to run every test inside a container.</p>
+      <p>The recommended flow is to run fast unit tests first, then follow up with the integration tests affected by the changed contract. Image builds and vulnerability scans happen at the pre-deployment stage. The key isn't making local, CI, and production files completely identical — it's sharing a common contract while making environment-specific differences explicit.</p>
+      <h2>Development Environment Checklist</h2>
       <ul>
-        <li>새 개발자가 한두 개의 명령으로 서비스를 실행할 수 있는가?</li>
-        <li>의존 서비스의 준비 상태와 실패 원인이 눈에 보이는가?</li>
-        <li>코드 변경 후 피드백 시간이 충분히 짧은가?</li>
-        <li>스키마·초기 데이터·환경 변수의 계약이 저장소에서 관리되는가?</li>
-        <li>시크릿이 이미지, 로그, 커밋 기록에 남지 않는가?</li>
-        <li>CI가 로컬과 같은 핵심 통합 계약을 검증하는가?</li>
+        <li>Can a new developer run the service with one or two commands?</li>
+        <li>Are a dependent service's readiness and failure causes visible?</li>
+        <li>Is the feedback time after a code change short enough?</li>
+        <li>Is the contract for schema, seed data, and environment variables managed in the repository?</li>
+        <li>Do secrets stay out of images, logs, and commit history?</li>
+        <li>Does CI verify the same core integration contract as local?</li>
       </ul>
-      <p>컨테이너 환경의 목적은 개발자를 운영 환경에 가두는 것이 아닙니다. 누구나 같은 출발점에서 빠르게 실험하고, 문제가 생겼을 때 같은 상태를 재현할 수 있게 하는 것입니다. 환경을 제품의 일부처럼 다루기 시작하면, 컨테이너는 단순한 실행 도구를 넘어 팀의 개발 경험을 지탱하는 기반이 됩니다.</p>
+      <p>The purpose of a containerized environment isn't to lock developers into production. It's to let anyone experiment quickly from the same starting point, and reproduce the same state when something goes wrong. Once you start treating the environment as part of the product, containers become more than a runtime tool — they become the foundation that supports the team's developer experience.</p>
     </PostLayout>
   );
 }

@@ -16,19 +16,19 @@ const latestPosts = posts.slice(0, 3);
 const sideProjects = [
   {
     title: 'Fove',
-    description: '사주팔자와 mbti를 기반으로 한 운세 테스트 웹앱입니다.',
+    description: 'A fortune-telling web app based on Korean Saju and MBTI.',
     status: 'Live',
     href: 'https://kyhsa93.github.io/fove',
   },
   {
     title: 'Event Flow Visualizer',
-    description: '이벤트 기반 시스템의 흐름을 더 쉽게 이해하기 위한 시각화 실험입니다.',
+    description: 'A visualization experiment for understanding event-driven system flows more easily.',
     status: 'In progress',
     href: undefined,
   },
   {
     title: 'Service Architecture Notes',
-    description: '서비스 설계 과정에서 얻은 패턴과 의사결정을 축적하는 개인 지식 베이스입니다.',
+    description: 'A personal knowledge base collecting patterns and decisions learned while designing services.',
     status: 'In progress',
     href: undefined,
   },
@@ -86,19 +86,19 @@ export default function Home() {
         <div className="hero-copy">
           <p className="eyebrow"><span />Backend engineer</p>
           <h1>
-            복잡한 시스템을
+            Designing complex systems
             <br />
-            <em>명확하게</em> 설계합니다.
+            <em>with clarity</em>.
           </h1>
           <p className="intro">
-            TypeScript와 Go를 중심으로, 컨테이너 환경에서 안정적으로
-            동작하는 백엔드 시스템을 만듭니다. 도메인 중심의 설계와 이벤트 기반
-            아키텍처에 관심이 많습니다.
+            I build backend systems that run reliably in containerized
+            environments, mainly with TypeScript and Go. I'm especially
+            interested in domain-driven design and event-driven architecture.
           </p>
           <div className="cta-row">
-            <a className="primary-link" href="#work">프로젝트 보기 <span aria-hidden="true">↓</span></a>
+            <a className="primary-link" href="#work">View projects <span aria-hidden="true">↓</span></a>
             <a className="text-link" href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
-              GitHub 방문 <span aria-hidden="true"></span>
+              Visit GitHub <span aria-hidden="true"></span>
             </a>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function Home() {
         <p className="section-kicker">What I work with</p>
         <div className="expertise-heading">
           <h2>Practical building blocks<br />for distributed systems.</h2>
-          <p>기술은 문제를 해결하기 위한 도구라고 생각합니다. 운영과 확장까지 고려한 선택을 지향합니다.</p>
+          <p>I see technology as a tool for solving problems, and I choose it with operations and scale in mind.</p>
         </div>
         <ul className="expertise-list">
           {expertise.map((item, index) => (
@@ -144,7 +144,7 @@ export default function Home() {
             <h2>Backend Service Playbook</h2>
           </div>
           <a className="all-link" href="https://github.com/kyhsa93/backend-service-playbook" target="_blank" rel="noreferrer">
-            GitHub에서 보기 <span aria-hidden="true"></span>
+            View on GitHub <span aria-hidden="true"></span>
           </a>
         </div>
         <article className="playbook-card">
@@ -154,11 +154,12 @@ export default function Home() {
             </div>
             <p className="project-label">A practical guide for backend services</p>
             <p className="playbook-description">
-              DDD 기반 백엔드 서비스의 설계와 구현 원칙을 한곳에 담았습니다.
-              특정 프레임워크에 갇히지 않고, 팀이 일관된 구조로 서비스를 만들 수 있도록 돕습니다.
+              A single place for the design and implementation principles of
+              DDD-based backend services. It helps teams build services with
+              a consistent structure, without being locked into any one framework.
             </p>
             <a className="playbook-link" href="https://github.com/kyhsa93/backend-service-playbook" target="_blank" rel="noreferrer">
-              저장소 열기 <span aria-hidden="true"></span>
+              Open repository <span aria-hidden="true"></span>
             </a>
           </div>
           <div className="playbook-details">
@@ -189,9 +190,9 @@ export default function Home() {
         <div className="latest-heading">
           <div>
             <p className="section-kicker">Latest</p>
-            <h2>기록하고, 실험합니다.</h2>
+            <h2>Writing and experimenting.</h2>
           </div>
-          <p>설계 과정에서 배운 점과 작은 실험들을 이곳에 차곡차곡 쌓아갑니다.</p>
+          <p>A running record of lessons learned from design work and small experiments.</p>
         </div>
 
         <div className="latest-grid">
@@ -204,7 +205,7 @@ export default function Home() {
                 <p>{post.summary}</p>
               </article>
             ))}
-            <Link to="/posts" className="coming-link">전체 글 보기 →</Link>
+            <Link to="/posts" className="coming-link">View all posts →</Link>
           </div>
           <div className="side-project-column">
             <div className="content-label"><span>Lab</span><span>Side projects</span></div>

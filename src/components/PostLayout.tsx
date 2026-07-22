@@ -23,11 +23,14 @@ export default function PostLayout({ slug, kicker, title, lede, children }: Post
   const date = meta?.date ?? '';
   const readMinutes = meta?.readMinutes ?? 0;
 
+  const image = `https://kyhsa93.github.io/og/${slug}.png`;
+
   useSeo({
     title: meta?.title ?? slug,
     description: meta?.summary ?? lede,
     path,
     type: 'article',
+    image,
     publishedTime: toIsoDate(date),
     jsonLd: {
       '@context': 'https://schema.org',
@@ -36,7 +39,7 @@ export default function PostLayout({ slug, kicker, title, lede, children }: Post
       description: meta?.summary ?? lede,
       datePublished: toIsoDate(date),
       author: { '@type': 'Person', name: 'younghoon' },
-      image: 'https://kyhsa93.github.io/og-image.png',
+      image,
       url: `https://kyhsa93.github.io${path}`,
     },
   });

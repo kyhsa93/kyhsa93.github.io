@@ -9,6 +9,7 @@ interface SeoOptions {
   description: string;
   path: string;
   type?: 'website' | 'article';
+  image?: string;
   publishedTime?: string;
   jsonLd?: Record<string, unknown>;
 }
@@ -35,7 +36,15 @@ function setLink(rel: string, href: string): void {
 
 const JSON_LD_SCRIPT_ID = 'seo-json-ld';
 
-export function useSeo({ title, description, path, type = 'website', publishedTime, jsonLd }: SeoOptions): void {
+export function useSeo({
+  title,
+  description,
+  path,
+  type = 'website',
+  image = DEFAULT_IMAGE,
+  publishedTime,
+  jsonLd,
+}: SeoOptions): void {
   const jsonLdString = jsonLd ? JSON.stringify(jsonLd) : undefined;
 
   useEffect(() => {
@@ -50,13 +59,13 @@ export function useSeo({ title, description, path, type = 'website', publishedTi
     setMeta('property', 'og:description', description);
     setMeta('property', 'og:type', type);
     setMeta('property', 'og:url', url);
-    setMeta('property', 'og:image', DEFAULT_IMAGE);
+    setMeta('property', 'og:image', image);
     setMeta('property', 'og:site_name', SITE_NAME);
 
     setMeta('name', 'twitter:card', 'summary_large_image');
     setMeta('name', 'twitter:title', title);
     setMeta('name', 'twitter:description', description);
-    setMeta('name', 'twitter:image', DEFAULT_IMAGE);
+    setMeta('name', 'twitter:image', image);
 
     if (publishedTime) setMeta('property', 'article:published_time', publishedTime);
 
@@ -68,5 +77,5 @@ export function useSeo({ title, description, path, type = 'website', publishedTi
       script.textContent = jsonLdString;
       document.head.appendChild(script);
     }
-  }, [title, description, path, type, publishedTime, jsonLdString]);
+  }, [title, description, path, type, image, publishedTime, jsonLdString]);
 }

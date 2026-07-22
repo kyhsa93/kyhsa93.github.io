@@ -12,8 +12,8 @@ export default defineConfig({
       manifest: {
         name: 'younghoon — backend engineer',
         short_name: 'younghoon',
-        description: '복잡한 시스템을 명확하게 설계하는 백엔드 엔지니어의 기록입니다.',
-        lang: 'ko',
+        description: 'Notes from a backend engineer who designs complex systems with clarity.',
+        lang: 'en',
         start_url: '/',
         scope: '/',
         display: 'standalone',

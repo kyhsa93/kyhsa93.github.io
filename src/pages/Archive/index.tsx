@@ -16,7 +16,7 @@ export default function Archive() {
 
       <section className="archive-section">
         <p className="section-kicker">Writing</p>
-        <h1 className="archive-heading">전체 글</h1>
+        <h1 className="archive-heading">All posts</h1>
         <div className="content-label"><span>Writing</span><span>{posts.length} posts</span></div>
         {posts.map((post) => (
           <article className="post-item published" key={post.slug}>

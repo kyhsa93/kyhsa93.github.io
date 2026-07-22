@@ -334,6 +334,7 @@ export default function Home() {
       <footer>
         <p>Let’s build something resilient.</p>
         <div className="footer-links">
+          <a href="/rss.xml">RSS</a>
           <Link to="/privacy-policy">Privacy</Link>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             github.com/kyhsa93{' '}

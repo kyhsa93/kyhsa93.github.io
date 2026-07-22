@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function DomainServicesAcrossAggregates() {
   return (
     <PostLayout
+      slug="domain-services-across-aggregates"
       kicker="DDD · Tactical Design"
       title={<>Domain Services:<br /><em>When a Rule Doesn't Belong to One Aggregate</em></>}
       lede="Some business rules genuinely need two Aggregates in the room at once. Forcing the rule into either one breaks encapsulation; a Domain Service that holds no state and only judges is the seam that keeps both sides intact."

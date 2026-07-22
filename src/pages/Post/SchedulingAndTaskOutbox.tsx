@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function SchedulingAndTaskOutbox() {
   return (
     <PostLayout
+      slug="scheduling-and-task-outbox"
       kicker="Scheduling · Backend"
       title={<>Scheduling and the<br /><em>Task Outbox Pattern</em></>}
       lede="A Cron job that runs business logic directly works fine right up until you have two instances of your service, both running it at the same moment. Scheduling done properly is really a story about who's allowed to do what, in what order."

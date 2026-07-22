@@ -1,7 +1,11 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
+import { posts } from '../data/posts';
+import { useSeo } from '../hooks/useSeo';
+
 interface PostLayoutProps {
+  slug: string;
   kicker: string;
   title: ReactNode;
   lede: string;
@@ -10,7 +14,12 @@ interface PostLayoutProps {
   children: ReactNode;
 }
 
+function toIsoDate(date: string): string {
+  return date.replace(/\./g, '-');
+}
+
 export default function PostLayout({
+  slug,
   kicker,
   title,
   lede,
@@ -18,6 +27,26 @@ export default function PostLayout({
   readMinutes,
   children,
 }: PostLayoutProps) {
+  const meta = posts.find((post) => post.slug === slug);
+  const path = `/posts/${slug}`;
+
+  useSeo({
+    title: meta?.title ?? slug,
+    description: meta?.summary ?? lede,
+    path,
+    type: 'article',
+    publishedTime: toIsoDate(date),
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: meta?.title ?? slug,
+      description: meta?.summary ?? lede,
+      datePublished: toIsoDate(date),
+      author: { '@type': 'Person', name: 'younghoon' },
+      url: `https://kyhsa93.github.io${path}`,
+    },
+  });
+
   return (
     <main className="post-page">
       <nav className="post-nav" aria-label="Post navigation">

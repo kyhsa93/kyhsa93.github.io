@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function ReliableEventDrivenSystems() {
   return (
     <PostLayout
+      slug="reliable-event-driven-systems"
       kicker="Event-driven · Backend"
       title={<>Reliability in<br /><em>Event-Driven Systems</em></>}
       lede="Having a message broker doesn't mean events are delivered safely. When you design assuming loss, duplication, and reordering as givens, a system can recover to a consistent state even after failures."

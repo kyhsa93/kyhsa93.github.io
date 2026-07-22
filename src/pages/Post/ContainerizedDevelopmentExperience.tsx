@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function ContainerizedDevelopmentExperience() {
   return (
     <PostLayout
+      slug="containerized-development-experience"
       kicker="Docker · Developer experience"
       title={<>Developer Experience<br /><em>in Containerized Environments</em></>}
       lede="The value of containers doesn't end at matching deployment environments. The bigger value is letting even a newly joined developer run the system quickly, experiment safely, and verify it the same way as everyone else."

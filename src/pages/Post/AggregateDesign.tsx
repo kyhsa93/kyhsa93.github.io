@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function AggregateDesign() {
   return (
     <PostLayout
+      slug="aggregate-design"
       kicker="DDD · Tactical Design"
       title={<>Designing Aggregates:<br /><em>Transaction Boundaries and Invariants</em></>}
       lede="An Aggregate isn't a folder for related data — it's the boundary of a transaction and the owner of an invariant. Get the boundary wrong, and every save becomes a negotiation between models that shouldn't know about each other."

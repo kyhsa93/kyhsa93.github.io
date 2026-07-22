@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function CanAnAiAgentFollowYourArchitecture() {
   return (
     <PostLayout
+      slug="can-an-ai-agent-follow-your-architecture"
       kicker="AI Agents · Benchmark"
       title={<>Can an AI Agent<br /><em>Follow Your Architecture?</em></>}
       lede="Most coding benchmarks ask whether the tests pass. A more useful question for a team actually adopting AI agents is narrower and harder: can it find your documented conventions on its own, and apply them correctly to a requirement it's never seen before?"

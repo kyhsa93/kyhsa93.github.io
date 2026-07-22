@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function TalkingAcrossBoundedContexts() {
   return (
     <PostLayout
+      slug="talking-across-bounded-contexts"
       kicker="DDD · Integration"
       title={<>Talking Across<br /><em>Bounded Contexts</em></>}
       lede="Once a Bounded Context boundary is real, the next question is unavoidable: how does one BC ask another for something, or tell it that something happened? There are exactly two honest answers, and picking the wrong one for the situation is how a distributed system quietly becomes a distributed monolith."

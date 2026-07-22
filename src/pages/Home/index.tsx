@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { posts } from '../../data/posts';
+import { useSeo } from '../../hooks/useSeo';
 
 const expertise = [
   'TypeScript · Node.js',
@@ -55,6 +56,12 @@ export default function Home() {
     document.documentElement.setAttribute('data-theme', theme);
     window.localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useSeo({
+    title: 'younghoon — backend engineer',
+    description: 'Notes from a backend engineer who designs complex systems with clarity. TypeScript, Go, and the Backend Service Playbook.',
+    path: '/',
+  });
 
   return (
     <main className="home-page">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { posts } from '../data/posts';
 import { useSeo } from '../hooks/useSeo';
+import { AdUnit } from './AdUnit';
 
 interface PostLayoutProps {
   slug: string;
@@ -50,22 +51,37 @@ export default function PostLayout({
   return (
     <main className="post-page">
       <nav className="post-nav" aria-label="Post navigation">
-        <Link to="/" className="brand"><span className="brand-mark">Y</span><span>younghoon</span></Link>
-        <Link to="/" className="back-link">← Home</Link>
+        <Link to="/" className="brand">
+          <span className="brand-mark">Y</span>
+          <span>younghoon</span>
+        </Link>
+        <Link to="/" className="back-link">
+          ← Home
+        </Link>
       </nav>
       <article className="post-content">
         <header className="post-header">
           <p className="section-kicker">{kicker}</p>
           <h1>{title}</h1>
           <p className="post-lede">{lede}</p>
-          <time>{date} · {readMinutes} min read</time>
+          <time>
+            {date} · {readMinutes} min read
+          </time>
         </header>
-        <div className="article-body">
-          {children}
-        </div>
+        <div className="article-body">{children}</div>
+        <AdUnit
+          slot={`POST_${slug.toUpperCase().replace(/-/g, '_')}_BANNER`}
+          format="horizontal"
+        />
         <footer className="post-footer">
           <Link to="/">← Back to home</Link>
-          <a href="https://github.com/kyhsa93/backend-service-playbook" target="_blank" rel="noreferrer">Backend Service Playbook </a>
+          <a
+            href="https://github.com/kyhsa93/backend-service-playbook"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Backend Service Playbook{' '}
+          </a>
         </footer>
       </article>
     </main>

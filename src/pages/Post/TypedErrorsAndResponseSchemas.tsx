@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function TypedErrorsAndResponseSchemas() {
   return (
     <PostLayout
+      slug="typed-errors-and-response-schemas"
       kicker="API Design · Conventions"
       title={<>Typed Errors and a<br /><em>Consistent Response Schema</em></>}
       lede="throw new Error('Order not found.') looks completely fine until a second person writes the string slightly differently somewhere else, and now the same failure produces two different codes depending on which file threw it."

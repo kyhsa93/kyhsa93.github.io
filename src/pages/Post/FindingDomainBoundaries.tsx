@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function FindingDomainBoundaries() {
   return (
     <PostLayout
+      slug="finding-domain-boundaries"
       kicker="DDD · Architecture"
       title={<>Finding<br /><em>Domain Boundaries</em></>}
       lede="Dividing a domain well isn't about classifying nouns — it's about finding the boundary between change and responsibility. Before anything else, observe which things need to change together as features grow."

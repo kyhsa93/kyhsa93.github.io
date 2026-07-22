@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function ComplianceAsCode() {
   return (
     <PostLayout
+      slug="compliance-as-code"
       kicker="Tooling · Architecture"
       title={<>Compliance as Code:<br /><em>Building a Harness That Enforces Architecture</em></>}
       lede="An architecture doc that nobody mechanically checks against is a suggestion with extra steps. The interesting engineering problem isn't writing the doc — it's building something that can tell you, automatically, the moment code stops following it."

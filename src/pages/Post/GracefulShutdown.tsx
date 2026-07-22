@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function GracefulShutdown() {
   return (
     <PostLayout
+      slug="graceful-shutdown"
       kicker="Reliability · Operations"
       title={<>Graceful Shutdown:<br /><em>The Reliability Feature Nobody Tests</em></>}
       lede="Nobody writes an integration test for what happens when Kubernetes sends SIGTERM mid-request. It's also one of the most reliable sources of dropped requests and 502s during every single deploy, if you get the ordering wrong."

@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function RequestScopedUserContext() {
   return (
     <PostLayout
+      slug="request-scoped-user-context"
       kicker="Cross-cutting Concerns · Backend"
       title={<>Request-Scoped Context:<br /><em>Why req.user Is an Anti-Pattern</em></>}
       lede="Reading the authenticated user off the request object looks completely harmless the first time you write it. It's also the single easiest way to quietly wire your business logic to the fact that an HTTP request is currently in flight."

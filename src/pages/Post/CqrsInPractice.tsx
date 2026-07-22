@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function CqrsInPractice() {
   return (
     <PostLayout
+      slug="cqrs-in-practice"
       kicker="CQRS · Architecture"
       title={<>CQRS in Practice:<br /><em>Why a Query Can't Use a Repository</em></>}
       lede="CQRS sounds like an architecture decision you make once, up front. In practice it's a boundary you have to keep re-enforcing — because the easiest possible way to satisfy a new read requirement is always to reach for the write-side Repository that's already sitting right there."

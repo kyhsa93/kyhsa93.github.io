@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function RepositoryNamingConvention() {
   return (
     <PostLayout
+      slug="repository-naming-convention"
       kicker="Repository Pattern · Conventions"
       title={<>The Naming Rule<br /><em>That Caught Real Bugs</em></>}
       lede="A method-naming convention feels like the most boring possible thing to standardize. Then you write a tool that actually checks it, run it once, and it finds three real violations nobody had noticed across four different codebases."

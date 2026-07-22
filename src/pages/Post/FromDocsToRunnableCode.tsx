@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function FromDocsToRunnableCode() {
   return (
     <PostLayout
+      slug="from-docs-to-runnable-code"
       kicker="Tooling · Developer Experience"
       title={<>From Docs to<br /><em>Runnable Code in One Command</em></>}
       lede="A reference implementation in a doc proves a pattern reads well. It doesn't prove anyone can actually reproduce it under deadline. The real test is whether a brand-new domain, generated from nothing but a name, passes every automated check the very first time."

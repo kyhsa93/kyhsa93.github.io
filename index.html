@@ -6,8 +6,36 @@
     <link rel="apple-touch-icon" href="/pwa-192x192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#182118" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://kyhsa93.github.io/" />
     <meta name="description" content="Notes from a backend engineer who designs complex systems with clarity." />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="younghoon" />
+    <meta property="og:title" content="younghoon — backend engineer" />
+    <meta property="og:description" content="Notes from a backend engineer who designs complex systems with clarity." />
+    <meta property="og:url" content="https://kyhsa93.github.io/" />
+    <meta property="og:image" content="https://kyhsa93.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="younghoon — backend engineer" />
+    <meta name="twitter:description" content="Notes from a backend engineer who designs complex systems with clarity." />
+    <meta name="twitter:image" content="https://kyhsa93.github.io/og-image.png" />
+
     <title>kyhsa93.github.io</title>
+
+    <script>
+      // Decodes the path GitHub Pages' 404.html re-encoded into a query string, restoring the
+      // real URL via history.replaceState before BrowserRouter reads window.location.
+      // https://github.com/rafgraph/spa-github-pages
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      }(window.location));
+    </script>
   </head>
   <body>
     <div id="root"></div>

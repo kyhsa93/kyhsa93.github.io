@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
 import { posts } from '../../data/posts';
+import { useSeo } from '../../hooks/useSeo';
 
 export default function Archive() {
+  useSeo({
+    title: 'All posts',
+    description: `Every post, in one place — ${posts.length} write-ups on DDD, CQRS, and backend architecture.`,
+    path: '/posts',
+  });
+
   return (
     <main className="home-page">
       <nav className="site-nav" aria-label="Main navigation">

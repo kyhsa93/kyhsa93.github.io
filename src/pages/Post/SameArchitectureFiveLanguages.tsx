@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function SameArchitectureFiveLanguages() {
   return (
     <PostLayout
+      slug="same-architecture-five-languages"
       kicker="Comparative · Architecture"
       title={<>Same Architecture,<br /><em>Five Languages</em></>}
       lede="The same Repository/Query separation, implemented independently in NestJS, Go, Java, Kotlin, and FastAPI, produces five genuinely different-looking pieces of code. What's worth noticing is exactly how much of the underlying decision stays identical anyway."

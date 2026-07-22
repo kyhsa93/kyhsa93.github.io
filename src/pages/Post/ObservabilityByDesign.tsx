@@ -3,6 +3,7 @@ import PostLayout from '../../components/PostLayout';
 export default function ObservabilityByDesign() {
   return (
     <PostLayout
+      slug="observability-by-design"
       kicker="Observability · Operations"
       title={<>Observability Is a<br /><em>Design Decision, Not an Afterthought</em></>}
       lede="Adding a logging library is easy. Deciding what belongs at which level, in which layer, and how to trace one request across a dozen log lines is the part that actually determines whether an incident takes five minutes or five hours to diagnose."

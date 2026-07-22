@@ -7,8 +7,6 @@ export default function FindingDomainBoundaries() {
       kicker="DDD · Architecture"
       title={<>Finding<br /><em>Domain Boundaries</em></>}
       lede="Dividing a domain well isn't about classifying nouns — it's about finding the boundary between change and responsibility. Before anything else, observe which things need to change together as features grow."
-      date="2026.07.19"
-      readMinutes={14}
     >
       <p>It's natural for a service to start with a single model. But once features that change for different reasons — like orders, payments, and shipping — start mixing into that one model, even a small change can ripple further than expected. What's needed at that point isn't more abstraction, but a fresh look at the boundaries.</p>
       <p>The boundary here isn't just a criterion for splitting tables or microservices. It determines which rules must hold together at once, which changes a single team is responsible for, and at what point asynchronous collaboration becomes acceptable. A poorly drawn boundary forces every request to lock multiple models; a well-drawn one keeps changes contained even as features grow.</p>

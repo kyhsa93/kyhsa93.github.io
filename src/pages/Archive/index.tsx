@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../../data/posts';
+import { postsByDate } from '../../data/posts';
 import { useSeo } from '../../hooks/useSeo';
 
 export default function Archive() {
   useSeo({
     title: 'All posts',
-    description: `Every post, in one place — ${posts.length} write-ups on DDD, CQRS, and backend architecture.`,
+    description: `Every post, in one place — ${postsByDate.length} write-ups on DDD, CQRS, and backend architecture.`,
     path: '/posts',
   });
 
@@ -26,9 +26,9 @@ export default function Archive() {
         <h1 className="archive-heading">All posts</h1>
         <div className="content-label">
           <span>Writing</span>
-          <span>{posts.length} posts</span>
+          <span>{postsByDate.length} posts</span>
         </div>
-        {posts.map((post) => (
+        {postsByDate.map((post) => (
           <article className="post-item published" key={post.slug}>
             <div className="post-meta">
               <time>{post.date}</time>

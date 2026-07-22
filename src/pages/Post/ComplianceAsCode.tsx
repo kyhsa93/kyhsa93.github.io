@@ -7,8 +7,6 @@ export default function ComplianceAsCode() {
       kicker="Tooling · Architecture"
       title={<>Compliance as Code:<br /><em>Building a Harness That Enforces Architecture</em></>}
       lede="An architecture doc that nobody mechanically checks against is a suggestion with extra steps. The interesting engineering problem isn't writing the doc — it's building something that can tell you, automatically, the moment code stops following it."
-      date="2026.07.22"
-      readMinutes={14}
     >
       <p>Design docs rot the same way comments do — quietly, a little at a time, until the day someone reads the doc, reads the code, and notices they've been describing two different systems for months. The fix that actually held up here wasn't writing better docs. It was building a harness: an automated evaluator that statically checks whether real code follows the documented rules, with no human review required to catch drift.</p>
       <h2>What a Harness Rule Is Allowed to Assume</h2>

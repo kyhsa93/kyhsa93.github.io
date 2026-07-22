@@ -7,8 +7,6 @@ export default function ContainerizedDevelopmentExperience() {
       kicker="Docker · Developer experience"
       title={<>Developer Experience<br /><em>in Containerized Environments</em></>}
       lede="The value of containers doesn't end at matching deployment environments. The bigger value is letting even a newly joined developer run the system quickly, experiment safely, and verify it the same way as everyone else."
-      date="2026.07.19"
-      readMinutes={11}
     >
       <p>“It works on my machine” is usually a sign that the environment's contract, not the code, was never documented. If the runtime version, database settings, dependent services, seed data, and startup order live only in someone's memory, the team's development speed ends up bottlenecked by whoever is least familiar with the environment.</p>
       <p>Containers are a good tool for moving that contract into code. But putting everything into a Dockerfile doesn't automatically improve the developer experience. You need to design for fast startup, fast reflection of code changes, predictable data, and clear failure messages together, for a containerized environment to actually reduce friction for the team.</p>

@@ -10,8 +10,6 @@ interface PostLayoutProps {
   kicker: string;
   title: ReactNode;
   lede: string;
-  date: string;
-  readMinutes: number;
   children: ReactNode;
 }
 
@@ -19,17 +17,11 @@ function toIsoDate(date: string): string {
   return date.replace(/\./g, '-');
 }
 
-export default function PostLayout({
-  slug,
-  kicker,
-  title,
-  lede,
-  date,
-  readMinutes,
-  children,
-}: PostLayoutProps) {
+export default function PostLayout({ slug, kicker, title, lede, children }: PostLayoutProps) {
   const meta = posts.find((post) => post.slug === slug);
   const path = `/posts/${slug}`;
+  const date = meta?.date ?? '';
+  const readMinutes = meta?.readMinutes ?? 0;
 
   useSeo({
     title: meta?.title ?? slug,

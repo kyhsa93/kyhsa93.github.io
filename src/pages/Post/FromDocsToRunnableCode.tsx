@@ -7,8 +7,6 @@ export default function FromDocsToRunnableCode() {
       kicker="Tooling · Developer Experience"
       title={<>From Docs to<br /><em>Runnable Code in One Command</em></>}
       lede="A reference implementation in a doc proves a pattern reads well. It doesn't prove anyone can actually reproduce it under deadline. The real test is whether a brand-new domain, generated from nothing but a name, passes every automated check the very first time."
-      date="2026.07.22"
-      readMinutes={12}
     >
       <p>This repo's <code>docs/reference.md</code> defines a practical implementation template — a small worked example (historically, an Order domain) showing every layer, every file, every naming convention in one place. A written template is useful right up until someone has to actually type it all out correctly for the fifth new domain in a row. The next step was turning that template into a generator: a script that takes just a domain name and produces real, harness-passing code.</p>
       <h2>What Gets Generated, in One Pass</h2>

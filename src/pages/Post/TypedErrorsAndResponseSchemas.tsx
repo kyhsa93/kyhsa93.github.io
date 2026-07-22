@@ -7,8 +7,6 @@ export default function TypedErrorsAndResponseSchemas() {
       kicker="API Design · Conventions"
       title={<>Typed Errors and a<br /><em>Consistent Response Schema</em></>}
       lede="throw new Error('Order not found.') looks completely fine until a second person writes the string slightly differently somewhere else, and now the same failure produces two different codes depending on which file threw it."
-      date="2026.07.22"
-      readMinutes={12}
     >
       <p>Error handling has a clean layer split: the Domain and Application layers throw a plain <code>Error</code>, never a framework-specific HTTP exception, and the Interface layer — the Controller — is the only place that catches an error and converts it into an HTTP status code. That separation keeps Domain and Application free of any HTTP dependency at all, and concentrates the one messy job, "translate this into a status code," in exactly one place.</p>
       <pre><code>{`// domain/order.ts — inside the Aggregate

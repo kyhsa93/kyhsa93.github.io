@@ -7,8 +7,6 @@ export default function ReliableEventDrivenSystems() {
       kicker="Event-driven · Backend"
       title={<>Reliability in<br /><em>Event-Driven Systems</em></>}
       lede="Having a message broker doesn't mean events are delivered safely. When you design assuming loss, duplication, and reordering as givens, a system can recover to a consistent state even after failures."
-      date="2026.07.19"
-      readMinutes={12}
     >
       <p>Event-driven architecture lowers coupling between services and enables independent scaling. But unlike a synchronous call where a request is immediately followed by a response, it's hard to see at a glance how far an event has traveled once it's published. The database write might succeed while the event publish fails, a consumer might receive the same message twice, or a consumer that paused for a while might process a stale event later.</p>
       <p>Reliability isn't achieved by a single promise of “exactly-once delivery.” It's a combination of mechanisms that anticipate failure at every stage — storage, delivery, consumption, observation — and make it safe to redo the same work. This post walks through, in order, the problems you run into most often in practice.</p>

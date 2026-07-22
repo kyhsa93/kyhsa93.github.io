@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { posts } from '../src/data/posts.ts';
+import { posts, postsByDate as sortedPosts } from '../src/data/posts.ts';
 
 const SITE_URL = 'https://kyhsa93.github.io';
 const SITE_NAME = 'younghoon';
@@ -13,8 +13,6 @@ const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = resolve(SCRIPT_DIR, '../dist');
-
-const sortedPosts = [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
 
 function toIsoDate(date: string): string {
   return date.replace(/\./g, '-');

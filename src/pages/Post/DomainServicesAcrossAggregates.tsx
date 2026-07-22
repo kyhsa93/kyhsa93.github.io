@@ -7,8 +7,6 @@ export default function DomainServicesAcrossAggregates() {
       kicker="DDD · Tactical Design"
       title={<>Domain Services:<br /><em>When a Rule Doesn't Belong to One Aggregate</em></>}
       lede="Some business rules genuinely need two Aggregates in the room at once. Forcing the rule into either one breaks encapsulation; a Domain Service that holds no state and only judges is the seam that keeps both sides intact."
-      date="2026.07.22"
-      readMinutes={13}
     >
       <p>Most domain logic fits cleanly inside a single Aggregate Root. But every so often a rule needs to read two independent Aggregates to make a judgment, or it's genuinely unclear which one should own it, or it requires calling an external service an Aggregate has no business doing I/O for. That's the gap a Domain Service fills — and it's worth being precise about, because it's also the pattern most often reached for when it isn't actually needed.</p>
       <h2>What a Domain Service Is Not</h2>

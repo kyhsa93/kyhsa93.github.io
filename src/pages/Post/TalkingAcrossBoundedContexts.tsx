@@ -7,8 +7,6 @@ export default function TalkingAcrossBoundedContexts() {
       kicker="DDD · Integration"
       title={<>Talking Across<br /><em>Bounded Contexts</em></>}
       lede="Once a Bounded Context boundary is real, the next question is unavoidable: how does one BC ask another for something, or tell it that something happened? There are exactly two honest answers, and picking the wrong one for the situation is how a distributed system quietly becomes a distributed monolith."
-      date="2026.07.22"
-      readMinutes={12}
     >
       <p>When one Bounded Context needs another, within the same process, there are two approaches: synchronous, through an Adapter, or asynchronous, through an Integration Event. Everything else — message brokers, sagas, choreography versus orchestration — is a variation on that choice. Getting it right per use case is what keeps BCs independently deployable instead of secretly coupled through a shared transaction.</p>
       <h2>The Decision, as Four Questions</h2>

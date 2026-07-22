@@ -7,8 +7,6 @@ export default function GracefulShutdown() {
       kicker="Reliability · Operations"
       title={<>Graceful Shutdown:<br /><em>The Reliability Feature Nobody Tests</em></>}
       lede="Nobody writes an integration test for what happens when Kubernetes sends SIGTERM mid-request. It's also one of the most reliable sources of dropped requests and 502s during every single deploy, if you get the ordering wrong."
-      date="2026.07.22"
-      readMinutes={11}
     >
       <p>In a container orchestration environment — Kubernetes, ECS, anything that starts and stops containers on your behalf — every deploy, every autoscale-down event, every node drain sends the same signal: SIGTERM, with a countdown before SIGKILL follows. What your process does in that window is the difference between a deploy nobody notices and a spike of failed requests on a dashboard somewhere.</p>
       <h2>The Sequence, and Why the Order Is the Whole Point</h2>

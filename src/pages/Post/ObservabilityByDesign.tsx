@@ -7,8 +7,6 @@ export default function ObservabilityByDesign() {
       kicker="Observability · Operations"
       title={<>Observability Is a<br /><em>Design Decision, Not an Afterthought</em></>}
       lede="Adding a logging library is easy. Deciding what belongs at which level, in which layer, and how to trace one request across a dozen log lines is the part that actually determines whether an incident takes five minutes or five hours to diagnose."
-      date="2026.07.22"
-      readMinutes={12}
     >
       <p>Observability tends to get treated as infrastructure you bolt on — pick a logging library, wire up a dashboard, done. The parts that actually matter are decisions, not tools: what gets logged at what level, which layer is responsible for logging what, and how a single request's story stays traceable once it's scattered across dozens of log lines from multiple processes.</p>
       <h2>Five Levels, Strictly Enforced</h2>

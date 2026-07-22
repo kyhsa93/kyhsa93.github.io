@@ -7,8 +7,6 @@ export default function CanAnAiAgentFollowYourArchitecture() {
       kicker="AI Agents · Benchmark"
       title={<>Can an AI Agent<br /><em>Follow Your Architecture?</em></>}
       lede="Most coding benchmarks ask whether the tests pass. A more useful question for a team actually adopting AI agents is narrower and harder: can it find your documented conventions on its own, and apply them correctly to a requirement it's never seen before?"
-      date="2026.07.22"
-      readMinutes={15}
     >
       <p>This repo already had an objective scorer sitting around unused for this purpose — the harness, which mechanically scores whether code follows documented architectural rules, with no human review needed. Repurposing it as an AI-agent benchmark turned out to need no new infrastructure at all, just a different way of framing the task.</p>
       <h2>The Task Format Is Deliberately Sparse</h2>

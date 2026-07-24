@@ -115,7 +115,7 @@ class RequestRefundHandler:
       <>
         <p>대부분의 도메인 로직은 하나의 Aggregate Root 안에 깔끔하게 들어맞는다. 하지만 가끔은 판단을 내리기 위해 독립된 두 개의 Aggregate를 함께 읽어야 하거나, 어느 쪽이 그 로직을 소유해야 하는지 정말로 애매하거나, Aggregate가 관여해서는 안 되는 외부 서비스 I/O를 호출해야 하는 경우가 있다. 이 틈을 메우는 것이 Domain Service다 — 그리고 이걸 정확히 짚고 넘어갈 필요가 있는데, 실제로는 필요하지 않은데도 가장 자주 손이 가는 패턴이기도 하기 때문이다.</p>
         <h2>Domain Service가 아닌 것</h2>
-        <p>Domain Service는 상태를 갖지 않는다. 오직 로직만 갖는다. "Domain Service"가 상태를 필요로 하기 시작한다면, 그건 그것이 Domain Service가 아니라는 신호다 — 설계를 다시 생각해봐야 한다. 그리고 Domain Service는 스스로 뭔가를 조회하지도 않는다:</p>
+        <p>Domain Service는 상태를 갖지 않는다. 오직 로직만 갖는다. "Domain Service"가 상태를 필요로 하기 시작한다면, 그것은 더 이상 Domain Service가 아니라는 신호다 — 설계를 다시 생각해봐야 한다. 그리고 Domain Service는 스스로 뭔가를 조회하지도 않는다:</p>
         <pre><code>{`# wrong — a Domain Service using the Repository directly
 class OrderValidationService:
     def __init__(self, order_repository: OrderRepository) -> None:
@@ -127,7 +127,7 @@ class OrderValidationService:
         <p>Domain Service는 이미 로드된 도메인 객체를 받아서 그것들을 판단만 한다. 조회 자체는 Domain Service가 아니라 Application Service의 몫이다.</p>
         <h2>실제 예시: RefundEligibilityService</h2>
         <p>도메인 규칙은 이렇다: 환불은 원래 결제가 <code>COMPLETED</code> 상태여야 하고, 환불 금액이 결제 금액을 초과할 수 없다. <code>Payment</code> Aggregate는 자신에 대한 환불 시도가 있는지 전혀 모른다 — 환불은 항상 별도의 Aggregate로만 존재한다. <code>Refund</code> Aggregate 역시 원래 결제의 금액이나 상태를 모른다 — <code>paymentId</code>를 통해서만 그것을 참조할 뿐이다.</p>
-        <p>이 판단을 둘 중 어느 Aggregate의 메서드 안에 넣는다면, 그 Aggregate는 다른 Aggregate 전체를 파라미터로 받아야 하게 되고, 이는 두 Aggregate 모두가 지켜야 할 경계를 깨뜨린다. 그래서 이 판단은 Domain Service 안에 있고, Application 계층이 — 두 Aggregate를 각각 독립적으로 로드한 뒤 — 그 Domain Service에 위임한다:</p>
+        <p>이 판단을 둘 중 어느 Aggregate의 메서드 안에 넣는다면, 그 Aggregate는 다른 Aggregate 전체를 파라미터로 받아야 하며, 이는 두 Aggregate 모두가 지켜야 할 경계를 깨뜨린다. 그래서 이 판단은 Domain Service 안에 있고, Application 계층이 — 두 Aggregate를 각각 독립적으로 로드한 뒤 — 그 Domain Service에 위임한다:</p>
         <pre><code>{`# domain/refund_eligibility_service.py — a Domain Service (no framework dependency)
 @dataclass(frozen=True)
 class RefundDecision:

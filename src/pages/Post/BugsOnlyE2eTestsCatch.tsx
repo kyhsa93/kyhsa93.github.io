@@ -67,9 +67,9 @@ void useApacheHttpClientRequestFactory() {
 @Scheduled(fixedDelay = 1000)
 @Transactional
 public void poll() { /* ... */ }`}</code></pre>
-        <p>Mock Repository는 그냥 인메모리 객체를 반환할 뿐이다. 닫을 세션도 없고, 스트림할 LOB도 없으며, 이 문제를 재현할 방법 자체가 없다. 이 예외가 애초에 존재하려면 실제 Postgres 커넥션에 대한 실제 Hibernate 세션이 있어야 했고, 그 세션이 실제 트랜잭션 경계에서 닫혀야 했다.</p>
+        <p>Mock Repository는 그냥 인메모리 객체를 반환할 뿐이다. 닫을 세션도 없고, 스트림할 LOB도 없으며, 이 문제를 재현할 방법 자체가 없다. 이 예외가 애초에 존재하려면 실제 Postgres 커넥션 위에서 동작하는 실제 Hibernate 세션이 있어야 했고, 그 세션이 실제 트랜잭션 경계에서 닫혀야 했다.</p>
         <h2>아무도 실제로 테스트해본 적 없던 401</h2>
-        <p>이전 글에서 다룬 인증 우회(authentication bypass) 버그를 고치는 작업은, 두 Spring Boot 포트를 통틀어 처음으로 실제 401 응답을 검증(assert)하는 테스트를 작성한다는 뜻이었다. 그 테스트는 곧바로 또 다른 버그에 부딪혔다: Spring의 기본 <code>TestRestTemplate</code> 요청 팩토리는 JDK 자체의 <code>HttpURLConnection</code> 위에서 동작하는데, 이는 POST 요청이 401 응답을 받는 순간 <code>IOException: cannot retry due to server authentication, in streaming mode</code>를 던진다 — 이는 테스트 대상 코드가 아니라 JDK 클라이언트 자체의 알려진 한계다.</p>
+        <p>이전 글에서 다룬 인증 우회(authentication bypass) 버그를 고치려면, 두 Spring Boot 포트를 통틀어 처음으로 실제 401 응답을 검증(assert)하는 테스트를 작성해야 했다. 그 테스트는 곧바로 또 다른 버그에 부딪혔다: Spring의 기본 <code>TestRestTemplate</code> 요청 팩토리는 JDK 자체의 <code>HttpURLConnection</code> 위에서 동작하는데, 이는 POST 요청이 401 응답을 받는 순간 <code>IOException: cannot retry due to server authentication, in streaming mode</code>를 던진다 — 이는 테스트 대상 코드가 아니라 JDK 클라이언트 자체의 알려진 한계다.</p>
         <pre><code>{`@BeforeEach
 void useApacheHttpClientRequestFactory() {
     // The default JDK HttpURLConnection-based factory can't handle a 401 response to a POST.
@@ -78,7 +78,7 @@ void useApacheHttpClientRequestFactory() {
 }`}</code></pre>
         <p>Mock이나 Fake HTTP 클라이언트는 JDK의 실제 request/response 상태 기계(state machine)를 돌리지 않는다. 이 버그는 바로 그 상태 기계 <em>안에</em> 있다 — 실제 소켓, 실제로 돌아가는 서버, 실제 401 응답이 모두 함께 관여할 때만 존재한다.</p>
         <h2>머지되지 않았지만, 여전히 실질적인 교훈</h2>
-        <p>이 범주의 버그가 전부 프로덕션 코드에 실제로 반영된 건 아니다. 다섯 개 언어 포트를 "정기 송금(recurring transfer)" 기능 스펙에 맞춰 비교한 벤치마크 실행 — 아직 이 기능을 실제로 호출할 곳이 없었기에 의도적으로 머지하지 않았다 — 에서 두 건이 더 드러났고, 이는 수정 커밋이 아니라 1인칭 엔지니어링 로그 형태로 기록됐다:</p>
+        <p>이 범주의 버그가 전부 프로덕션 코드에 실제로 반영된 건 아니다. 다섯 개 언어 포트를 "정기 송금(recurring transfer)" 기능 스펙에 맞춰 비교하는 벤치마크를 실행했다 — 아직 이 기능을 실제로 호출할 곳이 없었기에 의도적으로 머지하지는 않았다. 이 벤치마크에서 두 건이 더 드러났고, 이는 수정 커밋이 아니라 1인칭 엔지니어링 로그 형태로 기록됐다:</p>
         <p>Go 포트에서는 32자리 hex ID에 <code>-YYYY-MM</code> 접미사(총 40자)를 붙여 만든 참조 ID를 <code>reference_id VARCHAR(36)</code> 컬럼에 기록하고 있었다. Postgres는 이를 거부했다 — 다만 두 번째 달 실행부터였는데, 특정 길이 패턴의 첫 삽입은 우연히 들어맞을 수 있기 때문이다. 인메모리 Fake Repository는 컬럼 길이 제약을 아예 강제하지 않으므로, 실제 Postgres 이전 단계에서는 이 문제를 잡아낼 방법이 없었다.</p>
         <p>java-springboot 포트에서는 서로 다른 세 개의 <code>@Test</code> 메서드가 같은 테스트 실행 안에서 각각 동일한 월간(monthly) 스케줄러를 호출하고 있었다. 스케줄러의 dedup ID는 월 단위 날짜 기반이었기에 — 세 번의 호출 모두 값이 동일했고 — SQS FIFO의 5분짜리 중복 제거(dedup) 윈도우가 두 번째와 세 번째 호출을 조용히 걸러냈다. 실제로 큐에 도달한 Task는 첫 번째 테스트의 것뿐이었다.</p>
         <div className="article-note"><strong>머지되지 않은 버그가 그래도 실제 코드를 바꾼 사례</strong><p>VARCHAR(36) 교훈은 이론으로 끝나지 않았다. 같은 날 실제로 머지된 계좌 송금(account-transfer) 기능이 배포됐는데, 그 Go 구현은 벤치마크가 드러낸 바로 그 함정을 명시적으로 피하고 있다 — 접미사를 아예 붙이지 않고 32자리 원본 ID를 그대로 사용하는데, 접미사를 붙이면 컬럼 길이 제한을 넘을 수 있다는 바로 그 이유 때문이다. 코드가 버려진 벤치마크 실행 한 번이, 그날 오후 프로덕션 코드를 실제로 바꾼 교훈을 만들어낸 셈이다.</p></div>

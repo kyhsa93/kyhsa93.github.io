@@ -76,12 +76,12 @@ log.info("Order created");`}</code></pre>
     lede: '로깅 라이브러리를 붙이는 건 쉽다. 정말 중요한 건 어떤 레벨에, 어떤 계층에 무엇을 남길지, 그리고 하나의 요청을 수십 줄의 로그에 걸쳐 어떻게 추적 가능하게 만들지를 결정하는 일이다 — 장애가 났을 때 5분 만에 원인을 찾느냐, 5시간이 걸리느냐를 실제로 가르는 것도 바로 이 부분이다.',
     body: (
       <>
-        <p>Observability는 흔히 나중에 덧붙이는 인프라 취급을 받는다 — 로깅 라이브러리 하나 고르고, 대시보드 연결하면 끝. 하지만 실제로 중요한 건 도구가 아니라 결정이다: 무엇을 어떤 레벨로 남길지, 어떤 계층이 무엇을 로깅할 책임을 지는지, 그리고 하나의 요청이 여러 프로세스에서 나온 수십 줄의 로그로 흩어진 뒤에도 그 요청의 이야기를 계속 추적 가능하게 유지하는 방법.</p>
+        <p>Observability는 흔히 나중에 덧붙이는 인프라 취급을 받는다 — 로깅 라이브러리 하나 고르고, 대시보드 연결하면 끝. 하지만 실제로 중요한 건 도구가 아니라 결정이다: 무엇을 어떤 레벨로 남길지, 어떤 계층이 무엇을 로깅할 책임을 지는지, 그리고 하나의 요청이 여러 프로세스에서 나온 수십 줄의 로그로 흩어진 뒤에도 그 요청의 이야기를 계속 추적할 수 있는지.</p>
         <h2>다섯 개 레벨, 엄격하게 강제한다</h2>
         <p><code>error</code>는 요청 처리 실패와 외부 시스템 장애용이다 — DB 연결 실패, 외부 API의 5xx 응답, 처리되지 않은 예외. <code>warn</code>은 정상 동작이지만 여전히 주의가 필요한 경우다 — deprecated된 엔드포인트 호출, 재시도 발생, 임계치에 근접하는 상황. <code>log</code>는 핵심 비즈니스 이벤트와 상태 변화를 다룬다 — 주문 생성, 결제 완료, 앱 시작·종료. <code>debug</code>는 개발용 상세 정보다 — 쿼리 파라미터, 중간 계산 결과. <code>verbose</code>는 요청/응답 페이로드 전체 같은 최대 상세 정보다.</p>
         <p>운영 환경(production)은 <code>error</code>, <code>warn</code>, <code>log</code>만 남긴다. 개발과 스테이징 환경은 전부 남긴다. 운영 환경에서의 불필요한 로깅은 비용만 잡아먹는 게 아니라, 정작 가장 빠르게 찾아야 할 순간에 중요한 로그 줄을 노이즈 속에 파묻어 버린다.</p>
         <h2>누가 무엇을 로깅하는가</h2>
-        <p>Interface 계층(Controller)은 catch 블록에서 잡힌 요청 에러를 로깅한다. Application 계층은 비즈니스 이벤트와 외부 시스템 호출 결과를 로깅한다. Infrastructure는 외부 연동 실패·재시도와 비정상적인 쿼리 성능을 로깅한다. Domain 계층은 절대 로깅하지 않는다, 예외 없이 — 프레임워크 독립성을 유지해야 하고, 도메인 로직의 결과는 그걸 호출한 상위 계층인 Application 계층에서 로깅된다.</p>
+        <p>Interface 계층(Controller)은 catch 블록에서 잡힌 요청 에러를 로깅한다. Application 계층은 비즈니스 이벤트와 외부 시스템 호출 결과를 로깅한다. Infrastructure는 외부 연동 실패·재시도와 비정상적인 쿼리 성능을 로깅한다. Domain 계층은 어떤 경우에도 로깅하지 않는다 — 프레임워크 독립성을 유지해야 하기 때문이고, 도메인 로직의 결과는 그것을 호출한 상위 계층인 Application 계층이 로깅한다.</p>
         <pre><code>{`// forbidden — using a logger/framework in the Domain layer
 import org.slf4j.Logger;          // forbidden
 import org.slf4j.LoggerFactory;   // forbidden
@@ -94,7 +94,7 @@ public class Order {
         ...
     }
 }`}</code></pre>
-        <p>이건 순수성을 위한 순수성 규칙이 아니다. 로깅을 하는 Domain 계층은 원래 가져서는 안 될 프레임워크 의존성을 갖게 된 것이고, 그러면 모든 도메인 단위 테스트가 로거를 mocking하거나, 요청하지도 않은 로그 노이즈를 감내해야 한다.</p>
+        <p>이건 그저 순수성 자체를 지키기 위한 규칙이 아니다. Domain 계층이 로깅을 하면 원래 가져서는 안 될 프레임워크 의존성을 갖게 되고, 그러면 모든 도메인 단위 테스트가 로거를 mocking하거나 요청하지도 않은 로그 노이즈를 감내해야 한다.</p>
         <h2>구조화된 로그, 그리고 필드 이름이 중요한 이유</h2>
         <p>Datadog, CloudWatch, Grafana Loki 같은 외부 모니터링 시스템과 연동할 때, 로그는 <code>snake_case</code> 필드 이름을 쓰는 구조화된 JSON이어야 한다:</p>
         <pre><code>{`// a business-event log
@@ -118,7 +118,7 @@ try {
 
 // when logging, anywhere downstream — no argument needed, MDC is read automatically
 log.info("Order created");`}</code></pre>
-        <p>이건 인증에 쓰이는 request-scoped 사용자 컨텍스트 패턴과 정확히 같은 모양이다 — 값 하나가 요청의 진입점에서 딱 한 번 생성되고, 그 외 모든 곳에서는 request 객체를 넘겨받지 않고도 storage에서 읽어온다. 두 문제(현재 사용자가 누구인지, 이 로그 줄을 만든 요청이 무엇인지)는 서로 다르지만, 그걸 푸는 메커니즘이 동일한 건 의도된 것이다.</p>
+        <p>이건 인증에 쓰이는 request-scoped 사용자 컨텍스트 패턴과 정확히 같은 모양이다 — 값 하나가 요청의 진입점에서 딱 한 번 생성되고, 그 외 모든 곳에서는 request 객체를 넘겨받지 않고도 storage에서 읽어온다. 두 문제(현재 사용자가 누구인지, 이 로그 줄을 만든 요청이 무엇인지)는 서로 다르지만, 그 둘을 푸는 메커니즘이 똑같은 건 의도적이다.</p>
         <h2>메트릭과 트레이싱: 강제 사항이 아니라 방향성</h2>
         <p>이건 특정 스택 하나에 묶인 이야기는 아니지만, 어떤 스택을 고르든 알림을 걸어둘 만한 것들이 몇 가지 있다: HTTP 5xx 비율, p99 응답 시간, DB 커넥션 풀 포화도, 메시지 큐의 DLQ 적재량이 0보다 커지는 것, 그리고 큐의 <code>ApproximateAgeOfOldestMessage</code> — 이 지표는 요청이 실제로 실패하고 있다는 걸 누군가 눈치채기 훨씬 전에 멈춰버린 consumer를 잡아낸다.</p>
         <p>트레이싱은 OpenTelemetry auto-instrumentation을 쓰면 수동 설정을 최소화하면서 HTTP, DB, 메시지 큐 span을 수집할 수 있다. Task Queue나 Integration Event 같은 비동기 경계에서는, Outbox 페이로드에 <code>traceparent</code>를 포함시키면 그 간극을 넘어 trace context가 전파되어, HTTP 요청 하나가 몇 초 혹은 몇 분 뒤에 일어난 이벤트 처리까지 서로 단절된 두 개의 trace가 아니라 하나의 trace로 이어진다. 로그 레코드에 <code>trace_id</code>를 포함시키면 trace에서 곧바로 그 로그로 이동할 수 있는데, 이건 보통 "뭔가 느려졌다는 게 보인다"와 "정확히 어떤 쿼리가 느려졌는지 보인다"의 차이를 만든다.</p>

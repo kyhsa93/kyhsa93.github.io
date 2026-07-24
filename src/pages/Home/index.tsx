@@ -68,7 +68,6 @@ export default function Home() {
             }
           >
             <span aria-hidden="true">{theme === 'dark' ? '☀️' : '🌙'}</span>
-            {theme === 'dark' ? t.nav.light : t.nav.dark}
           </button>
           <LanguageToggle />
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">

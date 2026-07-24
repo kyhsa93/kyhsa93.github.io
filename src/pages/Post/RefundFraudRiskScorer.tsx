@@ -148,7 +148,7 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
         ),
     )`}</code></pre>
         <h2>의도적으로 placeholder 위에서 학습시킨다</h2>
-        <p>이 예제 저장소 뒤에는 실제 사용자 기반이 없으므로, 학습시킬 실제 사기 심사 이력 데이터도 없다. native 구현체는 생성 시점에 한 번, 시드가 고정된 합성 데이터셋과 의도적으로 단순한 ground-truth 규칙으로 스스로를 학습시킨다:</p>
+        <p>이 예제 저장소 뒤에는 실제 사용자 기반이 없으므로, 학습시킬 실제 사기 심사 이력 데이터도 없다. native 구현체는 생성 시점에 한 번, 시드가 고정된 합성 데이터셋과 의도적으로 단순한 ground-truth 규칙으로 스스로 학습한다:</p>
         <pre><code>{`private fun generateTrainingData(): List<TrainingExample> {
     val random = Random(TRAINING_SEED)
     return (0 until TRAINING_EXAMPLE_COUNT).map {
@@ -185,7 +185,7 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
     }
     return LogisticModel(weights, bias)
 }`}</code></pre>
-        <p>여기서 고정된 랜덤 시드가 중요하다: 생성되는 데이터셋 — 그리고 그로부터 학습되는 가중치 — 는 실행할 때마다 동일하다. 이건 명시적으로 대역(stand-in)일 뿐이며, 중요한 건 모델의 실제 예측 성능이 아니라 인터페이스 그 자체다.</p>
+        <p>여기서 고정된 랜덤 시드가 중요하다: 생성되는 데이터셋과 거기서 학습되는 가중치는 실행할 때마다 동일하다. 이건 명시적으로 대역(stand-in)일 뿐이며, 중요한 건 모델의 실제 예측 성능이 아니라 인터페이스 그 자체다.</p>
         <h2>다시 쓰지 않고, 설정으로 교체 가능하게</h2>
         <p>LLM classifier에 이미 쓰인 것과 같은 native/HTTP 토글이 여기서도 등장한다 — 설정 프로퍼티 하나가 프로세스 내부 계산과 공유 <code>services/fraud-risk-scorer</code> 마이크로서비스 호출 중 하나를 고른다:</p>
         <pre><code>{`@ConfigurationProperties(prefix = "fraud-scorer")
@@ -221,7 +221,7 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
 }`}</code></pre>
         <p>이 두 숫자가 만나는 유일한 곳이 Domain Service이며, 그 둘이 무엇을 의미하는지 결정하는 곳도 여전히 여기뿐이다.</p>
         <h2>테스트 소유자를 공유해서 생긴 버그</h2>
-        <p>공유 테스트 fixture를 쓰는 E2E 스위트에 이력 기반 scorer를 추가하자, 이 저장소의 다른 곳에서 실제로, 그것도 결정론적인 실패가 발생했다 — 우연히 가끔 실패하는 flaky 테스트가 아니었다. Testcontainers Postgres 인스턴스에 대해 여러 테스트 메서드가 같은 owner ID를 재사용했고(테스트별 리셋이 없었다), 그 결과 나중 테스트들이 앞선 테스트들의 거절된 환불 이력을 그대로 물려받아 native 점수가 0.8 임계값을 넘겨버렸고, 정상적으로 유효한 환불을 고위험으로 잘못 분류했다.</p>
+        <p>공유 테스트 fixture를 쓰는 E2E 스위트에 이력 기반 scorer를 추가하자, 이 저장소의 다른 곳에서 실제로 결정론적인 실패가 발생했다 — 우연히 가끔 실패하는 flaky 테스트가 아니었다. Testcontainers Postgres 인스턴스에 대해 여러 테스트 메서드가 같은 owner ID를 재사용했고(테스트별 리셋이 없었다), 그 결과 나중 테스트들이 앞선 테스트들의 거절된 환불 이력을 그대로 물려받아 native 점수가 0.8 임계값을 넘겨버렸고, 정상적으로 유효한 환불을 고위험으로 잘못 분류했다.</p>
         <p>이 문제에 부딪힌 두 포트는 서로 다른 두 가지 방식으로 고쳤는데, 하나의 공통 기법이었다고 뭉뚱그리기보다 정확히 이름을 붙일 가치가 있다. java-springboot 포트는 전체 E2E 스위트를 도달 불가능한 주소를 향한 HTTP 모드로 강제해서, 모든 테스트에서 점수가 결정론적으로 <code>0</code>으로 폴백되게 만들었다. nestjs 포트는 대신 스위트의 나머지 부분에는 native scoring을 그대로 살려두고, 영향을 받은 그 하나의 테스트에만 전용 owner ID를 부여했다 — 더 좁은 범위의 수정이지만, 근본 원인은 동일하다.</p>
         <div className="article-note"><strong>Flaky가 아니라 결정론적</strong><p>이 차이는 짚고 넘어갈 가치가 있다: flaky 테스트는 테스트 대상 코드와 무관한 이유로 예측 불가능하게 실패한다. 이 실패는 매번, 같은 순서로, 같은 이유로 일어났다 — 앞선 테스트들에서 누적된 상태가 뒤따르는 테스트의 입력을 바꿔버린 것이다. 이건 "flaky 테스트"라는 옷을 입은 테스트 격리(test-isolation) 버그이며, retry-on-failure로 땜질하기 전에 격리 문제부터 다시 한번 살펴볼 가치가 있다.</p></div>
         <div className="article-note"><strong>저장소 내 추가 자료</strong><p>

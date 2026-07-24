@@ -103,7 +103,7 @@ type RefundReasonClassifier interface {
 }`}</code></pre>
         <p>이 컴포넌트의 역할은 분류 결과를 만들어내는 데서 끝난다. 그 다음에 무슨 일이 일어나야 하는지에 대해서는 아무런 의견도 갖지 않는다 — 그건 이 계층이 신경 쓸 일이 아니다.</p>
         <h2>결정은 여전히 Domain Service가 내린다</h2>
-        <p><code>EvaluateRefundEligibility</code>는 평범한 패키지 함수다 — 프레임워크 의존성도 없고, Go에는 애초에 DI container가 없으니 그것도 관여하지 않는다 — 그리고 classifier를 import하거나 호출하는 일이 절대 없다. 이미 계산된 <code>classification</code> 값을, 이전 글에서 다룬 두 번째 부정 사용 신호와 함께 값으로 전달받아, 자신만의 고정된 임계값을 적용한다:</p>
+        <p><code>EvaluateRefundEligibility</code>는 평범한 패키지 함수다 — 프레임워크 의존성도 없고, Go에는 애초에 DI container라는 게 없다 — 그리고 classifier를 import하거나 호출하는 일도 전혀 없다. 이미 계산된 <code>classification</code>을 이전 글에서 다룬 두 번째 부정 사용 신호와 함께 전달받아, 자신만의 고정된 임계값을 적용한다:</p>
         <pre><code>{`const fraudRiskRejectionThreshold = 0.7
 
 func EvaluateRefundEligibility(p *Payment, r *Refund, classification RefundReasonClassification, mlFraudRiskScore float64) RefundDecision {
@@ -144,8 +144,8 @@ func RefundClassifierModel() string {
 const defaultOllamaBaseURL = "http://localhost:11434"`}</code></pre>
         <div className="article-note"><strong>더 작은 0.5b가 아니라 1.5b를 쓰는 이유</strong><p>처음에는 이 모델 계열에서 가장 작은 모델을 먼저 시도했다. Ollama를 상대로 직접 실전 테스트해 보니, "두 번 결제됐으니 중복분을 환불해 달라"는 평범한 불만을 <code>fraud_suspected</code>로, 그것도 부정 사용 위험 점수 <code>1.0</code>으로 잘못 분류했다 — 이대로였다면 완전히 정당한 환불 요청이 <code>0.7</code> 임계값에서 잘못 거절됐을 것이다. 이 케이스를 제대로 처리한 가장 작은 크기가 1.5B 파라미터였다.</p></div>
         <h2>무엇이 바뀌어야 했나 (거의 아무것도 아니다)</h2>
-        <p>이 교체 작업으로 Domain Service, Technical Service 인터페이스, 그리고 둘에 대한 단위 테스트는 전혀 손대지 않았다 — 바뀐 건 오직 Infrastructure 구현체와 두 개의 config 함수뿐이었다. 이것이 바로 아키텍처가 제 역할을 하는 모습이다: Infrastructure 바깥의 그 무엇도 LLM이 관여한다는 사실 자체를 알지도, 신경 쓰지도 않았고, 어떤 LLM인지는 더더욱 그랬다.</p>
-        <p>Go에 한정된 솔직한 단서 하나: 이 코드베이스에는 DI container가 없기 때문에, E2E 테스트 부트스트랩이 classifier의 구체 생성자를 손으로 직접 연결한다. 이번 교체는 테스트 셋업에서 그 생성자 호출 — 모델 이름과 base URL — 을 한 줄 고쳐야 했다. 이는 테스트 <em>로직</em>이 아니라 테스트 <em>배선(wiring)</em>이다; 어떤 assertion도 바뀌지 않았다. DI container가 그 배선을 암묵적으로 처리해 주는 언어들에서는 이번 교체가 정말로 테스트 파일을 단 하나도 건드리지 않았다; Go 버전의 "거의 아무것도 바뀌지 않았다"에는 이렇게 작지만 솔직한 각주 하나가 붙는다.</p>
+        <p>이번 교체에서 Domain Service, Technical Service 인터페이스, 그리고 둘에 대한 단위 테스트는 전혀 바뀌지 않았다 — 바뀐 건 오직 Infrastructure 구현체와 두 개의 config 함수뿐이었다. 이것이 바로 아키텍처가 제 역할을 하는 모습이다: Infrastructure 바깥의 그 무엇도 LLM이 관여한다는 사실 자체를 알지도, 신경 쓰지도 않았고, 어떤 LLM인지는 더더욱 그랬다.</p>
+        <p>Go에 한정된 솔직한 단서 하나: 이 코드베이스에는 DI container가 없기 때문에, E2E 테스트 부트스트랩이 classifier의 구체 생성자를 손으로 직접 연결한다. 이번 교체는 테스트 셋업에서 그 생성자 호출 — 모델 이름과 base URL — 을 한 줄 고쳐야 했다. 이는 테스트 <em>로직</em>이 아니라 테스트 <em>배선(wiring)</em>이다. 어떤 assertion도 바뀌지 않았다. DI container가 그 배선을 암묵적으로 처리해 주는 언어들에서는 이번 교체가 정말로 테스트 파일을 단 하나도 건드리지 않았다. Go 버전의 "거의 아무것도 바뀌지 않았다"에는 이렇게 작지만 솔직한 각주 하나가 붙는다.</p>
         <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
           <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a> — 이 classifier를 실제 예시로 다루는 Technical Service / Domain Service 구분 · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/implementations/go/examples/internal/infrastructure/llm/refund_reason_classifier.go" target="_blank" rel="noreferrer">refund_reason_classifier.go</a> — 실제 현재의 Ollama 기반 구현
         </p></div>

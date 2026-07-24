@@ -136,11 +136,11 @@ await transactionManager.run(async () => {
     lede: '비즈니스 로직을 직접 실행하는 Cron job은 서비스 인스턴스가 하나일 때는 잘 작동한다 — 문제는 인스턴스가 두 개가 되어 동시에 같은 작업을 실행하는 순간부터다. 제대로 된 스케줄링이란 결국 누가, 어떤 순서로, 무엇을 할 수 있는지에 관한 이야기다.',
     body: (
       <>
-        <p>주기적 작업(periodic work)과 배치 처리에는 프로토타이핑 단계에서는 건너뛰기 쉽지만 나중에 되돌리려면 비용이 큰 세 가지 요구사항이 따른다: Scheduler는 비즈니스 로직이 있는 Application 계층이 아니라 Infrastructure 계층에 속해야 하고; Task handler는 멱등(idempotent)해야 한다 — 메시지 큐는 at-least-once 전달을 보장하므로 같은 Task가 두 번 실행될 수 있기 때문이다; 그리고 메시지 큐를 쓴다면 Dead Letter Queue는 나중에 덧붙이는 게 아니라 기본값이어야 한다 — 무한 재시도를 막고, poison message가 뒤에 있는 모든 것을 막기 전에 격리해준다.</p>
+        <p>주기적 작업(periodic work)과 배치 처리에는 프로토타이핑 단계에서는 건너뛰기 쉽지만 나중에 갖추려면 비용이 커지는 세 가지 요구사항이 따른다: Scheduler는 비즈니스 로직이 있는 Application 계층이 아니라 Infrastructure 계층에 속해야 하고; Task handler는 멱등(idempotent)해야 한다 — 메시지 큐는 at-least-once 전달을 보장하므로 같은 Task가 두 번 실행될 수 있기 때문이다; 그리고 메시지 큐를 쓴다면 Dead Letter Queue는 나중에 덧붙이는 게 아니라 기본값이어야 한다 — 무한 재시도를 막고, poison message가 뒤에 있는 모든 것을 막기 전에 격리해준다.</p>
         <h2>Scheduler는 오직 Enqueue만 한다</h2>
         <p>Scheduler는 비즈니스 로직을 직접 실행하지 않는다. Scheduler가 하는 일은 오직 큐에 Task를 enqueue하는 것뿐이다; 실제 작업은 나중에, Task Consumer가 메시지를 수신하고 Command Service를 호출할 때 일어난다.</p>
         <pre><code>{`[Scheduler] --(enqueue)--> [task_outbox] --(Relay)--> [message queue] --(Consumer)--> [TaskController] --(calls)--> [CommandService]`}</code></pre>
-        <p>이 간접화(indirection)는 한 번에 네 가지를 얻게 해준다. 여러 인스턴스에서 안전하다 — 여러 인스턴스가 동시에 같은 Cron을 실행하더라도, FIFO 큐의 중복 제거(deduplication) 덕분에 실제로는 단 하나의 사본만 처리된다. 재시도는 공짜로 따라온다 — Consumer가 실패하면 visibility timeout이 지난 뒤 메시지가 자동으로 재전달되고, 최대 수신 횟수를 넘으면 DLQ로 격상된다. Backpressure를 제공한다 — 워크로드 급증은 그냥 큐에 쌓였다가 Consumer 자신의 처리 속도에 맞춰 소진될 뿐, 하류(downstream)의 무언가를 압도하지 않는다. 그리고 관측 가능(observable)하다 — 큐 지표(메시지 수, 처리 지연, DLQ 수)만으로도 비즈니스 로직 자체를 계측하지 않고 배치의 상태를 알 수 있다.</p>
+        <p>이 간접화(indirection)로 한 번에 네 가지를 얻는다. 여러 인스턴스에서 안전하다 — 여러 인스턴스가 동시에 같은 Cron을 실행하더라도, FIFO 큐의 중복 제거(deduplication) 덕분에 실제로는 단 하나의 사본만 처리된다. 재시도는 공짜로 따라온다 — Consumer가 실패하면 visibility timeout이 지난 뒤 메시지가 자동으로 재전달되고, 최대 수신 횟수를 넘으면 DLQ로 격상된다. Backpressure를 제공한다 — 워크로드 급증은 그냥 큐에 쌓였다가 Consumer 자신의 처리 속도에 맞춰 소진될 뿐, 하류(downstream)의 무언가를 압도하지 않는다. 그리고 관측 가능(observable)하다 — 큐 지표(메시지 수, 처리 지연, DLQ 수)만으로도 비즈니스 로직 자체를 계측하지 않고 배치의 상태를 알 수 있다.</p>
         <p>이 저장소의 NestJS 구현에서 가져온 실제 Cron handler다 — 이자 지급(interest-payment) scheduler는 정확히 한 가지 일, 즉 enqueue만 하고 그 외에는 아무것도 하지 않는다:</p>
         <pre><code>{`@Injectable()
 export class AccountInterestScheduler {
@@ -168,7 +168,7 @@ export class AccountInterestScheduler {
     }
   }
 }`}</code></pre>
-        <p>날짜를 찍은 <code>dedupId</code>가 여러 인스턴스에서 실행되더라도 이걸 안전하게 만들어주는 요소다. 세 개의 인스턴스가 같은 FIFO dedup window 안에서 모두 이 handler를 실행하더라도, 세 번의 시도 모두 동일한 <code>dedupId</code>를 갖는다 — 실제로 큐에 들어가는 건 그중 단 하나뿐이다. 그리고 enqueue 호출을 감싸는 명시적인 try-catch는 주석에 직접 적혀 있는 이유 때문에 존재한다: 여기서 쓰는 스케줄링 라이브러리는 Cron handler 안에서 던져진 예외를 조용히 삼켜버리므로, 이 catch-and-log가 없다면 enqueue 실패는 아무 흔적도 없이 그냥 사라져버릴 것이다.</p>
+        <p>날짜를 찍은 <code>dedupId</code> 덕분에 이 방식은 여러 인스턴스에서 동시에 실행되더라도 안전하다. 세 개의 인스턴스가 같은 FIFO dedup window 안에서 모두 이 handler를 실행하더라도, 세 번의 시도 모두 동일한 <code>dedupId</code>를 갖는다 — 실제로 큐에 들어가는 건 그중 단 하나뿐이다. 그리고 enqueue 호출을 감싸는 명시적인 try-catch에는 주석에 적힌 그대로의 이유가 있다: 여기서 쓰는 스케줄링 라이브러리는 Cron handler 안에서 던져진 예외를 조용히 삼켜버리므로, 이 catch-and-log가 없다면 enqueue 실패는 아무 흔적도 없이 그냥 사라져버릴 것이다.</p>
         <h2>같은 Scheduler를, Cron 데코레이터가 있을 때와 없을 때</h2>
         <p>Spring Boot 버전도 동일한 cron 표현식 관용구를 쓰지만, NestJS의 데코레이터 대신 표준 라이브러리 애노테이션을 사용한다:</p>
         <pre><code>{`@Component
@@ -217,7 +217,7 @@ func (s *InterestScheduler) EnqueueDailyInterest(ctx context.Context, today time
 }`}</code></pre>
         <p>세 가지 구현, 프레임워크 지원의 정도도 제각각이다 — 데코레이터, 애노테이션, 손으로 짠 ticker — 하지만 세 곳 모두 내부적으로는 동일한 형태로 귀결된다: enqueue만 한다, 스택 어딘가에서 예외를 조용히 삼키는 경향이 있으므로 실패는 명시적으로 로그를 남긴다, 그리고 인스턴스들을 직접 조율하려 하기보다 날짜 기반 dedup ID가 다중 인스턴스 상황을 흡수하게 둔다.</p>
         <h2>Enqueue는 DB 변경과 원자적이어야 한다</h2>
-        <p>Command Service 내부에서 메시지 큐에 <code>SendMessage</code>를 직접 호출하면, 신뢰성 있는 이벤트 기반 설계 전반에서 다뤄지는 것과 같은 dual-write 문제가 생긴다 — DB는 커밋됐는데 메시지 전송은 실패하거나, 메시지는 전송됐는데 DB는 롤백되는 식으로, 아무도 지켜보지 않는 불일치가 생긴다. 해법은 Domain Event에 쓰던 것과 같은 Outbox 패턴이다: DB 변경과 같은 트랜잭션 안에서 <code>task_outbox</code> 테이블에 기록하고, 별도의 Relay가 그 테이블을 폴링해 트랜잭션이 실제로 커밋된 이후에만 발행하게 한다.</p>
+        <p>Command Service 내부에서 메시지 큐에 <code>SendMessage</code>를 직접 호출하면, 신뢰성 있는 이벤트 기반 설계 전반에서 흔히 다루는 것과 동일한 dual-write 문제가 생긴다 — DB는 커밋됐는데 메시지 전송은 실패하거나, 메시지는 전송됐는데 DB는 롤백되는 식으로, 아무도 지켜보지 않는 불일치가 생긴다. 해법은 Domain Event에 쓰던 것과 같은 Outbox 패턴이다: DB 변경과 같은 트랜잭션 안에서 <code>task_outbox</code> 테이블에 기록하고, 별도의 Relay가 그 테이블을 폴링해 트랜잭션이 실제로 커밋된 이후에만 발행하게 한다.</p>
         <pre><code>{`// An Application Service — the DB change and enqueuing the Task happen in the same transaction
 await transactionManager.run(async () => {
   await orderRepository.saveOrder(order)
@@ -227,9 +227,9 @@ await transactionManager.run(async () => {
     { groupId: order.orderId, deduplicationId: \`order.archive-\${order.orderId}\` }
   )
 })`}</code></pre>
-        <p>트랜잭션 컨텍스트가 아예 없는 경우 — 예를 들어 Cron tick에서 실행되는 Scheduler 내부 — 에도 동일한 경로를 사용한다. 단일 row insert이므로 그 자체로 자연스럽게 원자적이고, 모든 enqueue 지점에 하나로 통일된 경로를 두면 멘탈 모델이 단순해진다: 무엇이 트리거했든 enqueue는 항상 outbox 테이블에 쓰는 것을 의미하며, 큐 클라이언트를 직접 호출하는 일은 결코 없다.</p>
+        <p>트랜잭션 컨텍스트가 아예 없는 경우 — 예를 들어 Cron tick에서 실행되는 Scheduler 내부 — 에도 동일한 경로를 사용한다. 단일 row insert이므로 그 자체로 자연스럽게 원자적이고, 모든 enqueue 지점에 하나로 통일된 경로를 두면 멘탈 모델이 단순해진다: 무엇이 트리거했든 enqueue는 언제나 outbox 테이블에 쓰는 행위이며, 큐 클라이언트를 직접 호출하는 일은 결코 없다.</p>
         <h2>Task Controller는 Handler가 아니라 Interface 계층의 Adapter다</h2>
-        <p>HTTP Controller가 HTTP 요청을 받아 Application Service에 위임하듯, Task Controller는 메시지 큐 메시지를 받아 Command Service를 호출한다 — 자체적인 조건 분기나 비즈니스 규칙은 전혀 없이. 그리고 HTTP Controller와 달리, 에러를 잡아서 변환하는 일도 절대 하지 않는다; 그대로 rethrow할 뿐인데, 그 예외가 재시도를 의미하는지 DLQ행을 의미하는지는 Consumer가 결정하기 때문이다.</p>
+        <p>HTTP Controller가 HTTP 요청을 받아 Application Service에 위임하듯, Task Controller는 메시지 큐 메시지를 받아 Command Service를 호출한다 — 자체적인 조건 분기나 비즈니스 규칙은 전혀 없이. 그리고 HTTP Controller와 달리, 에러를 잡아서 변환하는 일도 절대 하지 않는다; 그대로 rethrow할 뿐인데, 그 예외가 재시도로 이어질지 DLQ행으로 이어질지는 Consumer가 결정하기 때문이다.</p>
         <pre><code>{`class OrderTaskController {
   constructor(private readonly orderCommandService: OrderCommandService) {}
 

@@ -104,7 +104,7 @@ class AccountRepository(AccountQuery, ABC):
       <>
         <p>어떤 아키텍처 원칙이 우연히 TypeScript 모양을 하고 있는 게 아니라 실제로 언어에 독립적인지 시험해보는 한 가지 방법은, 충분히 많은 언어에서 독립적으로 구현해서 우연히 붙은 부분들은 떨어져 나가고 진짜 결정만 남게 만드는 것이다. 이 저장소는 같은 Account 도메인을 대상으로 다섯 개의 백엔드에서 그렇게 했다: NestJS(TypeScript), Go, Java와 Kotlin 각각의 Spring Boot, 그리고 FastAPI(Python). Repository/Query 분리는 무엇이 본질이고 무엇이 그냥 문법일 뿐인지 가장 선명하게 볼 수 있는 지점이다.</p>
         <h2>TypeScript: 인터페이스 역할을 하는 Abstract Class</h2>
-        <p>NestJS에는 의존성 주입을 위한 네이티브 "interface" 개념이 없다 — 순수 TypeScript <code>interface</code>는 컴파일 시점에 사라지기 때문에 DI 토큰으로 쓸 수 없다. 그래서 Query 계약은 대신 abstract class로 정의되는데, 이건 런타임까지 살아남는다:</p>
+        <p>NestJS에는 의존성 주입을 위한 네이티브 "interface" 개념이 없다 — 순수 TypeScript <code>interface</code>는 컴파일 시점에 사라지기 때문에 DI 토큰으로 쓸 수 없다. 그래서 Query 계약에는 대신 abstract class를 쓰는데, 이건 런타임까지 살아남는다:</p>
         <pre><code>{`export abstract class OrderQuery {
   abstract getOrders(query: GetOrdersQuery): Promise<GetOrdersResult>
   abstract getOrder(query: GetOrderQuery): Promise<GetOrderResult>
@@ -134,7 +134,7 @@ type Repository interface {
 	Query
 	SaveAccount(ctx context.Context, account *Account) error
 }`}</code></pre>
-        <p>Query Handler는 <code>Query</code>에 대한 의존성을 선언하고, Command Handler는 <code>Repository</code>에 대한 의존성을 선언한다. 둘 다 <code>main.go</code>의 와이어링 지점에서 정확히 같은 struct에 의해 충족된다 — 컴파일러가 이 분리를 강제하면서도 코드베이스가 두 번째 구현 타입의 비용을 치르지 않는다. Go에는 <code>findOne</code>에 해당하는 메서드도 아예 없다; 다른 언어들의 <code>.then(r =&gt; r.orders.pop())</code> 같은 메서드 체이닝 관용구가 없기 때문에, 반복되는 단일 레코드 조회 패턴은 대신 자유 함수(free function)로 빼낸다:</p>
+        <p>Query Handler는 <code>Query</code>에 대한 의존성을 선언하고, Command Handler는 <code>Repository</code>에 대한 의존성을 선언한다. 이 둘은 <code>main.go</code>의 와이어링 지점에서 정확히 같은 struct 하나가 충족시킨다 — 컴파일러가 이 분리를 강제하면서도, 코드베이스는 두 번째 구현 타입의 비용을 치르지 않는다. Go에는 <code>findOne</code>에 해당하는 메서드도 아예 없다; 다른 언어들의 <code>.then(r =&gt; r.orders.pop())</code> 같은 메서드 체이닝 관용구가 없기 때문에, 반복되는 단일 레코드 조회 패턴은 대신 자유 함수(free function)로 빼낸다:</p>
         <pre><code>{`func FindOne(ctx context.Context, q Query, accountID, ownerID string) (*Account, error) {
 	accounts, _, err := q.FindAccounts(ctx, FindQuery{AccountID: accountID, OwnerID: ownerID, Take: 1})
 	if err != nil {

@@ -105,7 +105,7 @@ if not order:
     lede: "raise Exception('Order not found.')는 완전히 멀쩡해 보인다 — 다른 어딘가에서 두 번째 사람이 문자열을 살짝 다르게 적기 전까지는. 그러면 그 순간부터 같은 실패가 어느 파일에서 던져졌는지에 따라 서로 다른 두 개의 코드로 나오게 된다.",
     body: (
       <>
-        <p>에러 처리는 명확한 계층 분리를 갖고 있다: Domain과 Application 계층은 FastAPI의 <code>HTTPException</code> 같은 프레임워크 전용 HTTP 예외가 아니라 순수한 <code>Exception</code>을 raise하고, Interface 계층 — 라우터 핸들러 — 만이 에러를 붙잡아 HTTP 상태 코드로 변환하는 유일한 지점이다. 이 분리 덕분에 Domain과 Application은 HTTP 의존성을 전혀 갖지 않게 되고, "이걸 상태 코드로 번역한다"는 지저분한 작업 하나가 정확히 한 곳으로 집중된다.</p>
+        <p>에러 처리는 계층이 명확하게 나뉘어 있다: Domain과 Application 계층은 FastAPI의 <code>HTTPException</code> 같은 프레임워크 전용 HTTP 예외가 아니라 순수한 <code>Exception</code>을 raise하고, Interface 계층 — 라우터 핸들러 — 만이 에러를 붙잡아 HTTP 상태 코드로 변환하는 유일한 지점이다. 이 분리 덕분에 Domain과 Application은 HTTP 의존성을 전혀 갖지 않게 되고, "이걸 상태 코드로 번역한다"는 지저분한 작업 하나가 정확히 한 곳으로 집중된다.</p>
         <pre><code>{`# domain/order.py — inside the Aggregate
 if self._status == "cancelled":
     raise Exception(OrderErrorMessage.ORDER_ALREADY_CANCELLED)
@@ -123,7 +123,7 @@ if not order:
         <pre><code>{`# The Interface layer's mapping
 (OrderErrorMessage.ORDER_NOT_FOUND, 404, OrderErrorCode.ORDER_NOT_FOUND)
 #  ↑ the enum member (checked by the type checker)      ↑ this value is compared against str(exc) at runtime`}</code></pre>
-        <p>만약 누군가 enum을 거치지 않고 원본 문자열을 직접 적어버린다면, 두 가지가 조용히 깨진다. 손으로 쓴 <code>raise Exception('Order not fund.')</code>의 오타는 단순 문자열 리터럴이기 때문에 린트나 타입 검사 단계에서 아무 에러도 만들어내지 않는다. 그리고 별개로, Interface 계층이 <code>OrderErrorMessage.ORDER_NOT_FOUND</code>와 비교할 때 더 이상 매치되지 않으므로, 그 에러는 원래 되어야 했던 404 대신 처리되지 않은 500으로 흘러가버린다. 모든 raise 지점이 enum 멤버를 <em>거쳐</em> 가도록 강제하면 — <code>raise Exception(OrderErrorMessage.ORDER_NOT_FOUND)</code> — 완전히 같은 오타라도, 이제는 멤버 이름 오타가 되어 몇 주 뒤에 잘못된 상태 코드로 드러나는 대신 ruff와 mypy가 코드를 배포하기도 전에 잡아낸다.</p>
+        <p>만약 누군가 enum을 거치지 않고 원본 문자열을 직접 적어버린다면, 두 가지가 조용히 깨진다. 손으로 쓴 <code>raise Exception('Order not fund.')</code>의 오타는 단순 문자열 리터럴이기 때문에 린트나 타입 검사 단계에서 아무 에러도 만들어내지 않는다. 그리고 별개로, Interface 계층이 <code>OrderErrorMessage.ORDER_NOT_FOUND</code>와 비교할 때 더 이상 매치되지 않으므로, 그 에러는 원래 되어야 했던 404 대신 처리되지 않은 500으로 흘러가버린다. 모든 raise 지점이 enum 멤버를 <em>거쳐</em> 가도록 강제하면 — <code>raise Exception(OrderErrorMessage.ORDER_NOT_FOUND)</code> — 완전히 같은 오타라도 이제는 멤버 이름 오타가 되므로, 몇 주 뒤에 잘못된 상태 코드로 드러나는 대신 ruff와 mypy가 배포 전에 미리 잡아낸다.</p>
         <h2>코드는 별개의 두 번째 축이다</h2>
         <p>HTTP 상태 코드가 분류(category)라면 에러 코드는 정확한 원인이다 — 그리고 이 코드는 메시지 텍스트와 독립적이어야 한다. 클라이언트는 <code>code</code>를 기준으로 분기해야지, 예고 없이 번역되거나 수정될 수 있는 메시지 문자열을 파싱해서 분기해서는 안 되기 때문이다.</p>
         <pre><code>{`class OrderErrorCode(str, Enum):
@@ -147,7 +147,7 @@ if not order:
                 (OrderErrorMessage.ORDER_ALREADY_CANCELLED, 400, OrderErrorCode.ORDER_ALREADY_CANCELLED),
             ],
         ) from exc`}</code></pre>
-        <p>이 매핑 테이블에 항목이 없는 에러는 500 Internal Server Error가 된다 — 이건 메꿔야 할 빈틈이 아니라 올바른 기본값이다. 매핑되지 않은 에러는 정말로 예상치 못한 실패이거나, 라우터 핸들러가 선언을 빠뜨린 도메인 에러 둘 중 하나를 의미한다 — 어느 쪽이든, 상태 코드를 추측해서 끼워맞추는 대신 불투명한 500으로 그대로 드러내는 쪽이 정직한 태도다.</p>
+        <p>이 매핑 테이블에 항목이 없는 에러는 500 Internal Server Error가 된다 — 이건 메꿔야 할 빈틈이 아니라 올바른 기본값이다. 매핑되지 않은 에러는 정말로 예상치 못한 실패이거나, 라우터 핸들러가 선언을 빠뜨린 도메인 에러, 둘 중 하나다 — 어느 쪽이든, 상태 코드를 추측해서 끼워맞추는 대신 불투명한 500으로 그대로 드러내는 쪽이 정직한 태도다.</p>
         <h2>어디서나 하나의 응답 형태</h2>
         <pre><code>{`class ErrorResponse(BaseModel):
     statusCode: int
@@ -179,9 +179,9 @@ order = orders[0] if orders else None
 
 if not order:
     raise Exception(OrderErrorMessage.ORDER_NOT_FOUND)`}</code></pre>
-        <p>별도의 <code>find_one</code>을 유지하면 두 메서드 사이에 동적 필터 조건 로직이 중복될 뿐이다. 하나의 경로로 통합해두면 나중에 선택적 필터를 추가할 자리가 정확히 한 곳만 존재하게 된다.</p>
+        <p>별도의 <code>find_one</code>을 유지하면 두 메서드 사이에 동적 필터 조건 로직이 중복될 뿐이다. 하나의 경로로 통합해두면 나중에 선택적 필터를 추가할 자리가 정확히 한 곳만 남는다.</p>
         <h2>이 구조가 암시하는 계약을 문서화하기</h2>
-        <p>핸들러가 실제로 반환할 수 있는 모든 non-2xx 상태는 API 문서에 선언되어야 하고, 그 핸들러 자신의 에러 매핑 테이블과 대조 검증되어야 한다 — 성공 응답뿐 아니라. 이것이 API 문서가 조용히 썩어가는 가장 흔한 방식이다: 문서 UI는 렌더링되고 엔드포인트는 "문서화됨"으로 보이지만, 그 특정 엔드포인트에서 나오는 404나 409가 실제로 어떤 모양인지는 아무것도 말해주지 않는다 — 정상 경로(happy path)만 기록되었을 뿐이기 때문이다.</p>
+        <p>성공 응답뿐 아니라, 핸들러가 실제로 반환할 수 있는 모든 non-2xx 상태도 API 문서에 선언되어야 하고, 그 핸들러 자신의 에러 매핑 테이블과 대조 검증되어야 한다. 이것이 API 문서가 조용히 썩어가는 가장 흔한 방식이다: 문서 UI는 렌더링되고 엔드포인트는 "문서화됨"으로 보이지만, 그 특정 엔드포인트에서 나오는 404나 409가 실제로 어떤 모양인지는 아무것도 말해주지 않는다 — 정상 경로(happy path)만 기록되었을 뿐이기 때문이다.</p>
         <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
           <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/error-handling.md" target="_blank" rel="noreferrer">docs/architecture/error-handling.md</a> — 전체 에러 메시지/에러 코드 enum 패턴 · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/api-response.md" target="_blank" rel="noreferrer">docs/architecture/api-response.md</a> — 페이지네이션, 응답 형태, OpenAPI 완성도 기준
         </p></div>

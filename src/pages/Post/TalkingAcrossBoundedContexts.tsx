@@ -76,7 +76,7 @@ const content = {
       <>
         <p>같은 프로세스 안에서 한 Bounded Context가 다른 BC를 필요로 할 때, 방법은 두 가지다: Adapter를 통한 동기 호출, 아니면 Integration Event를 통한 비동기 처리. 메시지 브로커, Saga, 코레오그래피 대 오케스트레이션 같은 나머지 모든 이야기는 결국 이 선택의 변주일 뿐이다. 유스케이스마다 이 선택을 제대로 하는 것이야말로 BC들을 하나의 공유 트랜잭션으로 몰래 결합시키지 않고 독립적으로 배포 가능한 상태로 유지하는 방법이다.</p>
         <h2>네 가지 질문으로 정리하는 판단 기준</h2>
-        <p>지금 이 요청의 응답이 외부 BC의 데이터를 당장 필요로 하는가? 그렇다면 동기 호출이 필요하다. 호출당하는 BC가 실제로 상태를 변경하는가, 아니면 단순히 읽히기만 하는가? 동기 호출을 통한 상태 변경이라면, 두 BC를 하나의 트랜잭션으로 묶는 것에서 한 걸음밖에 떨어져 있지 않은 셈이다 — 대개는 다시 생각해봐야 한다는 신호다. 외부 호출이 실패하면 현재 트랜잭션이 롤백되어야 하는가? 그렇지 않다면 — 즉 최종적 일관성(eventual consistency)으로 충분하다면 — 그것은 비동기 쪽으로 강하게 기우는 신호다. 그리고 호출 방향이 본질적으로 "듣고 있는 누구에게든 알린다" 같은 일방향인가? 그것은 요청이 아니라 이벤트다.</p>
+        <p>지금 이 요청의 응답이 외부 BC의 데이터를 당장 필요로 하는가? 그렇다면 동기 호출이 필요하다. 호출당하는 BC가 실제로 상태를 변경하는가, 아니면 단순히 읽히기만 하는가? 동기 호출을 통한 상태 변경이라면, 사실상 두 BC를 하나의 트랜잭션으로 묶는 것이나 다름없다 — 대개는 다시 생각해봐야 한다는 신호다. 외부 호출이 실패하면 현재 트랜잭션이 롤백되어야 하는가? 그렇지 않다면 — 즉 최종적 일관성(eventual consistency)으로 충분하다면 — 그것은 비동기 쪽으로 강하게 기우는 신호다. 그리고 호출 방향이 본질적으로 "듣고 있는 누구에게든 알린다" 같은 일방향인가? 그것은 요청이 아니라 이벤트다.</p>
         <blockquote>외부 BC에서 필요한 것이 읽기가 아니라 상태 변경이라면, 동기 호출로 두 BC를 하나의 트랜잭션에 묶지 마라. 각 BC가 Integration Event를 통해 독립적으로 처리하게 하라.</blockquote>
         <h2>동기 방식: Adapter 패턴</h2>
         <p>현재 요청 안에서, 외부 BC의 서비스로부터 즉시 뭔가를 조회해야 할 때 사용한다. 사용자 이름을 포함해야 하는 주문 상세 응답이나, 결제를 처리하기 전의 잔액 확인 — 둘 다 현재 요청이 끝나기 전에 답을 필요로 한다.</p>
@@ -89,7 +89,7 @@ const content = {
         <pre><code>{`[Order BC] → Domain Event → Application EventHandler → Integration Event → Outbox → message queue
                                                                                       ↓
                                                               [Payment BC] ← IntegrationEventController`}</code></pre>
-        <p>Integration Event는 내부 Domain Event를 있는 그대로 외부에 노출하지 않는다 — Application EventHandler가 바로 그 변환 지점이며, Adapter와 같은 anticorruption 개념을 반대 방향으로 적용한 것이다. 그리고 수신 측은 at-least-once 전달을 전제해야 하므로, 처리를 멱등(idempotent)하게 구현한다. 신뢰할 수 있는 이벤트 기반 설계 전반에서 다뤄지는 것과 정확히 같은 원칙이다.</p>
+        <p>Integration Event는 내부 Domain Event를 있는 그대로 외부에 노출하지 않는다 — Application EventHandler가 바로 그 변환 지점이며, Adapter와 같은 anticorruption 개념을 반대 방향으로 적용한 것이다. 그리고 수신 측은 at-least-once 전달을 전제해야 하므로, 신뢰할 수 있는 이벤트 기반 설계 전반에서 일반적으로 요구하는 것과 똑같이 처리를 멱등(idempotent)하게 구현한다.</p>
         <h2>실제 보상 트랜잭션 사례</h2>
         <p>Payment BC는 동기 Adapter를 통해 계정의 활성 상태와 잔액을 확인한 다음, 결제를 완료 처리한다(<code>payment.completed.v1</code> 발행). Account BC는 그 이벤트를 구독해 실제 차감을 수행한다 — 동기 확인과 비동기 차감 사이에 짧은 최종적 일관성 구간이 존재하는데, 이 간극은 실수가 아니라 명시적으로 받아들인 설계 결정이다.</p>
         <p>결제가 나중에 취소되면(<code>payment.cancelled.v1</code>) Account BC는 같은 방식으로 구독해, 이미 차감된 금액을 되돌리는 보상 입금(compensating credit)을 실행한다 — 트랜잭션 롤백이 아니라, 이전 상태 변경을 제자리에서 되돌리는 대신 그것을 상쇄하는 새로운 비동기 이벤트라는 점에서 전형적인 크로스 BC 보상 트랜잭션이다. 환불 승인(<code>refund.approved.v1</code>) 역시 정확히 같은 반응 로직을 재사용한다. 실제 구현은 <code>implementations/go/examples/internal/application/event/payment_cancelled_event_handler.go</code>에 있으며, <code>internal/application/integration-event/</code>에 정의된 <code>PaymentCancelledV1</code> Integration Event에 반응한다.</p>

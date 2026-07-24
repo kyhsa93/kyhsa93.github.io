@@ -33,22 +33,27 @@ const content = {
         <p>If the payment is later cancelled (<code>payment.cancelled.v1</code>), the Account BC subscribes the same way and runs a compensating credit that reverses the amount already deducted — not a transaction rollback, but a classic cross-BC compensating transaction: a new asynchronous event that offsets an earlier state change instead of undoing it in place. Refund approval (<code>refund.approved.v1</code>) reuses the exact same reaction. The real implementation lives at <code>implementations/nestjs/examples/src/account/interface/integration-event/account-integration-event-controller.ts</code> and <code>implementations/nestjs/examples/src/payment/application/event/</code>.</p>
         <h2>Mixing Both in One Use Case</h2>
         <p>A single command handler routinely uses both patterns for different parts of its work — a synchronous lookup for whatever the response needs right now, and an asynchronous follow-up for whatever downstream reaction doesn't:</p>
-        <pre><code>{`public async cancelOrder(command: CancelOrderCommand): Promise<void> {
-  // 1. A synchronous lookup via an Adapter (needed for the response)
-  const user = await this.userAdapter.findUsers({ userId: command.userId, take: 1, page: 0 })
-                  .then((r) => r.users.pop())
-  if (!user) throw new Error('User not found.')
+        <pre><code>{`func (h *CancelOrderHandler) Handle(ctx context.Context, cmd CancelOrderCommand) error {
+	// 1. A synchronous cross-BC lookup via an Adapter (needed for the response)
+	user, err := h.userAdapter.FindUser(ctx, cmd.UserID)
+	if err != nil {
+		return fmt.Errorf("cancel order: %w", err)
+	}
+	if user == nil {
+		return order.ErrUserNotFound
+	}
 
-  const order = await this.orderRepository.findOrders({ orderId: command.orderId, take: 1, page: 0 })
-                  .then((r) => r.orders.pop())
-  if (!order) throw new Error('Order not found.')
+	o, err := order.FindOne(ctx, h.orderRepository, cmd.OrderID, cmd.UserID)
+	if err != nil {
+		return fmt.Errorf("cancel order: %w", err)
+	}
 
-  order.cancel(command.reason)
+	if err := o.Cancel(cmd.Reason); err != nil {
+		return err
+	}
 
-  // 2. save → Domain Event → Integration Event (requesting a refund from the Payment BC is asynchronous)
-  await this.transactionManager.run(async () => {
-    await this.orderRepository.saveOrder(order)
-  })
+	// 2. save → Domain Event → Integration Event (requesting a refund from the Payment BC is asynchronous)
+	return h.orderRepository.SaveOrder(ctx, o)
 }`}</code></pre>
         <h2>Mapping to Classic Context Map Patterns</h2>
         <p>If you already know Context Mapping vocabulary, both patterns above are specific implementations of it. An Anticorruption Layer is the Adapter, preventing contamination from an external model. Open Host Service with a Published Language is publishing an Integration Event with an explicit version, like <code>order.cancelled.v1</code>. Conformist is using an external BC's model directly with no Adapter at all — not recommended, and usually a sign the boundary was drawn in a hurry. Customer-Supplier tends to show up as a combination of both patterns together, which is exactly what the compensating-action example above is.</p>
@@ -90,22 +95,27 @@ const content = {
         <p>결제가 나중에 취소되면(<code>payment.cancelled.v1</code>) Account BC는 같은 방식으로 구독해, 이미 차감된 금액을 되돌리는 보상 입금(compensating credit)을 실행한다 — 트랜잭션 롤백이 아니라, 이전 상태 변경을 제자리에서 되돌리는 대신 그것을 상쇄하는 새로운 비동기 이벤트라는 점에서 전형적인 크로스 BC 보상 트랜잭션이다. 환불 승인(<code>refund.approved.v1</code>) 역시 정확히 같은 반응 로직을 재사용한다. 실제 구현은 <code>implementations/nestjs/examples/src/account/interface/integration-event/account-integration-event-controller.ts</code>와 <code>implementations/nestjs/examples/src/payment/application/event/</code>에 있다.</p>
         <h2>하나의 유스케이스에서 두 방식을 함께 쓰기</h2>
         <p>하나의 Command Handler가 작업의 서로 다른 부분에 두 패턴을 함께 쓰는 일은 흔하다 — 응답이 지금 당장 필요로 하는 것에는 동기 조회를, 그렇지 않은 후속 반응에는 비동기 후속 처리를:</p>
-        <pre><code>{`public async cancelOrder(command: CancelOrderCommand): Promise<void> {
-  // 1. A synchronous lookup via an Adapter (needed for the response)
-  const user = await this.userAdapter.findUsers({ userId: command.userId, take: 1, page: 0 })
-                  .then((r) => r.users.pop())
-  if (!user) throw new Error('User not found.')
+        <pre><code>{`func (h *CancelOrderHandler) Handle(ctx context.Context, cmd CancelOrderCommand) error {
+	// 1. A synchronous cross-BC lookup via an Adapter (needed for the response)
+	user, err := h.userAdapter.FindUser(ctx, cmd.UserID)
+	if err != nil {
+		return fmt.Errorf("cancel order: %w", err)
+	}
+	if user == nil {
+		return order.ErrUserNotFound
+	}
 
-  const order = await this.orderRepository.findOrders({ orderId: command.orderId, take: 1, page: 0 })
-                  .then((r) => r.orders.pop())
-  if (!order) throw new Error('Order not found.')
+	o, err := order.FindOne(ctx, h.orderRepository, cmd.OrderID, cmd.UserID)
+	if err != nil {
+		return fmt.Errorf("cancel order: %w", err)
+	}
 
-  order.cancel(command.reason)
+	if err := o.Cancel(cmd.Reason); err != nil {
+		return err
+	}
 
-  // 2. save → Domain Event → Integration Event (requesting a refund from the Payment BC is asynchronous)
-  await this.transactionManager.run(async () => {
-    await this.orderRepository.saveOrder(order)
-  })
+	// 2. save → Domain Event → Integration Event (requesting a refund from the Payment BC is asynchronous)
+	return h.orderRepository.SaveOrder(ctx, o)
 }`}</code></pre>
         <h2>고전적인 Context Map 패턴과의 대응 관계</h2>
         <p>Context Mapping 용어를 이미 알고 있다면, 위의 두 패턴은 그 구체적인 구현체다. Anticorruption Layer는 곧 Adapter로, 외부 모델로부터의 오염을 막는다. Published Language를 갖춘 Open Host Service는 <code>order.cancelled.v1</code>처럼 명시적인 버전과 함께 Integration Event를 발행하는 것에 해당한다. Conformist는 Adapter 없이 외부 BC의 모델을 그대로 사용하는 것으로 — 권장되지 않으며, 대개 경계가 서둘러 그어졌다는 신호다. Customer-Supplier는 흔히 두 패턴이 함께 조합된 형태로 나타나는데, 위의 보상 트랜잭션 예시가 정확히 그런 경우다.</p>

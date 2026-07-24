@@ -14,20 +14,22 @@ const content = {
       <>
         <p>This repo's <code>docs/reference.md</code> defines a practical implementation template — a small worked example (historically, an Order domain) showing every layer, every file, every naming convention in one place. A written template is useful right up until someone has to actually type it all out correctly for the fifth new domain in a row. The next step was turning that template into a generator: a script that takes just a domain name and produces real, harness-passing code.</p>
         <h2>What Gets Generated, in One Pass</h2>
-        <p>Running the generator against a brand-new domain name produces, in one shot, an Aggregate with a single state field cycling through <code>PENDING</code>/<code>ACTIVE</code>/<code>CANCELLED</code>, CQRS Command and Query Handlers wired to a Command Bus and Query Bus, one Domain Event, a Repository (interface plus implementation), a Controller and DTOs, and a Module wiring it all together:</p>
-        <pre><code>{`# Default: generates under ../examples/src/<domain>/, leaves app-module.ts untouched and
-# only prints the import/registration snippet to paste in
-node scripts/create-domain.js Coupon
+        <p>Running the Go generator against a brand-new domain name produces, in one shot, an Aggregate with a single state field cycling through <code>PENDING</code>/<code>ACTIVE</code>/<code>CANCELLED</code>, CQRS Command and Query Handlers, one Domain Event, a Repository (domain interface plus infrastructure implementation), an HTTP Handler and DTOs, and a migration:</p>
+        <pre><code>{`# Default: generates under examples/internal/..., doesn't touch main.go/router.go,
+# just prints to the console the content you should paste in
+go run . Coupon
 
-# Passing --wire also auto-inserts the import/registration into app-module.ts
-node scripts/create-domain.js Coupon --wire
+# With --wire, it also auto-inserts into cmd/server/main.go (repository assembly + registration
+# in the shared outbox handler map) and internal/interface/http/router.go (Handler assembly +
+# route registration)
+go run . Coupon --wire
 
 # To generate into a different project (e.g. one cloned from this repo as a template), specify --out
-node scripts/create-domain.js Coupon --out /path/to/other-project/src --wire`}</code></pre>
+go run . Coupon --out /path/to/other-project --wire`}</code></pre>
         <p>What comes out is deliberately a skeleton, not a finished feature — an empty CRUD-style starting point. The actual business rules, error messages, and domain-specific fields still need to be filled in by hand. What the generator buys isn't "you never write domain logic again" — it's "you never have to remember, by hand, all thirty-some small conventions (file naming, layer placement, Repository method names, the Outbox registration call) that a from-scratch domain needs to pass the harness on day one."</p>
         <h2>The Verification That Actually Matters</h2>
         <p>A generator that produces plausible-looking code isn't the same as a generator that produces code passing every rule the harness checks. Confirming that gap is closed means generating a domain nobody's ever used before — one entirely unrelated to the existing example domains — and running the harness against it for real:</p>
-        <pre><code>{`node scripts/create-domain.js Coupon --wire
+        <pre><code>{`go run . Coupon --wire
 bash harness.sh <projectRoot>
 # → A (100/100)`}</code></pre>
         <p>This was tested against multiple-word and irregular-plural domain names specifically because that's where a naive code generator tends to break first — a pluralization rule based on simple suffix rules (+s, +es, y→ies) handles <code>Coupon</code> → <code>coupons</code> fine but needs manual touch-up for something like a domain whose plural doesn't follow that pattern. Confirming the generator scores 100/100 against domains it was never specifically tuned for is what actually validates that the docs and the tool agree — not a single successful run against the one example the generator's author had in mind while writing it.</p>
@@ -41,7 +43,7 @@ bash harness.sh <projectRoot>
         <p>Every language in this repo ended up with its own version of this tool, each idiomatic to that ecosystem — a Node script for NestJS, a standalone Go module using <code>go run .</code> since Go has no natural place to hang scaffolding scripts off an existing module, a Python script for the two Spring Boot ports (deliberately Python rather than requiring the Java/Gradle toolchain to boot just to scaffold a file), and one for FastAPI. All five follow the identical contract: take a domain name, optionally a <code>--wire</code> flag to auto-register the new domain instead of just printing the snippet to paste in, and an <code>--out</code> flag to target a different project entirely — useful for treating this repo as a template to bootstrap a brand-new service from, not just as a reference to copy by hand.</p>
         <p>The generator earns its keep twice over: once as a genuine productivity tool for scaffolding a real new domain, and once as a running regression test for the docs themselves — every time it's re-run against a name nobody's used before and re-verified against the harness, it's really asking "do the documented conventions and the tool that's supposed to embody them still agree with each other." That question turned out to need re-asking more often than expected.</p>
         <div className="article-note"><strong>Further reading in the repo</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/reference.md" target="_blank" rel="noreferrer">docs/reference.md</a> — the reference implementation template every generator is built from · <a href="https://github.com/kyhsa93/backend-service-playbook/tree/main/implementations/nestjs/scripts" target="_blank" rel="noreferrer">implementations/nestjs/scripts/create-domain.js</a> — the NestJS generator's real source
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/reference.md" target="_blank" rel="noreferrer">docs/reference.md</a> — the reference implementation template every generator is built from · <a href="https://github.com/kyhsa93/backend-service-playbook/tree/main/implementations/go/scripts/create-domain" target="_blank" rel="noreferrer">implementations/go/scripts/create-domain</a> — the Go generator's real source
         </p></div>
       </>
     ),
@@ -71,7 +73,7 @@ node scripts/create-domain.js Coupon --out /path/to/other-project/src --wire`}</
         <p>생성 결과물은 의도적으로 완성된 기능이 아니라 뼈대(skeleton)다 — 비어 있는 CRUD 형태의 출발점일 뿐이다. 실제 비즈니스 규칙, 에러 메시지, 도메인 고유 필드는 여전히 손으로 채워 넣어야 한다. 생성기가 가져다주는 것은 "다시는 도메인 로직을 작성하지 않아도 된다"가 아니라, "처음부터 만드는 도메인이 첫날부터 Harness를 통과하기 위해 필요한 서른 개 남짓한 자잘한 컨벤션(파일 네이밍, 계층 배치, Repository 메서드 이름, Outbox 등록 호출)을 손으로 일일이 기억하지 않아도 된다"는 것이다.</p>
         <h2>실제로 중요한 검증</h2>
         <p>그럴듯해 보이는 코드를 만드는 생성기와, Harness가 검사하는 모든 규칙을 통과하는 코드를 만드는 생성기는 같지 않다. 그 간극이 실제로 메워졌는지 확인하려면 지금까지 아무도 써본 적 없는 도메인 — 기존 예시 도메인들과 전혀 무관한 도메인 — 을 생성해서 Harness를 실제로 돌려봐야 한다:</p>
-        <pre><code>{`node scripts/create-domain.js Coupon --wire
+        <pre><code>{`go run . Coupon --wire
 bash harness.sh <projectRoot>
 # → A (100/100)`}</code></pre>
         <p>여러 단어로 이루어진 도메인 이름과 불규칙 복수형 도메인 이름을 대상으로 특별히 테스트한 이유는, 순진하게 짠 코드 생성기가 가장 먼저 깨지는 지점이 바로 거기이기 때문이다 — 단순 접미사 규칙(+s, +es, y→ies)에 기반한 복수화 규칙은 <code>Coupon</code> → <code>coupons</code>는 잘 처리하지만, 그 패턴을 따르지 않는 복수형을 가진 도메인은 수동으로 손봐야 한다. 생성기의 저자가 작성 당시 염두에 두었던 그 하나의 예시에 대해 한 번 성공하는 것이 아니라, 특별히 튜닝된 적 없는 도메인들을 대상으로 100/100을 받는지 확인하는 것이야말로 문서와 도구가 실제로 서로 일치하는지를 검증하는 방법이다.</p>
@@ -85,7 +87,7 @@ bash harness.sh <projectRoot>
         <p>이 저장소의 모든 언어는 결국 각자의 생태계에 맞는 관용적인 방식으로 이 도구의 자체 버전을 갖게 됐다 — NestJS는 Node 스크립트, Go는 <code>go run .</code>을 쓰는 독립된 Go 모듈(Go에는 기존 모듈에 스캐폴딩 스크립트를 자연스럽게 붙일 자리가 없기 때문이다), 두 개의 Spring Boot 포트는 Python 스크립트(파일 하나 스캐폴딩하자고 Java/Gradle 툴체인을 부팅시키게 하는 대신 의도적으로 Python을 선택했다), 그리고 FastAPI용도 하나. 다섯 개 모두 동일한 계약을 따른다: 도메인 이름을 받고, 붙여넣을 스니펫만 출력하는 대신 새 도메인을 자동으로 등록하는 선택적 <code>--wire</code> 플래그, 그리고 완전히 다른 프로젝트를 대상으로 하는 <code>--out</code> 플래그를 지원한다 — 이는 이 저장소를 손으로 베껴 쓸 참조 자료로서만이 아니라, 완전히 새로운 서비스를 부트스트랩하는 템플릿으로 다루는 데도 쓸모가 있다.</p>
         <p>생성기는 자기 몫을 두 번 해낸다: 한 번은 실제 신규 도메인을 스캐폴딩하는 진짜 생산성 도구로서, 또 한 번은 문서 자체에 대한 상시 회귀 테스트로서다 — 아무도 써본 적 없는 이름을 대상으로 다시 실행하고 Harness로 재검증할 때마다, 그것은 실제로 "문서화된 컨벤션과 그것을 구현해야 할 도구가 여전히 서로 일치하는가"를 묻는 것이다. 그 질문은 예상보다 훨씬 더 자주 다시 물어야 하는 것으로 드러났다.</p>
         <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/reference.md" target="_blank" rel="noreferrer">docs/reference.md</a> — 모든 생성기가 기반으로 삼는 참조 구현 템플릿 · <a href="https://github.com/kyhsa93/backend-service-playbook/tree/main/implementations/nestjs/scripts" target="_blank" rel="noreferrer">implementations/nestjs/scripts/create-domain.js</a> — NestJS 생성기의 실제 소스
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/reference.md" target="_blank" rel="noreferrer">docs/reference.md</a> — 모든 생성기가 기반으로 삼는 참조 구현 템플릿 · <a href="https://github.com/kyhsa93/backend-service-playbook/tree/main/implementations/go/scripts/create-domain" target="_blank" rel="noreferrer">implementations/go/scripts/create-domain</a> — Go 생성기의 실제 소스
         </p></div>
       </>
     ),

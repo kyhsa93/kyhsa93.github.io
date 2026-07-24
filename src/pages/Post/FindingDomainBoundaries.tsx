@@ -29,35 +29,41 @@ const content = {
         <p>So instead of changing payment status directly, the order Aggregate publishes a fact like <code>OrderPlaced</code>. Payment and inventory each receive that fact and carry out their own rules. Making failure a visible possibility in the model, and handling compensation or retries as a separate flow, is a more realistic consistency model.</p>
         <h3>Example: The Rules an Order Should Guarantee</h3>
         <p>The code below is an example containing only the minimal rules the order itself must protect. Inventory quantity or payment-approval results are never changed here. Only the fact that the order was created is left as an event, for the next model to handle.</p>
-        <pre><code>{`type OrderLine = {
-  productId: string;
-  quantity: number;
-  unitPrice: number;
-};
+        <pre><code>{`public record OrderLine(String productId, int quantity, long unitPrice) {
+}
 
-class Order {
-  private events: unknown[] = [];
-  private constructor(
-    private readonly id: string,
-    private readonly customerId: string,
-    private readonly lines: OrderLine[],
-  ) {}
+public record OrderPlaced(String orderId) {
+}
 
-  static place(id: string, customerId: string, lines: OrderLine[]) {
-    if (lines.length === 0) throw new Error('At least one order line is required.');
-    if (lines.some((line) => line.quantity <= 0)) {
-      throw new Error('Quantity must be at least 1.');
+public class Order {
+    private final List<Object> events = new ArrayList<>();
+    private final String id;
+    private final String customerId;
+    private final List<OrderLine> lines;
+
+    private Order(String id, String customerId, List<OrderLine> lines) {
+        this.id = id;
+        this.customerId = customerId;
+        this.lines = lines;
     }
-    const order = new Order(id, customerId, lines);
-    order.events.push({ type: 'OrderPlaced', orderId: id });
-    return order;
-  }
 
-  get totalAmount() {
-    return this.lines.reduce(
-      (total, line) => total + line.quantity * line.unitPrice, 0,
-    );
-  }
+    public static Order place(String id, String customerId, List<OrderLine> lines) {
+        if (lines.isEmpty()) {
+            throw new IllegalArgumentException("At least one order line is required.");
+        }
+        if (lines.stream().anyMatch(line -> line.quantity() <= 0)) {
+            throw new IllegalArgumentException("Quantity must be at least 1.");
+        }
+        Order order = new Order(id, customerId, lines);
+        order.events.add(new OrderPlaced(id));
+        return order;
+    }
+
+    public long totalAmount() {
+        return lines.stream()
+                .mapToLong(line -> (long) line.quantity() * line.unitPrice())
+                .sum();
+    }
 }`}</code></pre>
         <p>The key point of this code is that <code>Order</code> only knows its own invariants. Injecting an <code>InventoryRepository</code> or a payment SDK might look convenient, but then the order model would have to know about every external policy and failure. The moment that happens, the boundary blurs and testing becomes harder.</p>
         <h2>3. Note Where the Language Changes</h2>
@@ -65,24 +71,35 @@ class Order {
         <p>Writing down the verbs people use during event storming or requirements workshops makes this difference clearer. In the order context, “create,” “cancel,” and “discount” matter; in the shipping context, “dispatch,” “ship,” and “track” take center stage. Rather than sharing a single <code>Order</code> class, letting each context express only the information it needs, in its own language, keeps the model simpler.</p>
         <p>The cost of translation between boundaries is not something to avoid — it's a mechanism that preserves intent. If the shipping service receives a <code>ShippingRequested</code> event instead of joining the orders table, it's less affected when the order's internal structure changes. An event should carry only the stable information the other model needs, and should avoid serializing internal objects as-is.</p>
         <h3>Example: Connecting Boundaries with Events</h3>
-        <pre><code>{`type OrderPlaced = {
-  type: 'OrderPlaced';
-  orderId: string;
-  customerId: string;
-  items: Array<{ productId: string; quantity: number }>;
-};
+        <pre><code>{`public record OrderPlaced(
+        String orderId,
+        String customerId,
+        List<OrderItem> items) {
+}
+
+public record OrderItem(String productId, int quantity) {
+}
+
+public record StockReservationFailed(String orderId, String reason) {
+}
 
 // The inventory context consumes the order event.
-async function reserveStock(event: OrderPlaced) {
-  const result = await inventory.reserve(event.items);
+public class ReserveStockHandler {
+    private final InventoryClient inventory;
+    private final EventPublisher eventBus;
 
-  if (!result.success) {
-    await eventBus.publish({
-      type: 'StockReservationFailed',
-      orderId: event.orderId,
-      reason: result.reason,
-    });
-  }
+    public ReserveStockHandler(InventoryClient inventory, EventPublisher eventBus) {
+        this.inventory = inventory;
+        this.eventBus = eventBus;
+    }
+
+    public void handle(OrderPlaced event) {
+        ReservationResult result = inventory.reserve(event.items());
+
+        if (!result.success()) {
+            eventBus.publish(new StockReservationFailed(event.orderId(), result.reason()));
+        }
+    }
 }`}</code></pre>
         <p>In this flow, the order doesn't wait for stock to be reserved. Instead, it receives a “stock reservation failed” state and carries out follow-up policies such as cancelling the order, notifying the customer, or retrying. This requires handling a few more states than a model that assumes immediate success, but it preserves each system's availability and responsibility. The consumer must always be implemented idempotently, so the outcome doesn't change even if the same event arrives twice.</p>
         <h2>4. Read Models Can Cross Boundaries</h2>
@@ -130,35 +147,41 @@ async function reserveStock(event: OrderPlaced) {
         <p>그래서 주문 Aggregate는 결제 상태를 직접 바꾸는 대신 <code>OrderPlaced</code> 같은 사실(fact)을 발행한다. 결제와 재고는 각자 그 사실을 받아서 자신의 규칙을 수행한다. 실패를 모델 안에서 눈에 보이는 가능성으로 만들고, 보상(compensation)이나 재시도를 별도 흐름으로 처리하는 편이 더 현실적인 일관성 모델이다.</p>
         <h3>예시: 주문이 보장해야 할 규칙</h3>
         <p>아래 코드는 주문 스스로가 지켜야 할 최소한의 규칙만을 담은 예시다. 재고 수량이나 결제 승인 결과는 여기서 절대 변경되지 않는다. 주문이 생성됐다는 사실만 이벤트로 남겨, 다음 모델이 처리하도록 넘긴다.</p>
-        <pre><code>{`type OrderLine = {
-  productId: string;
-  quantity: number;
-  unitPrice: number;
-};
+        <pre><code>{`public record OrderLine(String productId, int quantity, long unitPrice) {
+}
 
-class Order {
-  private events: unknown[] = [];
-  private constructor(
-    private readonly id: string,
-    private readonly customerId: string,
-    private readonly lines: OrderLine[],
-  ) {}
+public record OrderPlaced(String orderId) {
+}
 
-  static place(id: string, customerId: string, lines: OrderLine[]) {
-    if (lines.length === 0) throw new Error('At least one order line is required.');
-    if (lines.some((line) => line.quantity <= 0)) {
-      throw new Error('Quantity must be at least 1.');
+public class Order {
+    private final List<Object> events = new ArrayList<>();
+    private final String id;
+    private final String customerId;
+    private final List<OrderLine> lines;
+
+    private Order(String id, String customerId, List<OrderLine> lines) {
+        this.id = id;
+        this.customerId = customerId;
+        this.lines = lines;
     }
-    const order = new Order(id, customerId, lines);
-    order.events.push({ type: 'OrderPlaced', orderId: id });
-    return order;
-  }
 
-  get totalAmount() {
-    return this.lines.reduce(
-      (total, line) => total + line.quantity * line.unitPrice, 0,
-    );
-  }
+    public static Order place(String id, String customerId, List<OrderLine> lines) {
+        if (lines.isEmpty()) {
+            throw new IllegalArgumentException("At least one order line is required.");
+        }
+        if (lines.stream().anyMatch(line -> line.quantity() <= 0)) {
+            throw new IllegalArgumentException("Quantity must be at least 1.");
+        }
+        Order order = new Order(id, customerId, lines);
+        order.events.add(new OrderPlaced(id));
+        return order;
+    }
+
+    public long totalAmount() {
+        return lines.stream()
+                .mapToLong(line -> (long) line.quantity() * line.unitPrice())
+                .sum();
+    }
 }`}</code></pre>
         <p>이 코드의 핵심은 <code>Order</code>가 오직 자기 자신의 불변식만 안다는 점이다. <code>InventoryRepository</code>나 결제 SDK를 주입하면 편리해 보일 수 있지만, 그 순간 주문 모델은 모든 외부 정책과 실패 상황을 알아야만 하게 된다. 그렇게 되는 순간 경계는 흐려지고 테스트는 더 어려워진다.</p>
         <h2>3. 언어가 바뀌는 지점을 주목한다</h2>
@@ -166,24 +189,35 @@ class Order {
         <p>이벤트 스토밍이나 요구사항 워크숍에서 사람들이 쓰는 동사를 적어보면 이 차이가 더 뚜렷해진다. 주문 컨텍스트에서는 “생성”, “취소”, “할인”이 중요하고, 배송 컨텍스트에서는 “출고”, “발송”, “추적”이 중심이 된다. 하나의 <code>Order</code> 클래스를 공유하기보다, 각 컨텍스트가 자신에게 필요한 정보만을 자기 언어로 표현하게 하는 편이 모델을 더 단순하게 유지한다.</p>
         <p>경계 사이의 변환(translation) 비용은 피해야 할 대상이 아니라 의도를 보존하는 장치다. 배송 서비스가 주문 테이블을 직접 join하는 대신 <code>ShippingRequested</code> 이벤트를 받는다면, 주문의 내부 구조가 바뀌어도 영향을 덜 받는다. 이벤트는 상대 모델이 필요로 하는 안정적인 정보만을 담아야 하며, 내부 객체를 그대로 직렬화하는 일은 피해야 한다.</p>
         <h3>예시: 이벤트로 경계 연결하기</h3>
-        <pre><code>{`type OrderPlaced = {
-  type: 'OrderPlaced';
-  orderId: string;
-  customerId: string;
-  items: Array<{ productId: string; quantity: number }>;
-};
+        <pre><code>{`public record OrderPlaced(
+        String orderId,
+        String customerId,
+        List<OrderItem> items) {
+}
+
+public record OrderItem(String productId, int quantity) {
+}
+
+public record StockReservationFailed(String orderId, String reason) {
+}
 
 // The inventory context consumes the order event.
-async function reserveStock(event: OrderPlaced) {
-  const result = await inventory.reserve(event.items);
+public class ReserveStockHandler {
+    private final InventoryClient inventory;
+    private final EventPublisher eventBus;
 
-  if (!result.success) {
-    await eventBus.publish({
-      type: 'StockReservationFailed',
-      orderId: event.orderId,
-      reason: result.reason,
-    });
-  }
+    public ReserveStockHandler(InventoryClient inventory, EventPublisher eventBus) {
+        this.inventory = inventory;
+        this.eventBus = eventBus;
+    }
+
+    public void handle(OrderPlaced event) {
+        ReservationResult result = inventory.reserve(event.items());
+
+        if (!result.success()) {
+            eventBus.publish(new StockReservationFailed(event.orderId(), result.reason()));
+        }
+    }
 }`}</code></pre>
         <p>이 흐름에서 주문은 재고 예약을 기다리지 않는다. 대신 “재고 예약 실패”라는 상태를 전달받아, 주문 취소·고객 알림·재시도 같은 후속 정책을 수행한다. 즉시 성공을 가정하는 모델보다 다뤄야 할 상태가 조금 더 늘어나지만, 그 대신 각 시스템의 가용성과 책임을 지킬 수 있다. Consumer는 반드시 멱등(idempotent)하게 구현되어야 하며, 그래야 같은 이벤트가 두 번 도착해도 결과가 달라지지 않는다.</p>
         <h2>4. Read Model은 경계를 가로지를 수 있다</h2>

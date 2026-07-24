@@ -99,6 +99,9 @@ class PaymentApprovedEventHandler(
           <li>Is the scope where ordering matters, and the policy for handling delayed events, clearly defined?</li>
         </ul>
         <p>A reliable event system isn't one that never fails — it's one that anticipates failure and can safely retry. Designing delivery guarantees, idempotency, retry policy, and observability together lets you keep data flowing even as services multiply.</p>
+        <div className="article-note"><strong>Further reading in the repo</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-events.md" target="_blank" rel="noreferrer">docs/architecture/domain-events.md</a> — the full Outbox pattern, Integration Events, and idempotency conventions
+        </p></div>
       </>
     ),
   },
@@ -199,6 +202,9 @@ class PaymentApprovedEventHandler(
           <li>순서가 중요한 범위와, 지연된 이벤트를 처리하는 정책이 명확히 정의되어 있는가?</li>
         </ul>
         <p>신뢰할 수 있는 이벤트 시스템이란 절대 실패하지 않는 시스템이 아니라, 실패를 미리 전제하고 안전하게 재시도할 수 있는 시스템이다. 전달 보장, 멱등성, 재시도 정책, 관측 가능성을 함께 설계하면 서비스가 늘어나도 데이터 흐름을 계속 유지할 수 있다.</p>
+        <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-events.md" target="_blank" rel="noreferrer">docs/architecture/domain-events.md</a> — 전체 Outbox 패턴, Integration Event, 멱등성 컨벤션
+        </p></div>
       </>
     ),
   },

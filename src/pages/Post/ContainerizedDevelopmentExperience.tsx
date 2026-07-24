@@ -85,6 +85,9 @@ volumes:
           <li>Does CI verify the same core integration contract as local?</li>
         </ul>
         <p>The purpose of a containerized environment isn't to lock developers into production. It's to let anyone experiment quickly from the same starting point, and reproduce the same state when something goes wrong. Once you start treating the environment as part of the product, containers become more than a runtime tool — they become the foundation that supports the team's developer experience.</p>
+        <div className="article-note"><strong>Further reading in the repo</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/local-dev.md" target="_blank" rel="noreferrer">docs/architecture/local-dev.md</a> — the full local-dev Compose setup, including LocalStack · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a> — the Dockerfile/multi-stage-build conventions this depends on
+        </p></div>
       </>
     ),
   },
@@ -171,6 +174,9 @@ volumes:
           <li>CI가 로컬과 동일한 핵심 통합 계약을 검증하는가?</li>
         </ul>
         <p>컨테이너화된 환경의 목적은 개발자를 프로덕션에 가두는 것이 아니다. 누구나 같은 출발점에서 빠르게 실험하고, 문제가 생겼을 때 같은 상태를 재현할 수 있게 하는 것이다. 환경을 제품의 일부로 대하기 시작하는 순간, 컨테이너는 단순한 런타임 도구를 넘어 팀의 개발자 경험을 떠받치는 기반이 된다.</p>
+        <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/local-dev.md" target="_blank" rel="noreferrer">docs/architecture/local-dev.md</a> — LocalStack을 포함한 전체 로컬 개발 Compose 구성 · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a> — 이 글이 전제하는 Dockerfile/멀티스테이지 빌드 컨벤션
+        </p></div>
       </>
     ),
   },

@@ -71,6 +71,9 @@ const defaultOllamaBaseURL = "http://localhost:11434"`}</code></pre>
         <h2>What Had to Change (Almost Nothing)</h2>
         <p>The Domain Service, the Technical Service interface, and the unit tests for both were untouched by the swap — only the Infrastructure implementation and the two config functions changed. That's the architecture doing its job: nothing outside Infrastructure knew or cared that an LLM was involved at all, let alone which one.</p>
         <p>One honest caveat, specific to Go: this codebase has no DI container, so the E2E test bootstrap wires the classifier's concrete constructor by hand. The swap needed a one-line update to that constructor call — model name and base URL — in the test setup. That's test <em>wiring</em>, not test <em>logic</em>; no assertion changed. In the languages with a DI container to do that wiring implicitly, the swap really did touch zero test files at all; Go's version of "almost nothing changed" comes with one small, honest asterisk.</p>
+        <div className="article-note"><strong>Further reading in the repo</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a> — the Technical Service / Domain Service split, with this exact classifier as a worked example · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/implementations/go/examples/internal/infrastructure/llm/refund_reason_classifier.go" target="_blank" rel="noreferrer">refund_reason_classifier.go</a> — the real, current Ollama-backed implementation
+        </p></div>
       </>
     ),
   },
@@ -143,6 +146,9 @@ const defaultOllamaBaseURL = "http://localhost:11434"`}</code></pre>
         <h2>무엇이 바뀌어야 했나 (거의 아무것도 아니다)</h2>
         <p>이 교체 작업으로 Domain Service, Technical Service 인터페이스, 그리고 둘에 대한 단위 테스트는 전혀 손대지 않았다 — 바뀐 건 오직 Infrastructure 구현체와 두 개의 config 함수뿐이었다. 이것이 바로 아키텍처가 제 역할을 하는 모습이다: Infrastructure 바깥의 그 무엇도 LLM이 관여한다는 사실 자체를 알지도, 신경 쓰지도 않았고, 어떤 LLM인지는 더더욱 그랬다.</p>
         <p>Go에 한정된 솔직한 단서 하나: 이 코드베이스에는 DI container가 없기 때문에, E2E 테스트 부트스트랩이 classifier의 구체 생성자를 손으로 직접 연결한다. 이번 교체는 테스트 셋업에서 그 생성자 호출 — 모델 이름과 base URL — 을 한 줄 고쳐야 했다. 이는 테스트 <em>로직</em>이 아니라 테스트 <em>배선(wiring)</em>이다; 어떤 assertion도 바뀌지 않았다. DI container가 그 배선을 암묵적으로 처리해 주는 언어들에서는 이번 교체가 정말로 테스트 파일을 단 하나도 건드리지 않았다; Go 버전의 "거의 아무것도 바뀌지 않았다"에는 이렇게 작지만 솔직한 각주 하나가 붙는다.</p>
+        <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a> — 이 classifier를 실제 예시로 다루는 Technical Service / Domain Service 구분 · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/implementations/go/examples/internal/infrastructure/llm/refund_reason_classifier.go" target="_blank" rel="noreferrer">refund_reason_classifier.go</a> — 실제 현재의 Ollama 기반 구현
+        </p></div>
       </>
     ),
   },

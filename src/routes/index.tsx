@@ -53,6 +53,19 @@ const ReliableEventDrivenSystems = lazy(
 const ContainerizedDevelopmentExperience = lazy(
   () => import('../pages/Post/ContainerizedDevelopmentExperience'),
 );
+const AuthBypassVulnerability = lazy(
+  () => import('../pages/Post/AuthBypassVulnerability'),
+);
+const LlmTechnicalService = lazy(() => import('../pages/Post/LlmTechnicalService'));
+const RefundFraudRiskScorer = lazy(
+  () => import('../pages/Post/RefundFraudRiskScorer'),
+);
+const BugsOnlyE2eTestsCatch = lazy(
+  () => import('../pages/Post/BugsOnlyE2eTestsCatch'),
+);
+const PromptInjectionInToolOutput = lazy(
+  () => import('../pages/Post/PromptInjectionInToolOutput'),
+);
 
 export default function Router() {
   return (
@@ -131,6 +144,26 @@ export default function Router() {
             <Route
               path="/posts/containerized-development-experience"
               element={<ContainerizedDevelopmentExperience />}
+            />
+            <Route
+              path="/posts/auth-bypass-vulnerability"
+              element={<AuthBypassVulnerability />}
+            />
+            <Route
+              path="/posts/llm-technical-service"
+              element={<LlmTechnicalService />}
+            />
+            <Route
+              path="/posts/refund-fraud-risk-scorer"
+              element={<RefundFraudRiskScorer />}
+            />
+            <Route
+              path="/posts/bugs-only-e2e-tests-catch"
+              element={<BugsOnlyE2eTestsCatch />}
+            />
+            <Route
+              path="/posts/prompt-injection-in-tool-output"
+              element={<PromptInjectionInToolOutput />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

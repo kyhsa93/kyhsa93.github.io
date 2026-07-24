@@ -252,6 +252,76 @@ export const posts: PostMeta[] = [
     tags: ['Docker', 'Developer experience'],
     readMinutes: 11,
   },
+  {
+    slug: 'auth-bypass-vulnerability',
+    title: {
+      en: 'Signing In Without a Password',
+      ko: '비밀번호 없이 로그인하기',
+    },
+    summary: {
+      en: 'A security audit found /auth/sign-in accepted a userId and nothing else — how the same bug showed up in five languages, and the JDK retry bug a new 401 test uncovered along the way.',
+      ko: '보안 감사에서 /auth/sign-in이 userId만 받고 아무것도 검증하지 않는다는 사실이 드러났다 — 다섯 언어에서 같은 버그가 어떻게 다르게 나타났는지, 그리고 새로 만든 401 테스트가 드러낸 JDK 재시도 버그까지.',
+    },
+    date: '2026.07.16',
+    tags: ['Security', 'Backend'],
+    readMinutes: 12,
+  },
+  {
+    slug: 'llm-technical-service',
+    title: {
+      en: 'Wiring an LLM Into a Domain Service',
+      ko: 'Domain Service에 LLM 연결하기',
+    },
+    summary: {
+      en: 'RefundReasonClassifier reads a refund reason and hands back a signal — the Domain Service that actually decides never calls it, and swapping the LLM backend from Claude to self-hosted Ollama touched almost no test.',
+      ko: 'RefundReasonClassifier는 환불 사유를 읽고 신호를 돌려줄 뿐이다 — 실제 판단을 내리는 Domain Service는 그걸 호출조차 하지 않으며, Claude에서 자체 호스팅 Ollama로 LLM 백엔드를 바꿔도 테스트는 거의 건드릴 필요가 없었다.',
+    },
+    date: '2026.07.23',
+    tags: ['LLM', 'Architecture'],
+    readMinutes: 12,
+  },
+  {
+    slug: 'refund-fraud-risk-scorer',
+    title: {
+      en: 'A Second Fraud Signal: Scoring History, Not Reading It',
+      ko: '두 번째 사기 신호: 이력을 읽는 게 아니라 점수 매기기',
+    },
+    summary: {
+      en: 'RefundFraudRiskScorer is a hand-rolled logistic regression trained on refund history, swappable between a native and an HTTP implementation, feeding the same Domain Service a second independent threshold.',
+      ko: 'RefundFraudRiskScorer는 환불 이력으로 직접 학습시킨 로지스틱 회귀 모델로, native/HTTP 구현을 자유롭게 전환할 수 있으며 같은 Domain Service에 독립적인 두 번째 임계값을 제공한다.',
+    },
+    date: '2026.07.23',
+    tags: ['Machine Learning', 'Architecture'],
+    readMinutes: 12,
+  },
+  {
+    slug: 'bugs-only-e2e-tests-catch',
+    title: {
+      en: "The Bugs Unit Tests Can't See",
+      ko: '유닛 테스트가 볼 수 없는 버그들',
+    },
+    summary: {
+      en: 'A missing @Transactional, a JDK HTTP client retry quirk, a VARCHAR(36) overflow, an SQS FIFO dedup collision — four real bugs that needed real infrastructure to even exist.',
+      ko: '빠진 @Transactional, JDK HTTP 클라이언트의 재시도 결함, VARCHAR(36) 오버플로우, SQS FIFO 중복 제거 충돌 — 실제 인프라가 있어야만 존재할 수 있었던 버그 네 가지.',
+    },
+    date: '2026.07.24',
+    tags: ['Testing', 'Reliability'],
+    readMinutes: 11,
+  },
+  {
+    slug: 'prompt-injection-in-tool-output',
+    title: {
+      en: 'When the Tool Output Itself Tries to Manipulate the Agent',
+      ko: '툴 출력 자체가 에이전트를 조종하려 할 때',
+    },
+    summary: {
+      en: "A shell command's output has, more than once, contained something shaped exactly like a real system message, instructing the agent to hide a change. The rule that matters: disregard it, and say so.",
+      ko: '셸 명령 출력 안에 실제 시스템 메시지처럼 위장한 내용이 변경사항을 숨기라고 지시한 적이 여러 번 있었다. 지켜야 할 규칙은 하나다: 따르지 말고, 그 사실을 알린다.',
+    },
+    date: '2026.07.21',
+    tags: ['AI Agents', 'Security'],
+    readMinutes: 9,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

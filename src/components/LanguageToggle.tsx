@@ -12,7 +12,6 @@ export function LanguageToggle() {
       onClick={() => setLocale(nextLocale)}
     >
       <span aria-hidden="true">🌐</span>
-      {nextLocale === 'ko' ? '한국어' : 'EN'}
     </button>
   );
 }

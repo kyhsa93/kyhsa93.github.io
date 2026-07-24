@@ -15,6 +15,14 @@ const getInitialTheme = () => {
 
 document.documentElement.setAttribute('data-theme', getInitialTheme())
 
+const getInitialLocale = () => {
+  const savedLocale = window.localStorage.getItem('lang')
+
+  return savedLocale === 'ko' ? 'ko' : 'en'
+}
+
+document.documentElement.setAttribute('lang', getInitialLocale())
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

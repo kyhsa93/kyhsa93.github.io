@@ -42,11 +42,11 @@ function generateRss(): string {
         .map((tag: string) => `      <category>${xmlEscape(tag)}</category>`)
         .join('\n');
       return `    <item>
-      <title>${xmlEscape(post.title)}</title>
+      <title>${xmlEscape(post.title.en)}</title>
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <pubDate>${toRfc822(post.date)}</pubDate>
-      <description>${xmlEscape(post.summary)}</description>
+      <description>${xmlEscape(post.summary.en)}</description>
 ${categories}
     </item>`;
     })
@@ -78,12 +78,12 @@ function generateAtom(): string {
         .map((tag: string) => `    <category term="${xmlEscape(tag)}" />`)
         .join('\n');
       return `  <entry>
-    <title>${xmlEscape(post.title)}</title>
+    <title>${xmlEscape(post.title.en)}</title>
     <link href="${url}" />
     <id>${url}</id>
     <updated>${iso}</updated>
     <published>${iso}</published>
-    <summary>${xmlEscape(post.summary)}</summary>
+    <summary>${xmlEscape(post.summary.en)}</summary>
 ${categories}
   </entry>`;
     })
@@ -253,8 +253,8 @@ async function main(): Promise<void> {
     const path = `/posts/${post.slug}`;
     const image = `${SITE_URL}/og/${post.slug}.png`;
     writeRoute(template, path, {
-      title: post.title,
-      description: post.summary,
+      title: post.title.en,
+      description: post.summary.en,
       path,
       type: 'article',
       image,
@@ -262,8 +262,8 @@ async function main(): Promise<void> {
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'Article',
-        headline: post.title,
-        description: post.summary,
+        headline: post.title.en,
+        description: post.summary.en,
         datePublished: toIsoDate(post.date),
         author: { '@type': 'Person', name: SITE_NAME },
         image,

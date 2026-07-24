@@ -29,6 +29,7 @@ function titleFontSize(title: string): number {
 
 export async function renderOgImage(post: PostMeta): Promise<Buffer> {
   const kicker = post.tags.join(' · ').toUpperCase();
+  const title = post.title.en;
 
   const markup = {
     type: 'div',
@@ -98,13 +99,13 @@ export async function renderOgImage(post: PostMeta): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: {
-                    fontSize: `${titleFontSize(post.title)}px`,
+                    fontSize: `${titleFontSize(title)}px`,
                     fontWeight: 800,
                     color: INK,
                     lineHeight: 1.2,
                     maxWidth: '1020px',
                   },
-                  children: post.title,
+                  children: title,
                 },
               },
             ],

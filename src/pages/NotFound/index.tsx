@@ -1,48 +1,54 @@
 import { Link } from 'react-router-dom';
 import { useSeo } from '../../hooks/useSeo';
+import { useLocale } from '../../lib/locale';
+import { uiCopy } from '../../lib/copy';
+import { LanguageToggle } from '../../components/LanguageToggle';
 
 export default function NotFound() {
+  const { locale } = useLocale();
+  const t = uiCopy[locale];
+
   useSeo({
-    title: 'Page Not Found',
-    description: "The page you're looking for doesn't exist or has moved.",
+    title: t.notFound.seoTitle,
+    description: t.notFound.seoDescription,
     path: '/404',
   });
 
   return (
     <main className="home-page">
-      <nav className="site-nav" aria-label="Main navigation">
+      <nav className="site-nav" aria-label={t.nav.mainAriaLabel}>
         <Link className="brand" to="/">
           <span className="brand-mark">Y</span>
           <span>younghoon</span>
         </Link>
         <div className="nav-links">
-          <Link to="/">← Home</Link>
+          <Link to="/">{t.nav.backHome}</Link>
+          <LanguageToggle />
         </div>
       </nav>
 
       <section className="archive-section">
-        <p className="section-kicker">404</p>
-        <h1 className="archive-heading">This page doesn't exist.</h1>
+        <p className="section-kicker">{t.notFound.kicker}</p>
+        <h1 className="archive-heading">{t.notFound.heading}</h1>
         <p>
-          The link might be broken, or the page may have moved. Try the
-          homepage, or browse{' '}
+          {t.notFound.body}{' '}
           <Link to="/posts" className="text-link">
-            all posts
+            {t.notFound.allPostsLink}
           </Link>
-          .
+          {t.notFound.bodySuffix}.
         </p>
         <div className="cta-row" style={{ marginTop: '32px' }}>
           <Link className="primary-link" to="/">
-            Back to home <span aria-hidden="true">→</span>
+            {t.notFound.backHome} <span aria-hidden="true">→</span>
           </Link>
         </div>
       </section>
 
       <footer>
-        <p>Let’s build something resilient.</p>
+        <p>{t.footer.tagline}</p>
         <div className="footer-links">
-          <a href="/rss.xml">RSS</a>
-          <Link to="/privacy-policy">Privacy</Link>
+          <a href="/rss.xml">{t.footer.rss}</a>
+          <Link to="/privacy-policy">{t.footer.privacy}</Link>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             github.com/kyhsa93 →
           </a>

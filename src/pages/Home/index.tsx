@@ -2,39 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { postsByDate } from '../../data/posts';
 import { useSeo } from '../../hooks/useSeo';
-
-const expertise = [
-  'TypeScript · Node.js',
-  'Go',
-  'Docker · Kubernetes',
-  'AWS · GCP',
-  'CQRS · DDD',
-  'Event-driven architecture',
-];
+import { useLocale } from '../../lib/locale';
+import { uiCopy } from '../../lib/copy';
+import { LanguageToggle } from '../../components/LanguageToggle';
 
 const latestPosts = postsByDate.slice(0, 3);
 
-const sideProjects = [
-  {
-    title: 'Fove',
-    description: 'A fortune-telling web app based on Korean Saju and MBTI.',
-    status: 'Live',
-    href: 'https://kyhsa93.github.io/fove',
-  },
-  {
-    title: 'Event Flow Visualizer',
-    description:
-      'A visualization experiment for understanding event-driven system flows more easily.',
-    status: 'In progress',
-    href: undefined,
-  },
-  {
-    title: 'Service Architecture Notes',
-    description:
-      'A personal knowledge base collecting patterns and decisions learned while designing services.',
-    status: 'In progress',
-    href: undefined,
-  },
+const sideProjectLinks: (string | undefined)[] = [
+  'https://kyhsa93.github.io/fove',
+  undefined,
+  undefined,
 ];
 
 const getInitialTheme = () => {
@@ -55,6 +32,8 @@ const getInitialTheme = () => {
 
 export default function Home() {
   const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+  const { locale } = useLocale();
+  const t = uiCopy[locale];
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -62,26 +41,25 @@ export default function Home() {
   }, [theme]);
 
   useSeo({
-    title: 'younghoon — backend engineer',
-    description:
-      'Notes from a backend engineer who designs complex systems with clarity. TypeScript, Go, and the Backend Service Playbook.',
+    title: t.home.seoTitle,
+    description: t.home.seoDescription,
     path: '/',
   });
 
   return (
     <main className="home-page">
-      <nav className="site-nav" aria-label="Main navigation">
+      <nav className="site-nav" aria-label={t.nav.mainAriaLabel}>
         <a className="brand" href="#top" aria-label="Younghoon home">
           <span className="brand-mark">Y</span>
           <span>younghoon</span>
         </a>
         <div className="nav-links">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
+          <a href="#work">{t.nav.work}</a>
+          <a href="#about">{t.nav.about}</a>
           <button
             className="theme-toggle"
             type="button"
-            aria-label="Switch theme"
+            aria-label={t.nav.switchTheme}
             aria-pressed={theme === 'dark'}
             onClick={() =>
               setTheme((currentTheme) =>
@@ -90,10 +68,11 @@ export default function Home() {
             }
           >
             <span aria-hidden="true">{theme === 'dark' ? '☀️' : '🌙'}</span>
-            {theme === 'dark' ? 'Light' : 'Dark'}
+            {theme === 'dark' ? t.nav.light : t.nav.dark}
           </button>
+          <LanguageToggle />
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
-            GitHub <span aria-hidden="true"></span>
+            {t.nav.github} <span aria-hidden="true"></span>
           </a>
         </div>
       </nav>
@@ -102,21 +81,17 @@ export default function Home() {
         <div className="hero-copy">
           <p className="eyebrow">
             <span />
-            Backend engineer
+            {t.home.eyebrow}
           </p>
           <h1>
-            Designing complex systems
+            {t.home.headlineLine1}
             <br />
-            <em>with clarity</em>.
+            <em>{t.home.headlineEm}</em>
           </h1>
-          <p className="intro">
-            I build backend systems that run reliably in containerized
-            environments, mainly with TypeScript and Go. I'm especially
-            interested in domain-driven design and event-driven architecture.
-          </p>
+          <p className="intro">{t.home.intro}</p>
           <div className="cta-row">
             <a className="primary-link" href="#work">
-              View projects <span aria-hidden="true">↓</span>
+              {t.home.ctaViewProjects} <span aria-hidden="true">↓</span>
             </a>
             <a
               className="text-link"
@@ -124,7 +99,7 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              Visit GitHub <span aria-hidden="true"></span>
+              {t.home.ctaVisitGithub} <span aria-hidden="true"></span>
             </a>
           </div>
         </div>
@@ -134,9 +109,9 @@ export default function Home() {
           aria-label="System architecture illustration"
         >
           <div className="system-card-heading">
-            <span>system / overview</span>
+            <span>{t.home.systemOverview}</span>
             <span className="status">
-              <i /> online
+              <i /> {t.home.online}
             </span>
           </div>
           <div className="architecture">
@@ -151,25 +126,22 @@ export default function Home() {
               <div className="node queue">events</div>
             </div>
           </div>
-          <p className="system-note">from request to reliable delivery</p>
+          <p className="system-note">{t.home.systemNote}</p>
         </div>
       </section>
 
       <section className="expertise-section" id="about">
-        <p className="section-kicker">What I work with</p>
+        <p className="section-kicker">{t.home.expertiseKicker}</p>
         <div className="expertise-heading">
           <h2>
-            Practical building blocks
+            {t.home.expertiseHeadingLine1}
             <br />
-            for distributed systems.
+            {t.home.expertiseHeadingLine2}
           </h2>
-          <p>
-            I see technology as a tool for solving problems, and I choose it
-            with operations and scale in mind.
-          </p>
+          <p>{t.home.expertiseSubheading}</p>
         </div>
         <ul className="expertise-list">
-          {expertise.map((item, index) => (
+          {t.home.expertiseList.map((item, index) => (
             <li key={item}>
               <span>0{index + 1}</span>
               {item}
@@ -181,8 +153,8 @@ export default function Home() {
       <section className="work-section" id="work">
         <div className="section-heading">
           <div>
-            <p className="section-kicker">Open-source project</p>
-            <h2>Backend Service Playbook</h2>
+            <p className="section-kicker">{t.home.workKicker}</p>
+            <h2>{t.home.workHeading}</h2>
           </div>
           <a
             className="all-link"
@@ -190,7 +162,7 @@ export default function Home() {
             target="_blank"
             rel="noreferrer"
           >
-            View on GitHub <span aria-hidden="true"></span>
+            {t.home.viewOnGithub} <span aria-hidden="true"></span>
           </a>
         </div>
         <article className="playbook-card">
@@ -200,43 +172,31 @@ export default function Home() {
               <span />
               <span />
             </div>
-            <p className="project-label">
-              A practical guide for backend services
-            </p>
-            <p className="playbook-description">
-              A single place for the design and implementation principles of
-              DDD-based backend services. It helps teams build services with a
-              consistent structure, without being locked into any one framework.
-            </p>
+            <p className="project-label">{t.home.projectLabel}</p>
+            <p className="playbook-description">{t.home.playbookDescription}</p>
             <a
               className="playbook-link"
               href="https://github.com/kyhsa93/backend-service-playbook"
               target="_blank"
               rel="noreferrer"
             >
-              Open repository <span aria-hidden="true"></span>
+              {t.home.openRepository} <span aria-hidden="true"></span>
             </a>
           </div>
           <div className="playbook-details">
             <div className="principle-list">
-              <p>Included principles</p>
+              <p>{t.home.includedPrinciples}</p>
               <ul>
-                <li>
-                  <span>01</span>Domain-driven design
-                </li>
-                <li>
-                  <span>02</span>Layered architecture
-                </li>
-                <li>
-                  <span>03</span>CQRS &amp; Repository
-                </li>
-                <li>
-                  <span>04</span>Conventions &amp; checklist
-                </li>
+                {t.home.principles.map((principle, index) => (
+                  <li key={principle}>
+                    <span>0{index + 1}</span>
+                    {principle}
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="implementation-list">
-              <p>Implementation guides</p>
+              <p>{t.home.implementationGuides}</p>
               <div>
                 <span>
                   TypeScript <b>NestJS</b>
@@ -262,20 +222,17 @@ export default function Home() {
       <section className="latest-section" id="latest">
         <div className="latest-heading">
           <div>
-            <p className="section-kicker">Latest</p>
-            <h2>Writing and experimenting.</h2>
+            <p className="section-kicker">{t.home.latestKicker}</p>
+            <h2>{t.home.latestHeading}</h2>
           </div>
-          <p>
-            A running record of lessons learned from design work and small
-            experiments.
-          </p>
+          <p>{t.home.latestSubheading}</p>
         </div>
 
         <div className="latest-grid">
           <div className="post-column">
             <div className="content-label">
-              <span>Writing</span>
-              <span>Latest posts</span>
+              <span>{t.home.writingLabel}</span>
+              <span>{t.home.latestPostsLabel}</span>
             </div>
             {latestPosts.map((post) => (
               <article className="post-item published" key={post.slug}>
@@ -285,57 +242,62 @@ export default function Home() {
                 </div>
                 <h3>
                   <Link to={`/posts/${post.slug}`}>
-                    {post.title}
+                    {post.title[locale]}
                     <span aria-hidden="true">→</span>
                   </Link>
                 </h3>
-                <p>{post.summary}</p>
+                <p>{post.summary[locale]}</p>
               </article>
             ))}
             <Link to="/posts" className="coming-link">
-              View all posts →
+              {t.home.viewAllPosts}
             </Link>
           </div>
           <div className="side-project-column">
             <div className="content-label">
-              <span>Lab</span>
-              <span>Side projects</span>
+              <span>{t.home.labLabel}</span>
+              <span>{t.home.sideProjectsLabel}</span>
             </div>
-            {sideProjects.map((project, index) => (
-              <article className="side-project" key={project.title}>
-                <div
-                  className={`project-orb orb-${index + 1}`}
-                  aria-hidden="true"
-                >
-                  <span />
-                </div>
-                <div>
-                  <p className="project-status">
-                    <i />
-                    {project.status}
-                  </p>
-                  <h3>
-                    {project.href ? (
-                      <a href={project.href} target="_blank" rel="noreferrer">
-                        {project.title} <span aria-hidden="true"></span>
-                      </a>
-                    ) : (
-                      project.title
-                    )}
-                  </h3>
-                  <p>{project.description}</p>
-                </div>
-              </article>
-            ))}
+            {t.home.sideProjects.map((project, index) => {
+              const href = sideProjectLinks[index];
+              const status = href ? t.home.statusLive : t.home.statusInProgress;
+
+              return (
+                <article className="side-project" key={project.title}>
+                  <div
+                    className={`project-orb orb-${index + 1}`}
+                    aria-hidden="true"
+                  >
+                    <span />
+                  </div>
+                  <div>
+                    <p className="project-status">
+                      <i />
+                      {status}
+                    </p>
+                    <h3>
+                      {href ? (
+                        <a href={href} target="_blank" rel="noreferrer">
+                          {project.title} <span aria-hidden="true"></span>
+                        </a>
+                      ) : (
+                        project.title
+                      )}
+                    </h3>
+                    <p>{project.description}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
 
       <footer>
-        <p>Let’s build something resilient.</p>
+        <p>{t.footer.tagline}</p>
         <div className="footer-links">
-          <a href="/rss.xml">RSS</a>
-          <Link to="/privacy-policy">Privacy</Link>
+          <a href="/rss.xml">{t.footer.rss}</a>
+          <Link to="/privacy-policy">{t.footer.privacy}</Link>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             github.com/kyhsa93{' '}
           </a>

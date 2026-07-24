@@ -1,5 +1,10 @@
 import Router from './routes';
+import { LocaleProvider } from './lib/locale';
 
 export default function App() {
-  return <Router />;
+  return (
+    <LocaleProvider>
+      <Router />
+    </LocaleProvider>
+  );
 }

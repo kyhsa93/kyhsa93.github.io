@@ -60,16 +60,18 @@ bash harness.sh <projectRoot>
       <>
         <p>이 저장소의 <code>docs/reference.md</code>는 실용적인 구현 템플릿을 정의한다 — 모든 계층, 모든 파일, 모든 네이밍 컨벤션을 한곳에서 보여주는 작은 예시(과거에는 Order 도메인이었다)다. 문서로 작성된 템플릿은 누군가 다섯 번째 신규 도메인을 연달아 직접 정확하게 타이핑해야 하는 순간까지는 유용하다. 다음 단계는 그 템플릿을 생성기(generator)로 바꾸는 것이었다: 도메인 이름 하나만 받아서 실제로 Harness를 통과하는 코드를 만들어내는 스크립트다.</p>
         <h2>한 번에 생성되는 것들</h2>
-        <p>완전히 새로운 도메인 이름을 대상으로 생성기를 실행하면, 한 번에 <code>PENDING</code>/<code>ACTIVE</code>/<code>CANCELLED</code>를 순환하는 단일 상태 필드를 가진 Aggregate, Command Bus와 Query Bus에 연결된 CQRS Command/Query Handler, Domain Event 하나, Repository(인터페이스와 구현체), Controller와 DTO, 그리고 이 모든 것을 엮는 Module까지 만들어진다:</p>
-        <pre><code>{`# Default: generates under ../examples/src/<domain>/, leaves app-module.ts untouched and
-# only prints the import/registration snippet to paste in
-node scripts/create-domain.js Coupon
+        <p>완전히 새로운 도메인 이름을 대상으로 Go 생성기를 실행하면, 한 번에 <code>PENDING</code>/<code>ACTIVE</code>/<code>CANCELLED</code>를 순환하는 단일 상태 필드를 가진 Aggregate, CQRS Command/Query Handler, Domain Event 하나, Repository(domain 인터페이스와 infrastructure 구현체), HTTP Handler와 DTO, 그리고 migration까지 만들어진다:</p>
+        <pre><code>{`# Default: generates under examples/internal/..., doesn't touch main.go/router.go,
+# just prints to the console the content you should paste in
+go run . Coupon
 
-# Passing --wire also auto-inserts the import/registration into app-module.ts
-node scripts/create-domain.js Coupon --wire
+# With --wire, it also auto-inserts into cmd/server/main.go (repository assembly + registration
+# in the shared outbox handler map) and internal/interface/http/router.go (Handler assembly +
+# route registration)
+go run . Coupon --wire
 
 # To generate into a different project (e.g. one cloned from this repo as a template), specify --out
-node scripts/create-domain.js Coupon --out /path/to/other-project/src --wire`}</code></pre>
+go run . Coupon --out /path/to/other-project --wire`}</code></pre>
         <p>생성 결과물은 의도적으로 완성된 기능이 아니라 뼈대(skeleton)다 — 비어 있는 CRUD 형태의 출발점일 뿐이다. 실제 비즈니스 규칙, 에러 메시지, 도메인 고유 필드는 여전히 손으로 채워 넣어야 한다. 생성기가 가져다주는 것은 "다시는 도메인 로직을 작성하지 않아도 된다"가 아니라, "처음부터 만드는 도메인이 첫날부터 Harness를 통과하기 위해 필요한 서른 개 남짓한 자잘한 컨벤션(파일 네이밍, 계층 배치, Repository 메서드 이름, Outbox 등록 호출)을 손으로 일일이 기억하지 않아도 된다"는 것이다.</p>
         <h2>실제로 중요한 검증</h2>
         <p>그럴듯해 보이는 코드를 만드는 생성기와, Harness가 검사하는 모든 규칙을 통과하는 코드를 만드는 생성기는 같지 않다. 그 간극이 실제로 메워졌는지 확인하려면 지금까지 아무도 써본 적 없는 도메인 — 기존 예시 도메인들과 전혀 무관한 도메인 — 을 생성해서 Harness를 실제로 돌려봐야 한다:</p>

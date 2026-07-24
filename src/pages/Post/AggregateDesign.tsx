@@ -62,7 +62,7 @@ class Order private constructor() {
 }`}</code></pre>
         <p>An Application Service never carries out business logic itself — it delegates to an Aggregate method and nothing more. If you find yourself writing an <code>if</code> statement about the domain inside a Command Service, that logic almost certainly belongs one layer down.</p>
         <h2>Reference Other Aggregates by ID, Never by Object</h2>
-        <p>The transaction boundary is set at the Aggregate Root level — only one Aggregate changes per transaction. That's only possible if Aggregates don't hold direct object references to each other. <code>Order</code> holds a <code>userId: string</code>, never a <code>User</code> object. An object reference creates coupling that an ID reference avoids: loading one Aggregate never cascades into loading a graph of others just to satisfy a type.</p>
+        <p>The transaction boundary is set at the Aggregate Root level — only one Aggregate changes per transaction. That's only possible if Aggregates don't hold direct object references to each other. <code>Order</code> holds a <code>userId: String</code>, never a <code>User</code> object. An object reference creates coupling that an ID reference avoids: loading one Aggregate never cascades into loading a graph of others just to satisfy a type.</p>
         <h2>Entities and Value Objects Live at the Same Layer, With Different Contracts</h2>
         <p>An Entity's equality is judged by a unique identifier — two objects with the same ID are the same object even if every other field differs, and it has a lifecycle: created, modified, deleted. A child Entity inside an Aggregate, like an <code>OrderItem</code>, is only ever accessed and modified through the Aggregate Root that owns it.</p>
         <p>A Value Object has no identifier at all — its equality is judged by the combination of its values, and it's immutable.</p>
@@ -197,7 +197,7 @@ class Order private constructor() {
 }`}</code></pre>
         <p>Application Service는 비즈니스 로직을 스스로 수행하지 않는다 — Aggregate의 메서드에 위임할 뿐, 그 이상은 아니다. Command Service 안에서 도메인에 관한 <code>if</code> 문을 쓰고 있는 자신을 발견했다면, 그 로직은 거의 확실히 한 계층 아래로 내려가야 한다.</p>
         <h2>다른 Aggregate는 객체가 아니라 반드시 ID로 참조하라</h2>
-        <p>트랜잭션 경계는 Aggregate Root 단위로 설정된다 — 트랜잭션 하나당 오직 하나의 Aggregate만 변경된다. 이는 Aggregate들이 서로를 직접 객체 참조로 붙들고 있지 않을 때만 가능하다. <code>Order</code>는 <code>userId: string</code>을 가질 뿐, <code>User</code> 객체를 갖지 않는다. 객체 참조는 ID 참조로는 생기지 않을 결합을 만든다: Aggregate 하나를 로드할 때 단지 타입을 맞추기 위해 다른 객체들의 그래프까지 줄줄이 로드되는 일이 없어야 한다.</p>
+        <p>트랜잭션 경계는 Aggregate Root 단위로 설정된다 — 트랜잭션 하나당 오직 하나의 Aggregate만 변경된다. 이는 Aggregate들이 서로를 직접 객체 참조로 붙들고 있지 않을 때만 가능하다. <code>Order</code>는 <code>userId: String</code>을 가질 뿐, <code>User</code> 객체를 갖지 않는다. 객체 참조는 ID 참조로는 생기지 않을 결합을 만든다: Aggregate 하나를 로드할 때 단지 타입을 맞추기 위해 다른 객체들의 그래프까지 줄줄이 로드되는 일이 없어야 한다.</p>
         <h2>Entity와 Value Object는 같은 계층에 살지만, 계약이 다르다</h2>
         <p>Entity의 동일성은 고유 식별자로 판단한다 — ID가 같으면 다른 모든 필드가 다르더라도 같은 객체이며, 생성·수정·삭제라는 생명주기를 갖는다. <code>OrderItem</code>처럼 Aggregate 내부의 자식 Entity는 그것을 소유한 Aggregate Root를 통해서만 접근하고 수정할 수 있다.</p>
         <p>Value Object는 식별자를 아예 갖지 않는다 — 동일성은 값들의 조합으로 판단하며, 불변(immutable)이다.</p>

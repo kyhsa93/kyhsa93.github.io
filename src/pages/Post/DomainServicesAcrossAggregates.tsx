@@ -33,40 +33,64 @@ class RefundDecision:
 
 
 class RefundEligibilityService:
-    def evaluate(self, payment: Payment, refund: Refund) -> RefundDecision:
+    def evaluate(
+        self,
+        payment: Payment,
+        refund: Refund,
+        classification: RefundReasonClassification,
+        ml_fraud_risk_score: float,
+    ) -> RefundDecision:
         if payment.status != PaymentStatus.COMPLETED:
             return RefundDecision(approved=False, reason="A refund can only be requested for a completed payment.")
         if refund.amount > payment.amount:
             return RefundDecision(approved=False, reason="The refund amount cannot exceed the payment amount.")
+        if (
+            classification.category == RefundReasonCategory.FRAUD_SUSPECTED
+            and classification.fraud_risk_score >= FRAUD_RISK_REJECTION_THRESHOLD
+        ):
+            return RefundDecision(approved=False, reason="This refund reason was flagged as high fraud risk and requires manual review.")
+        if ml_fraud_risk_score >= ML_FRAUD_RISK_REJECTION_THRESHOLD:
+            return RefundDecision(approved=False, reason="This refund pattern was flagged as high risk by the fraud-risk model and requires manual review.")
         return RefundDecision(approved=True)`}</code></pre>
-        <pre><code>{`# application/command/request_refund_handler.py — loads both Repositories and delegates
+        <pre><code>{`# application/command/request_refund_handler.py — loads both Repositories, classifies the reason,
+# scores the history pattern, and delegates all four inputs to the Domain Service
 class RequestRefundHandler:
-    def __init__(self, payment_repository: PaymentRepository, refund_repository: RefundRepository) -> None:
-        self.payment_repository = payment_repository
-        self.refund_repository = refund_repository
+    def __init__(
+        self,
+        payment_repo: PaymentRepository,
+        refund_repo: RefundRepository,
+        refund_reason_classifier: RefundReasonClassifier,
+        refund_fraud_risk_scorer: RefundFraudRiskScorer,
+    ) -> None:
+        self._payment_repo = payment_repo
+        self._refund_repo = refund_repo
+        self._refund_reason_classifier = refund_reason_classifier
+        self._refund_fraud_risk_scorer = refund_fraud_risk_scorer
         # RefundEligibilityService is a pure Domain Service with no framework dependency —
         # instantiated directly rather than registered with FastAPI's Depends().
-        self.refund_eligibility_service = RefundEligibilityService()
+        self._refund_eligibility_service = RefundEligibilityService()
 
-    async def execute(self, command: RequestRefundCommand) -> Refund:
-        payments, _ = await self.payment_repository.find_payments(
-            payment_id=command.payment_id, owner_id=command.requester_id, take=1, page=0
+    async def execute(self, cmd: RequestRefundCommand) -> Refund:
+        payments, _ = await self._payment_repo.find_payments(
+            page=0, take=1, payment_id=cmd.payment_id, owner_id=cmd.requester_id
         )
         payment = payments[0] if payments else None
         if payment is None:
-            raise PaymentNotFoundError(command.payment_id)
+            raise PaymentNotFoundError(cmd.payment_id)
 
-        refund = Refund.create(payment_id=payment.payment_id, amount=command.amount, reason=command.reason)
+        refund = Refund.create(payment_id=payment.payment_id, amount=cmd.amount, reason=cmd.reason)
+        classification = await self._refund_reason_classifier.classify(cmd.reason)
+        ml_fraud_risk_score = await self._refund_fraud_risk_scorer.score(/* refund history features */)
 
-        decision = self.refund_eligibility_service.evaluate(payment, refund)
+        decision = self._refund_eligibility_service.evaluate(payment, refund, classification, ml_fraud_risk_score)
         if decision.approved:
             refund.approve(account_id=payment.account_id, owner_id=payment.owner_id)
         else:
             refund.reject(decision.reason or "The refund request was rejected.")
 
-        await self.refund_repository.save_refund(refund)
+        await self._refund_repo.save_refund(refund)
         return refund`}</code></pre>
-        <p><code>RefundEligibilityService</code> is instantiated directly — it's never wired through FastAPI's <code>Depends()</code>, staying true to "holds no state, no framework dependency." Its unit test doesn't go through the Application layer at all; it instantiates the class directly and verifies only the decision logic. The full code lives at <code>implementations/fastapi/examples/src/payment/domain/refund_eligibility_service.py</code> alongside <code>payment.py</code>, <code>refund.py</code>, and the command handler above.</p>
+        <p><code>RefundEligibilityService</code> is instantiated directly — it's never wired through FastAPI's <code>Depends()</code>, staying true to "holds no state, no framework dependency." Its unit test doesn't go through the Application layer at all; it instantiates the class directly and verifies only the decision logic. <code>classification</code> and <code>ml_fraud_risk_score</code> are two independent signals produced by Technical Services upstream (an LLM-backed classifier and a history-scoring model, each covered in its own post) — this Domain Service never calls either one, only weighs the already-computed values against its own fixed thresholds. The full code lives at <code>implementations/fastapi/examples/src/payment/domain/refund_eligibility_service.py</code> alongside <code>payment.py</code>, <code>refund.py</code>, and the command handler above.</p>
         <p>This example also earned itself a permanent regression guard: a harness rule checks, within <code>payment/domain/</code>, that <code>payment.py</code> never directly imports the <code>Refund</code> class and vice versa — proving the two Aggregates only ever reference each other by ID, never by holding one another as a field. The legitimate pattern of a Domain Service taking both as function parameters, like <code>evaluate(payment: Payment, refund: Refund)</code>, is explicitly not a target of that rule.</p>
         <h2>Domain Service vs. Application Service vs. Technical Service</h2>
         <p>Three easily-confused concepts, told apart by what they depend on. The <strong>Application Service</strong> coordinates the use case — calling the Repository, running the transaction. The <strong>Domain Service</strong> handles the domain judgment inside it, depending only on other domain objects. The <strong>Technical Service</strong> handles the piece where a technical implementation is the actual point — encryption, file storage, an external API client — abstracted behind an interface the Application layer depends on, with the real SDK usage confined to the Infrastructure-layer implementation.</p>
@@ -112,40 +136,64 @@ class RefundDecision:
 
 
 class RefundEligibilityService:
-    def evaluate(self, payment: Payment, refund: Refund) -> RefundDecision:
+    def evaluate(
+        self,
+        payment: Payment,
+        refund: Refund,
+        classification: RefundReasonClassification,
+        ml_fraud_risk_score: float,
+    ) -> RefundDecision:
         if payment.status != PaymentStatus.COMPLETED:
             return RefundDecision(approved=False, reason="A refund can only be requested for a completed payment.")
         if refund.amount > payment.amount:
             return RefundDecision(approved=False, reason="The refund amount cannot exceed the payment amount.")
+        if (
+            classification.category == RefundReasonCategory.FRAUD_SUSPECTED
+            and classification.fraud_risk_score >= FRAUD_RISK_REJECTION_THRESHOLD
+        ):
+            return RefundDecision(approved=False, reason="This refund reason was flagged as high fraud risk and requires manual review.")
+        if ml_fraud_risk_score >= ML_FRAUD_RISK_REJECTION_THRESHOLD:
+            return RefundDecision(approved=False, reason="This refund pattern was flagged as high risk by the fraud-risk model and requires manual review.")
         return RefundDecision(approved=True)`}</code></pre>
-        <pre><code>{`# application/command/request_refund_handler.py — loads both Repositories and delegates
+        <pre><code>{`# application/command/request_refund_handler.py — loads both Repositories, classifies the reason,
+# scores the history pattern, and delegates all four inputs to the Domain Service
 class RequestRefundHandler:
-    def __init__(self, payment_repository: PaymentRepository, refund_repository: RefundRepository) -> None:
-        self.payment_repository = payment_repository
-        self.refund_repository = refund_repository
+    def __init__(
+        self,
+        payment_repo: PaymentRepository,
+        refund_repo: RefundRepository,
+        refund_reason_classifier: RefundReasonClassifier,
+        refund_fraud_risk_scorer: RefundFraudRiskScorer,
+    ) -> None:
+        self._payment_repo = payment_repo
+        self._refund_repo = refund_repo
+        self._refund_reason_classifier = refund_reason_classifier
+        self._refund_fraud_risk_scorer = refund_fraud_risk_scorer
         # RefundEligibilityService is a pure Domain Service with no framework dependency —
         # instantiated directly rather than registered with FastAPI's Depends().
-        self.refund_eligibility_service = RefundEligibilityService()
+        self._refund_eligibility_service = RefundEligibilityService()
 
-    async def execute(self, command: RequestRefundCommand) -> Refund:
-        payments, _ = await self.payment_repository.find_payments(
-            payment_id=command.payment_id, owner_id=command.requester_id, take=1, page=0
+    async def execute(self, cmd: RequestRefundCommand) -> Refund:
+        payments, _ = await self._payment_repo.find_payments(
+            page=0, take=1, payment_id=cmd.payment_id, owner_id=cmd.requester_id
         )
         payment = payments[0] if payments else None
         if payment is None:
-            raise PaymentNotFoundError(command.payment_id)
+            raise PaymentNotFoundError(cmd.payment_id)
 
-        refund = Refund.create(payment_id=payment.payment_id, amount=command.amount, reason=command.reason)
+        refund = Refund.create(payment_id=payment.payment_id, amount=cmd.amount, reason=cmd.reason)
+        classification = await self._refund_reason_classifier.classify(cmd.reason)
+        ml_fraud_risk_score = await self._refund_fraud_risk_scorer.score(/* refund history features */)
 
-        decision = self.refund_eligibility_service.evaluate(payment, refund)
+        decision = self._refund_eligibility_service.evaluate(payment, refund, classification, ml_fraud_risk_score)
         if decision.approved:
             refund.approve(account_id=payment.account_id, owner_id=payment.owner_id)
         else:
             refund.reject(decision.reason or "The refund request was rejected.")
 
-        await self.refund_repository.save_refund(refund)
+        await self._refund_repo.save_refund(refund)
         return refund`}</code></pre>
-        <p><code>RefundEligibilityService</code>는 직접 인스턴스화된다 — FastAPI의 <code>Depends()</code>로 등록되는 일이 없으며, "상태를 갖지 않고 프레임워크 의존성도 없다"는 원칙을 그대로 지킨다. 이 클래스의 단위 테스트는 Application 계층을 아예 거치지 않는다. 클래스를 직접 인스턴스화해서 판단 로직만 검증한다. 전체 코드는 <code>implementations/fastapi/examples/src/payment/domain/refund_eligibility_service.py</code>에 있으며, 같은 위치에 <code>payment.py</code>, <code>refund.py</code>, 그리고 위의 command handler가 함께 있다.</p>
+        <p><code>RefundEligibilityService</code>는 직접 인스턴스화된다 — FastAPI의 <code>Depends()</code>로 등록되는 일이 없으며, "상태를 갖지 않고 프레임워크 의존성도 없다"는 원칙을 그대로 지킨다. 이 클래스의 단위 테스트는 Application 계층을 아예 거치지 않는다. 클래스를 직접 인스턴스화해서 판단 로직만 검증한다. <code>classification</code>과 <code>ml_fraud_risk_score</code>는 각각 상위(upstream)의 Technical Service — LLM 기반 분류기와 이력 기반 스코어링 모델(각각 별도의 글에서 다룬다) — 가 만들어낸 독립적인 두 신호다. 이 Domain Service는 둘 중 어느 것도 직접 호출하지 않고, 이미 계산된 값을 자신의 고정된 임계값과 비교할 뿐이다. 전체 코드는 <code>implementations/fastapi/examples/src/payment/domain/refund_eligibility_service.py</code>에 있으며, 같은 위치에 <code>payment.py</code>, <code>refund.py</code>, 그리고 위의 command handler가 함께 있다.</p>
         <p>이 예시는 영구적인 회귀 방지 장치도 하나 얻었다: <code>payment/domain/</code> 내에서 <code>payment.py</code>가 <code>Refund</code> 클래스를 직접 import하지 않는지, 그리고 그 반대도 마찬가지인지를 검사하는 Harness 규칙이다 — 이는 두 Aggregate가 서로를 필드로 갖지 않고 오직 ID로만 참조한다는 것을 증명한다. <code>evaluate(payment: Payment, refund: Refund)</code>처럼 Domain Service가 둘을 함수 파라미터로 받는 정당한 패턴은 이 규칙의 검사 대상이 명시적으로 아니다.</p>
         <h2>Domain Service vs. Application Service vs. Technical Service</h2>
         <p>서로 헷갈리기 쉬운 세 개념은 무엇에 의존하는지로 구분된다. <strong>Application Service</strong>는 유스케이스를 조율한다 — Repository를 호출하고 트랜잭션을 실행한다. <strong>Domain Service</strong>는 그 안에서 도메인 판단을 처리하며, 오직 다른 도메인 객체에만 의존한다. <strong>Technical Service</strong>는 기술적 구현 자체가 핵심인 부분을 처리한다 — 암호화, 파일 저장, 외부 API 클라이언트 등 — 이는 Application 계층이 의존하는 인터페이스 뒤로 추상화되고, 실제 SDK 사용은 Infrastructure 계층의 구현체 안에만 갇혀 있다.</p>

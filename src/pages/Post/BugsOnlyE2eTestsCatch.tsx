@@ -40,6 +40,9 @@ void useApacheHttpClientRequestFactory() {
         <div className="article-note"><strong>An unmerged bug that still changed real code</strong><p>The VARCHAR(36) lesson didn't stay theoretical. A real, merged account-transfer feature shipped the same day, and its Go implementation explicitly avoids the exact trap the benchmark surfaced — using the raw 32-character ID with no suffix at all, specifically because appending one could exceed the column limit. A benchmark run whose code was thrown away still produced a lesson that shaped production code the same afternoon.</p></div>
         <h2>What All Four Have in Common</h2>
         <p>None of these are exotic. A missing annotation, a client library's known limitation, a column-length constraint, a deduplication window — ordinary infrastructure behavior, not edge cases dreamed up to stress-test a system. What they share is that a mock or fake, by construction, doesn't implement the actual failure surface: no real session to close early, no real HTTP client state machine, no real column, no real dedup window. Confidence that a feature works has to include running it, at least once, against the real things it depends on — not because unit tests are wrong, but because they were never testing this part of the system.</p>
+        <div className="article-note"><strong>Further reading in the repo</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/testing.md" target="_blank" rel="noreferrer">docs/architecture/testing.md</a> — the Domain/Application/E2E testing strategy these bugs fell outside of · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/implementations/java-springboot/examples/src/main/java/com/example/accountservice/outbox/OutboxPoller.java" target="_blank" rel="noreferrer">OutboxPoller.java</a> — the real fix for the Lob-stream bug · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/benchmark.md" target="_blank" rel="noreferrer">docs/benchmark.md</a> — the first-person log of the two unmerged benchmark bugs
+        </p></div>
       </>
     ),
   },
@@ -81,6 +84,9 @@ void useApacheHttpClientRequestFactory() {
         <div className="article-note"><strong>머지되지 않은 버그가 그래도 실제 코드를 바꾼 사례</strong><p>VARCHAR(36) 교훈은 이론으로 끝나지 않았다. 같은 날 실제로 머지된 계좌 송금(account-transfer) 기능이 배포됐는데, 그 Go 구현은 벤치마크가 드러낸 바로 그 함정을 명시적으로 피하고 있다 — 접미사를 아예 붙이지 않고 32자리 원본 ID를 그대로 사용하는데, 접미사를 붙이면 컬럼 길이 제한을 넘을 수 있다는 바로 그 이유 때문이다. 코드가 버려진 벤치마크 실행 한 번이, 그날 오후 프로덕션 코드를 실제로 바꾼 교훈을 만들어낸 셈이다.</p></div>
         <h2>네 가지 버그의 공통점</h2>
         <p>이 중 어느 것도 특별하거나 희귀한 사례가 아니다. 누락된 애노테이션, 클라이언트 라이브러리의 알려진 한계, 컬럼 길이 제약, 중복 제거 윈도우 — 시스템을 스트레스 테스트하겠다고 억지로 만들어낸 엣지 케이스가 아니라 평범한 인프라 동작일 뿐이다. 이들의 공통점은 Mock이나 Fake가 구조상 실제 실패 표면(failure surface)을 구현하지 않는다는 점이다: 일찍 닫힐 실제 세션도 없고, 실제 HTTP 클라이언트 상태 기계도 없고, 실제 컬럼도, 실제 dedup 윈도우도 없다. 어떤 기능이 제대로 동작한다는 확신을 얻으려면, 그 기능이 의존하는 실제 대상을 상대로 적어도 한 번은 실행해봐야 한다 — 유닛 테스트가 틀려서가 아니라, 애초에 시스템의 이 부분을 테스트한 적이 없기 때문이다.</p>
+        <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/testing.md" target="_blank" rel="noreferrer">docs/architecture/testing.md</a> — 이 버그들이 벗어나 있던 Domain/Application/E2E 테스트 전략 · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/implementations/java-springboot/examples/src/main/java/com/example/accountservice/outbox/OutboxPoller.java" target="_blank" rel="noreferrer">OutboxPoller.java</a> — Lob 스트림 버그의 실제 수정 · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/benchmark.md" target="_blank" rel="noreferrer">docs/benchmark.md</a> — 머지되지 않은 벤치마크 버그 두 건을 기록한 1인칭 기록
+        </p></div>
       </>
     ),
   },

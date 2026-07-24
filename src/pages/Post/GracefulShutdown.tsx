@@ -99,7 +99,6 @@ if err := srv.Shutdown(shutdownCtx); err != nil {
           <li>Does resource cleanup run strictly after the HTTP server has stopped accepting new work?</li>
           <li>Is every cleanup step wrapped so one failure doesn't skip the rest?</li>
         </ul>
-        <p>None of this shows up in a demo, and none of it shows up in a typical test suite either — it only shows up in production, during a deploy, as either nothing happening or a burst of errors that someone has to explain afterward. That asymmetry is exactly why it's worth getting right before it's needed, not after the first incident that traces back to it.</p>
         <div className="article-note"><strong>Further reading in the repo</strong><p>
           <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/graceful-shutdown.md" target="_blank" rel="noreferrer">docs/architecture/graceful-shutdown.md</a> — the full shutdown sequence and probe-configuration reference · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a> — the Dockerfile CMD convention this depends on
         </p></div>
@@ -203,7 +202,6 @@ if err := srv.Shutdown(shutdownCtx); err != nil {
           <li>리소스 정리가 HTTP 서버가 새 작업 수신을 멈춘 이후에만 엄격하게 실행되는가?</li>
           <li>정리 단계 하나가 실패해도 나머지가 건너뛰어지지 않도록 각 단계가 감싸져 있는가?</li>
         </ul>
-        <p>이 중 어느 것도 데모에서는 드러나지 않고, 일반적인 테스트 스위트에서도 드러나지 않는다 — 오직 프로덕션에서, 배포 도중에, 아무 일도 일어나지 않거나 누군가 나중에 해명해야 할 만큼 에러가 몰아치는 형태로만 드러난다. 바로 그 비대칭성 때문에, 이건 처음 겪는 장애가 여기까지 원인을 추적한 뒤가 아니라 필요해지기 전에 미리 제대로 해 둘 가치가 있다.</p>
         <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
           <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/graceful-shutdown.md" target="_blank" rel="noreferrer">docs/architecture/graceful-shutdown.md</a> — 전체 종료 시퀀스와 probe 설정 레퍼런스 · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a> — 이 글이 전제하는 Dockerfile CMD 컨벤션
         </p></div>

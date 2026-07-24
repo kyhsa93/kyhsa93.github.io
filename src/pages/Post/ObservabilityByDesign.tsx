@@ -19,36 +19,41 @@ const content = {
         <h2>Who Logs What</h2>
         <p>The Interface layer (a Controller) logs request errors, caught in a catch block. The Application layer logs business events and the results of external system calls. Infrastructure logs external-integration failures and retries, and abnormal query performance. The Domain layer never logs, full stop — it stays framework-independent, and the result of domain logic gets logged one layer up, in the Application layer that called it.</p>
         <pre><code>{`// forbidden — using a logger/framework in the Domain layer
-import { Logger } from '@nestjs/common'  // forbidden
+import org.slf4j.Logger;          // forbidden
+import org.slf4j.LoggerFactory;   // forbidden
 
-export class Order {
-  private readonly logger = new Logger(Order.name)  // forbidden
-  public cancel(reason: string): void {
-    this.logger.log('Order cancelled')  // forbidden
-    ...
-  }
+public class Order {
+    private static final Logger log = LoggerFactory.getLogger(Order.class);  // forbidden
+
+    public void cancel(String reason) {
+        log.info("Order cancelled");  // forbidden
+        ...
+    }
 }`}</code></pre>
         <p>This isn't a purity rule for its own sake. A Domain layer that logs has taken a framework dependency it's supposed to have none of, and now every domain unit test has to either mock a logger or tolerate log noise it never asked for.</p>
         <h2>Structured Logs, and Why the Field Names Matter</h2>
         <p>When integrating with an external monitoring system — Datadog, CloudWatch, Grafana Loki — logs should be structured JSON, with field names in <code>snake_case</code>:</p>
         <pre><code>{`// a business-event log
-logger.log({ message: 'Order created', order_id: orderId, user_id: userId, amount })
+log.info("Order created", kv("order_id", orderId), kv("user_id", userId), kv("amount", amount));
 
 // an error log
-logger.error({ message: 'SQS send failed', event_id: event.eventId, error })`}</code></pre>
+log.error("SQS send failed", kv("event_id", event.getEventId()), e);`}</code></pre>
         <p>The reason for <code>snake_case</code> specifically, not camelCase, is unglamorous but concrete: most monitoring platforms parse snake_case fields by default. A field-name mismatch doesn't just look inconsistent — it silently breaks indexing, so a query that should find every log for a given <code>order_id</code> quietly returns nothing.</p>
         <h2>Correlation ID: Making One Request Traceable Across Everything</h2>
         <p>To trace a single request across multiple services in logs, every log entry includes a Correlation ID. If the client sends an <code>x-correlation-id</code> header, it's used as-is; otherwise the server generates one. The header is forwarded on every downstream call, and returned in the response too.</p>
-        <p>The ID is generated or extracted at the request entry point — the Interface layer — and propagated via <code>AsyncLocalStorage</code>, so every later layer can read the current request's Correlation ID with no argument threaded through function signatures:</p>
-        <pre><code>{`const correlationStorage = new AsyncLocalStorage<string>()
+        <p>The ID is generated or extracted at the request entry point — the Interface layer, as a Servlet <code>Filter</code> — and propagated via SLF4J's <code>MDC</code> (Mapped Diagnostic Context), a <code>ThreadLocal</code>-backed map that the Logback JSON encoder reads automatically, so every later layer can read the current request's Correlation ID with no argument threaded through method signatures:</p>
+        <pre><code>{`// at request entry — a Filter in the Interface layer
+String correlationId = Optional.ofNullable(request.getHeader("X-Correlation-Id"))
+        .orElseGet(() -> UUID.randomUUID().toString().replace("-", ""));
+MDC.put("correlation_id", correlationId);
+try {
+    chain.doFilter(request, response);
+} finally {
+    MDC.remove("correlation_id");
+}
 
-// at request entry
-const correlationId = request.headers['x-correlation-id'] ?? generateId()
-correlationStorage.run(correlationId, () => handleRequest())
-
-// when logging, anywhere downstream
-const correlationId = correlationStorage.getStore()
-logger.log({ message: '...', correlation_id: correlationId })`}</code></pre>
+// when logging, anywhere downstream — no argument needed, MDC is read automatically
+log.info("Order created");`}</code></pre>
         <p>This is the exact same shape as the request-scoped user-context pattern used for authentication — a value generated once at the edge, read from storage everywhere else, with no request object passed around to get at it. The two problems (who is the current user, what request produced this log line) are different, but the mechanism that solves them is identical on purpose.</p>
         <h2>Metrics and Tracing: Directional, Not Mandated</h2>
         <p>This isn't tied to one specific stack, but a few things are worth alerting on regardless of which one you pick: the HTTP 5xx rate, p99 response time, DB connection pool saturation, message-queue DLQ depth greater than zero, and the queue's <code>ApproximateAgeOfOldestMessage</code> — a metric that catches a stalled consumer long before anyone notices requests are actually failing.</p>
@@ -79,36 +84,41 @@ logger.log({ message: '...', correlation_id: correlationId })`}</code></pre>
         <h2>누가 무엇을 로깅하는가</h2>
         <p>Interface 계층(Controller)은 catch 블록에서 잡힌 요청 에러를 로깅한다. Application 계층은 비즈니스 이벤트와 외부 시스템 호출 결과를 로깅한다. Infrastructure는 외부 연동 실패·재시도와 비정상적인 쿼리 성능을 로깅한다. Domain 계층은 절대 로깅하지 않는다, 예외 없이 — 프레임워크 독립성을 유지해야 하고, 도메인 로직의 결과는 그걸 호출한 상위 계층인 Application 계층에서 로깅된다.</p>
         <pre><code>{`// forbidden — using a logger/framework in the Domain layer
-import { Logger } from '@nestjs/common'  // forbidden
+import org.slf4j.Logger;          // forbidden
+import org.slf4j.LoggerFactory;   // forbidden
 
-export class Order {
-  private readonly logger = new Logger(Order.name)  // forbidden
-  public cancel(reason: string): void {
-    this.logger.log('Order cancelled')  // forbidden
-    ...
-  }
+public class Order {
+    private static final Logger log = LoggerFactory.getLogger(Order.class);  // forbidden
+
+    public void cancel(String reason) {
+        log.info("Order cancelled");  // forbidden
+        ...
+    }
 }`}</code></pre>
         <p>이건 순수성을 위한 순수성 규칙이 아니다. 로깅을 하는 Domain 계층은 원래 가져서는 안 될 프레임워크 의존성을 갖게 된 것이고, 그러면 모든 도메인 단위 테스트가 로거를 mocking하거나, 요청하지도 않은 로그 노이즈를 감내해야 한다.</p>
         <h2>구조화된 로그, 그리고 필드 이름이 중요한 이유</h2>
         <p>Datadog, CloudWatch, Grafana Loki 같은 외부 모니터링 시스템과 연동할 때, 로그는 <code>snake_case</code> 필드 이름을 쓰는 구조화된 JSON이어야 한다:</p>
         <pre><code>{`// a business-event log
-logger.log({ message: 'Order created', order_id: orderId, user_id: userId, amount })
+log.info("Order created", kv("order_id", orderId), kv("user_id", userId), kv("amount", amount));
 
 // an error log
-logger.error({ message: 'SQS send failed', event_id: event.eventId, error })`}</code></pre>
+log.error("SQS send failed", kv("event_id", event.getEventId()), e);`}</code></pre>
         <p>camelCase가 아니라 굳이 <code>snake_case</code>를 쓰는 이유는 화려하진 않지만 구체적이다: 대부분의 모니터링 플랫폼이 기본적으로 snake_case 필드를 파싱하기 때문이다. 필드 이름이 안 맞으면 단순히 일관성이 없어 보이는 데서 끝나지 않는다 — 인덱싱이 조용히 깨져서, 특정 <code>order_id</code>에 대한 모든 로그를 찾아야 할 쿼리가 아무 결과도 없이 조용히 실패한다.</p>
         <h2>Correlation ID: 하나의 요청을 전체 구간에서 추적 가능하게 만들기</h2>
         <p>로그 상에서 하나의 요청을 여러 서비스에 걸쳐 추적하기 위해, 모든 로그 항목에는 Correlation ID가 포함된다. 클라이언트가 <code>x-correlation-id</code> 헤더를 보내면 그걸 그대로 쓰고, 그렇지 않으면 서버가 하나 생성한다. 이 헤더는 하위 호출마다 전달되고, 응답에도 함께 반환된다.</p>
-        <p>ID는 요청의 진입점 — Interface 계층 — 에서 생성되거나 추출되고, <code>AsyncLocalStorage</code>를 통해 전파된다. 그래서 이후의 모든 계층은 함수 시그니처에 아무 인자도 추가하지 않고도 현재 요청의 Correlation ID를 읽을 수 있다:</p>
-        <pre><code>{`const correlationStorage = new AsyncLocalStorage<string>()
+        <p>ID는 요청의 진입점 — Interface 계층의 Servlet <code>Filter</code> — 에서 생성되거나 추출되고, SLF4J의 <code>MDC</code>(Mapped Diagnostic Context, <code>ThreadLocal</code> 기반의 맵으로 Logback JSON 인코더가 자동으로 읽어들인다)를 통해 전파된다. 그래서 이후의 모든 계층은 메서드 시그니처에 아무 인자도 추가하지 않고도 현재 요청의 Correlation ID를 읽을 수 있다:</p>
+        <pre><code>{`// at request entry — a Filter in the Interface layer
+String correlationId = Optional.ofNullable(request.getHeader("X-Correlation-Id"))
+        .orElseGet(() -> UUID.randomUUID().toString().replace("-", ""));
+MDC.put("correlation_id", correlationId);
+try {
+    chain.doFilter(request, response);
+} finally {
+    MDC.remove("correlation_id");
+}
 
-// at request entry
-const correlationId = request.headers['x-correlation-id'] ?? generateId()
-correlationStorage.run(correlationId, () => handleRequest())
-
-// when logging, anywhere downstream
-const correlationId = correlationStorage.getStore()
-logger.log({ message: '...', correlation_id: correlationId })`}</code></pre>
+// when logging, anywhere downstream — no argument needed, MDC is read automatically
+log.info("Order created");`}</code></pre>
         <p>이건 인증에 쓰이는 request-scoped 사용자 컨텍스트 패턴과 정확히 같은 모양이다 — 값 하나가 요청의 진입점에서 딱 한 번 생성되고, 그 외 모든 곳에서는 request 객체를 넘겨받지 않고도 storage에서 읽어온다. 두 문제(현재 사용자가 누구인지, 이 로그 줄을 만든 요청이 무엇인지)는 서로 다르지만, 그걸 푸는 메커니즘이 동일한 건 의도된 것이다.</p>
         <h2>메트릭과 트레이싱: 강제 사항이 아니라 방향성</h2>
         <p>이건 특정 스택 하나에 묶인 이야기는 아니지만, 어떤 스택을 고르든 알림을 걸어둘 만한 것들이 몇 가지 있다: HTTP 5xx 비율, p99 응답 시간, DB 커넥션 풀 포화도, 메시지 큐의 DLQ 적재량이 0보다 커지는 것, 그리고 큐의 <code>ApproximateAgeOfOldestMessage</code> — 이 지표는 요청이 실제로 실패하고 있다는 걸 누군가 눈치채기 훨씬 전에 멈춰버린 consumer를 잡아낸다.</p>

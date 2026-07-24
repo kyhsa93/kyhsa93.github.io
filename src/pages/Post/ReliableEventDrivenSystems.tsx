@@ -21,43 +21,63 @@ const content = {
         <p>The simplest code — save the order, then publish the event — has two failure windows. If the process dies after the DB write, the event is lost; if the event is sent first and the DB write then fails, an event for a nonexistent order is delivered. You could tie the two systems together with a distributed transaction, but the operational complexity and availability cost are high.</p>
         <p>The Outbox pattern stores the domain data and the event to be published in the same local transaction. A separate worker reads not-yet-published Outbox records, sends them to the broker, and flips them to published once that succeeds. This approach may deliver events late, but it eliminates the window where they get lost.</p>
         <h3>Example: Transactional Outbox</h3>
-        <pre><code>{`async function placeOrder(command: PlaceOrder) {
-  await db.transaction(async (tx) => {
-    const order = Order.place(command);
-    await orderRepository.save(tx, order);
+        <pre><code>{`@Service
+class PlaceOrderService(
+    private val orderRepository: OrderRepository,
+    private val outboxRepository: OutboxRepository,
+) {
+    @Transactional
+    fun placeOrder(command: PlaceOrderCommand): Order {
+        val order = Order.place(command)
+        orderRepository.saveOrder(order)
 
-    await outboxRepository.append(tx, {
-      id: crypto.randomUUID(),
-      topic: 'orders.placed',
-      key: order.id,
-      payload: { orderId: order.id, customerId: order.customerId },
-      occurredAt: new Date(),
-    });
-  });
+        outboxRepository.append(
+            OutboxEvent(
+                id = UUID.randomUUID().toString(),
+                topic = "orders.placed",
+                key = order.id,
+                payload = OrderPlacedPayload(orderId = order.id, customerId = order.customerId),
+                occurredAt = LocalDateTime.now(),
+            ),
+        )
+        return order
+    }
 }
 
-async function publishOutbox() {
-  for (const event of await outboxRepository.findUnpublished()) {
-    await broker.publish(event.topic, event.key, event.payload);
-    await outboxRepository.markPublished(event.id);
-  }
+@Component
+class OutboxPoller(
+    private val outboxRepository: OutboxRepository,
+    private val broker: EventBroker,
+) {
+    @Scheduled(fixedDelay = 1000)
+    @Transactional
+    fun publishOutbox() {
+        outboxRepository.findUnpublished().forEach { event ->
+            broker.publish(event.topic, event.key, event.payload)
+            outboxRepository.markPublished(event.id)
+        }
+    }
 }`}</code></pre>
         <p>If the worker dies after sending to the broker but before marking it complete, the same event can be published again. So the Outbox alone can't eliminate duplicates. Instead, the publishing side must provide a stable event ID and key, and the consuming side must handle duplicates safely.</p>
         <h2>2. Consumers Store an Idempotency Key</h2>
         <p>The simplest approach is to record the event ID as a processing history. Before doing the work, the consumer checks whether that ID has already been processed, then saves the result and the ID in the same transaction. Using a database unique constraint lets only one of several consumer instances succeed, even if they all receive the same message at once.</p>
         <h3>Example: A Consumer That Ignores Duplicate Events</h3>
-        <pre><code>{`async function handlePaymentApproved(event: PaymentApproved) {
-  await db.transaction(async (tx) => {
-    const alreadyProcessed = await inboxRepository.exists(tx, event.id);
-    if (alreadyProcessed) return;
+        <pre><code>{`@Component
+class PaymentApprovedEventHandler(
+    private val inboxRepository: InboxRepository,
+    private val orderRepository: OrderRepository,
+) {
+    @Transactional
+    fun handle(event: PaymentApprovedEvent) {
+        if (inboxRepository.exists(event.id)) return
 
-    const order = await orderRepository.findById(tx, event.orderId);
-    order.markPaid(event.approvedAt);
-    await orderRepository.save(tx, order);
+        val order = orderRepository.findOrder(event.orderId)
+        order.markPaid(event.approvedAt)
+        orderRepository.saveOrder(order)
 
-    // Put a unique index on event_id.
-    await inboxRepository.record(tx, event.id, 'payment-service');
-  });
+        // Put a unique index on event_id.
+        inboxRepository.record(event.id, "payment-service")
+    }
 }`}</code></pre>
         <p>Here, the Inbox record and the order state change must be in the same transaction. If only one succeeds, the next retry creates an inconsistency. For work that can't be placed in the same transaction — like an external API call — you should pass an idempotency key the provider supports, or record the intent to call as an Outbox entry, turning it into a retryable operation.</p>
         <h2>3. Retries Are a Policy, Not Infinite Repetition</h2>
@@ -101,43 +121,63 @@ async function publishOutbox() {
         <p>가장 단순한 코드 — 주문을 저장한 뒤 이벤트를 발행하는 방식 — 에는 두 개의 실패 구간이 있다. DB 저장 후 프로세스가 죽으면 이벤트가 유실되고, 이벤트를 먼저 보낸 뒤 DB 저장이 실패하면 존재하지 않는 주문에 대한 이벤트가 전달된다. 두 시스템을 분산 트랜잭션으로 묶을 수도 있지만, 운영 복잡도와 가용성 비용이 크다.</p>
         <p>Outbox 패턴은 도메인 데이터와 발행할 이벤트를 같은 로컬 트랜잭션 안에 저장한다. 별도의 워커가 아직 발행되지 않은 Outbox 레코드를 읽어 브로커로 보내고, 성공하면 발행 완료로 표시한다. 이 방식은 이벤트가 늦게 전달될 수는 있지만, 유실되는 구간 자체를 없앤다.</p>
         <h3>예시: Transactional Outbox</h3>
-        <pre><code>{`async function placeOrder(command: PlaceOrder) {
-  await db.transaction(async (tx) => {
-    const order = Order.place(command);
-    await orderRepository.save(tx, order);
+        <pre><code>{`@Service
+class PlaceOrderService(
+    private val orderRepository: OrderRepository,
+    private val outboxRepository: OutboxRepository,
+) {
+    @Transactional
+    fun placeOrder(command: PlaceOrderCommand): Order {
+        val order = Order.place(command)
+        orderRepository.saveOrder(order)
 
-    await outboxRepository.append(tx, {
-      id: crypto.randomUUID(),
-      topic: 'orders.placed',
-      key: order.id,
-      payload: { orderId: order.id, customerId: order.customerId },
-      occurredAt: new Date(),
-    });
-  });
+        outboxRepository.append(
+            OutboxEvent(
+                id = UUID.randomUUID().toString(),
+                topic = "orders.placed",
+                key = order.id,
+                payload = OrderPlacedPayload(orderId = order.id, customerId = order.customerId),
+                occurredAt = LocalDateTime.now(),
+            ),
+        )
+        return order
+    }
 }
 
-async function publishOutbox() {
-  for (const event of await outboxRepository.findUnpublished()) {
-    await broker.publish(event.topic, event.key, event.payload);
-    await outboxRepository.markPublished(event.id);
-  }
+@Component
+class OutboxPoller(
+    private val outboxRepository: OutboxRepository,
+    private val broker: EventBroker,
+) {
+    @Scheduled(fixedDelay = 1000)
+    @Transactional
+    fun publishOutbox() {
+        outboxRepository.findUnpublished().forEach { event ->
+            broker.publish(event.topic, event.key, event.payload)
+            outboxRepository.markPublished(event.id)
+        }
+    }
 }`}</code></pre>
         <p>워커가 브로커에 전송한 뒤 완료 표시를 하기 전에 죽으면, 같은 이벤트가 다시 발행될 수 있다. 즉 Outbox만으로는 중복을 없앨 수 없다. 발행 쪽은 안정적인 이벤트 ID와 key를 제공해야 하고, 소비 쪽은 중복을 안전하게 처리해야 한다.</p>
         <h2>2. Consumer는 멱등성 키를 저장한다</h2>
         <p>가장 단순한 방법은 이벤트 ID를 처리 이력으로 기록하는 것이다. Consumer는 작업을 수행하기 전에 해당 ID가 이미 처리됐는지 확인하고, 처리 결과와 ID를 같은 트랜잭션 안에 저장한다. 데이터베이스의 unique 제약을 활용하면, 여러 Consumer 인스턴스가 동시에 같은 메시지를 받더라도 그중 하나만 성공하게 만들 수 있다.</p>
         <h3>예시: 중복 이벤트를 무시하는 Consumer</h3>
-        <pre><code>{`async function handlePaymentApproved(event: PaymentApproved) {
-  await db.transaction(async (tx) => {
-    const alreadyProcessed = await inboxRepository.exists(tx, event.id);
-    if (alreadyProcessed) return;
+        <pre><code>{`@Component
+class PaymentApprovedEventHandler(
+    private val inboxRepository: InboxRepository,
+    private val orderRepository: OrderRepository,
+) {
+    @Transactional
+    fun handle(event: PaymentApprovedEvent) {
+        if (inboxRepository.exists(event.id)) return
 
-    const order = await orderRepository.findById(tx, event.orderId);
-    order.markPaid(event.approvedAt);
-    await orderRepository.save(tx, order);
+        val order = orderRepository.findOrder(event.orderId)
+        order.markPaid(event.approvedAt)
+        orderRepository.saveOrder(order)
 
-    // Put a unique index on event_id.
-    await inboxRepository.record(tx, event.id, 'payment-service');
-  });
+        // Put a unique index on event_id.
+        inboxRepository.record(event.id, "payment-service")
+    }
 }`}</code></pre>
         <p>여기서 Inbox 레코드와 주문 상태 변경은 반드시 같은 트랜잭션 안에 있어야 한다. 둘 중 하나만 성공하면 다음 재시도에서 불일치가 생긴다. 외부 API 호출처럼 같은 트랜잭션에 묶을 수 없는 작업이라면, 제공자가 지원하는 멱등성 키를 전달하거나 호출 의도 자체를 Outbox 항목으로 기록해 재시도 가능한 연산으로 바꿔야 한다.</p>
         <h2>3. 재시도는 정책이지, 무한 반복이 아니다</h2>

@@ -66,6 +66,10 @@ const BugsOnlyE2eTestsCatch = lazy(
 const PromptInjectionInToolOutput = lazy(
   () => import('../pages/Post/PromptInjectionInToolOutput'),
 );
+const TheFraudSignalThatTrustedTheFraudster = lazy(
+  () => import('../pages/Post/TheFraudSignalThatTrustedTheFraudster'),
+);
+const NarrowWhatNeverWho = lazy(() => import('../pages/Post/NarrowWhatNeverWho'));
 
 export default function Router() {
   return (
@@ -164,6 +168,14 @@ export default function Router() {
             <Route
               path="/posts/prompt-injection-in-tool-output"
               element={<PromptInjectionInToolOutput />}
+            />
+            <Route
+              path="/posts/the-fraud-signal-that-trusted-the-fraudster"
+              element={<TheFraudSignalThatTrustedTheFraudster />}
+            />
+            <Route
+              path="/posts/narrow-what-never-who"
+              element={<NarrowWhatNeverWho />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

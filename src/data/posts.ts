@@ -15,6 +15,34 @@ export interface PostMeta {
 // Not necessarily in date order — see `postsByDate` for that.
 export const posts: PostMeta[] = [
   {
+    slug: 'the-fraud-signal-that-trusted-the-fraudster',
+    title: {
+      en: 'The Fraud Signal That Trusted the Fraudster',
+      ko: '사기꾼을 그대로 믿은 사기 탐지 신호',
+    },
+    summary: {
+      en: "RefundReasonClassifier's fraud-risk score was computed entirely from text the refund requester controlled. Removing it, the sibling ML scorer that went with it, and the one rule the removal left behind.",
+      ko: 'RefundReasonClassifier의 사기 위험 점수는 환불 요청자가 직접 통제하는 텍스트만으로 계산되었다. 그것과 함께 있던 자매 ML 스코어러를 제거하고, 이번 제거가 남긴 단 하나의 규칙까지.',
+    },
+    date: '2026.07.26',
+    tags: ['Security', 'LLM'],
+    readMinutes: 12,
+  },
+  {
+    slug: 'narrow-what-never-who',
+    title: {
+      en: 'Narrow What, Never Who',
+      ko: '무엇은 좁히고, 누구는 정하지 않는다',
+    },
+    summary: {
+      en: 'A structured-data RAG feature over an account\'s own transaction history, the guardrail that lets an LLM touch it safely, and how the same invariant survived five different languages\' own conventions.',
+      ko: '계좌 본인의 거래 내역을 다루는 구조화 데이터 RAG 기능과, LLM이 안전하게 관여하도록 만드는 가드레일, 그리고 그 불변식이 다섯 개 언어 각자의 관례 속에서도 살아남은 과정.',
+    },
+    date: '2026.07.26',
+    tags: ['LLM', 'Comparative'],
+    readMinutes: 14,
+  },
+  {
     slug: 'aggregate-design',
     title: {
       en: 'Designing Aggregates: Transaction Boundaries and Invariants',

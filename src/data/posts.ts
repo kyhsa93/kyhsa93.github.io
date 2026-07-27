@@ -15,6 +15,20 @@ export interface PostMeta {
 // Not necessarily in date order — see `postsByDate` for that.
 export const posts: PostMeta[] = [
   {
+    slug: 'not-every-report-needs-a-server',
+    title: {
+      en: 'Not Every Report Needs a Server',
+      ko: '모든 리포트에 서버가 필요한 건 아니다',
+    },
+    summary: {
+      en: 'A monthly statement and a GDPR-style data export both died to the same question: couldn\'t the client just build this itself? The spending-analysis ETL that survived it, and the rule it revealed.',
+      ko: '월별 명세서도, GDPR식 데이터 내보내기도 같은 질문 앞에서 무너졌다: 클라이언트가 직접 만들면 되지 않나? 그 질문을 통과한 지출 분석 ETL과, 거기서 드러난 규칙.',
+    },
+    date: '2026.07.27',
+    tags: ['ETL', 'Architecture'],
+    readMinutes: 12,
+  },
+  {
     slug: 'the-fraud-signal-that-trusted-the-fraudster',
     title: {
       en: 'The Fraud Signal That Trusted the Fraudster',

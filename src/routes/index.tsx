@@ -70,6 +70,9 @@ const TheFraudSignalThatTrustedTheFraudster = lazy(
   () => import('../pages/Post/TheFraudSignalThatTrustedTheFraudster'),
 );
 const NarrowWhatNeverWho = lazy(() => import('../pages/Post/NarrowWhatNeverWho'));
+const NotEveryReportNeedsAServer = lazy(
+  () => import('../pages/Post/NotEveryReportNeedsAServer'),
+);
 
 export default function Router() {
   return (
@@ -176,6 +179,10 @@ export default function Router() {
             <Route
               path="/posts/narrow-what-never-who"
               element={<NarrowWhatNeverWho />}
+            />
+            <Route
+              path="/posts/not-every-report-needs-a-server"
+              element={<NotEveryReportNeedsAServer />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

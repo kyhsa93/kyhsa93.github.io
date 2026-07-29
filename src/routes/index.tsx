@@ -73,6 +73,9 @@ const NarrowWhatNeverWho = lazy(() => import('../pages/Post/NarrowWhatNeverWho')
 const NotEveryReportNeedsAServer = lazy(
   () => import('../pages/Post/NotEveryReportNeedsAServer'),
 );
+const APerfectScoreABrokenFeature = lazy(
+  () => import('../pages/Post/APerfectScoreABrokenFeature'),
+);
 
 export default function Router() {
   return (
@@ -183,6 +186,10 @@ export default function Router() {
             <Route
               path="/posts/not-every-report-needs-a-server"
               element={<NotEveryReportNeedsAServer />}
+            />
+            <Route
+              path="/posts/a-perfect-score-a-broken-feature"
+              element={<APerfectScoreABrokenFeature />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

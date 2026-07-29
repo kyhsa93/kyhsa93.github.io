@@ -15,6 +15,20 @@ export interface PostMeta {
 // Not necessarily in date order — see `postsByDate` for that.
 export const posts: PostMeta[] = [
   {
+    slug: 'a-perfect-score-a-broken-feature',
+    title: {
+      en: 'A Perfect Score, A Broken Feature',
+      ko: '완벽한 점수, 작동하지 않는 기능',
+    },
+    summary: {
+      en: 'Same doc, same task, two models, run at the same time in separate worktrees. Both self-reported a perfect harness score. Only one of them, independently reproduced against real Postgres and LocalStack, actually worked.',
+      ko: '같은 문서, 같은 과제, 두 개의 모델을 별도 worktree에서 동시에 돌렸다. 둘 다 완벽한 harness 점수를 자체 보고했다. 실제 Postgres와 LocalStack을 대상으로 독립 재현했을 때, 동작한 쪽은 하나뿐이었다.',
+    },
+    date: '2026.07.28',
+    tags: ['AI Agents', 'Benchmark'],
+    readMinutes: 9,
+  },
+  {
     slug: 'not-every-report-needs-a-server',
     title: {
       en: 'Not Every Report Needs a Server',

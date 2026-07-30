@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import type { MetaFunction } from 'react-router';
 import { postsByDate } from '../../data/posts';
-import { useSeo } from '../../hooks/useSeo';
 import { useLocale } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
+import { createMeta } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
+
+export const meta: MetaFunction = () =>
+  createMeta({
+    title: uiCopy.en.home.seoTitle,
+    description: uiCopy.en.home.seoDescription,
+    path: '/',
+  });
 
 const latestPosts = postsByDate.slice(0, 3);
 
@@ -39,12 +47,6 @@ export default function Home() {
     document.documentElement.setAttribute('data-theme', theme);
     window.localStorage.setItem('theme', theme);
   }, [theme]);
-
-  useSeo({
-    title: t.home.seoTitle,
-    description: t.home.seoDescription,
-    path: '/',
-  });
 
   return (
     <main className="home-page">

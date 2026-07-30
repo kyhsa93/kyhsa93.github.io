@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
-import { useSeo } from '../../hooks/useSeo';
+import type { MetaFunction } from 'react-router';
 import { useLocale } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
+import { createMeta } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
+
+export const meta: MetaFunction = () =>
+  createMeta({
+    title: uiCopy.en.privacyPolicy.seoTitle,
+    description: uiCopy.en.privacyPolicy.seoDescription,
+    path: '/privacy-policy',
+  });
 
 export default function PrivacyPolicy() {
   const { locale } = useLocale();
   const t = uiCopy[locale];
-
-  useSeo({
-    title: t.privacyPolicy.seoTitle,
-    description: t.privacyPolicy.seoDescription,
-    path: '/privacy-policy',
-  });
 
   return (
     <main className="home-page">

@@ -1,0 +1,83 @@
+import type { ReactNode } from 'react';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+
+import { LocaleProvider } from './lib/locale';
+import { AdConsentProvider } from './lib/adConsent';
+import { ConsentBanner } from './components/ConsentBanner';
+import { ScrollToTop } from './components/ScrollToTop';
+
+import './index.css';
+import './App.css';
+
+// Runs before paint so a saved/preferred dark theme applies on first render instead of
+// flashing the light default while JS hydrates. Mirrors the logic every page relies on —
+// only Home owns a theme toggle, every other route just needs this applied once, up front.
+const THEME_INIT_SCRIPT = `
+(function () {
+  try {
+    var saved = window.localStorage.getItem('theme');
+    var theme = saved === 'dark' || saved === 'light'
+      ? saved
+      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+`;
+
+export function Layout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#182118" />
+        <meta name="robots" content="index, follow" />
+
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="younghoon — backend engineer"
+          href="https://kyhsa93.github.io/rss.xml"
+        />
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title="younghoon — backend engineer"
+          href="https://kyhsa93.github.io/atom.xml"
+        />
+
+        <meta name="google-adsense-account" content="ca-pub-1195159445218373" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1195159445218373"
+          crossOrigin="anonymous"
+        />
+
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+export default function App() {
+  return (
+    <LocaleProvider>
+      <AdConsentProvider>
+        <ScrollToTop />
+        <Outlet />
+        <ConsentBanner />
+      </AdConsentProvider>
+    </LocaleProvider>
+  );
+}

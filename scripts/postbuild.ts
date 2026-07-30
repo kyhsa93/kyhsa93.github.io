@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,10 +10,9 @@ const SITE_NAME = 'younghoon';
 const SITE_TITLE = 'younghoon — backend engineer';
 const SITE_DESCRIPTION =
   'Notes from a backend engineer who designs complex systems with clarity.';
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
-const DIST_DIR = resolve(SCRIPT_DIR, '../dist');
+const DIST_DIR = resolve(SCRIPT_DIR, '../build/client');
 
 function toIsoDate(date: string): string {
   return date.replace(/\./g, '-');
@@ -145,82 +144,7 @@ ${postEntries}
 `;
 }
 
-// --- Static per-route <head> tags, so link-preview bots and crawlers that
-// don't execute JS still see the real title/description/OG/JSON-LD instead
-// of the generic homepage meta baked into index.html ---------------------
-
-interface PageMeta {
-  title: string;
-  description: string;
-  path: string;
-  type: 'website' | 'article';
-  image?: string;
-  publishedTime?: string;
-  jsonLd?: Record<string, unknown>;
-}
-
-function injectMeta(template: string, meta: PageMeta): string {
-  const url = `${SITE_URL}${meta.path}`;
-  const fullTitle = meta.path === '/' ? meta.title : `${meta.title} · ${SITE_NAME}`;
-  const title = xmlEscape(meta.title);
-  const description = xmlEscape(meta.description);
-  const image = meta.image ?? DEFAULT_IMAGE;
-
-  let html = template
-    .replace(/<title>.*?<\/title>/, `<title>${xmlEscape(fullTitle)}</title>`)
-    .replace(/<link rel="canonical" href="[^"]*"\s*\/>/, `<link rel="canonical" href="${url}" />`)
-    .replace(
-      /<meta name="description" content="[^"]*"\s*\/>/,
-      `<meta name="description" content="${description}" />`
-    )
-    .replace(
-      /<meta property="og:type" content="[^"]*"\s*\/>/,
-      `<meta property="og:type" content="${meta.type}" />`
-    )
-    .replace(
-      /<meta property="og:title" content="[^"]*"\s*\/>/,
-      `<meta property="og:title" content="${title}" />`
-    )
-    .replace(
-      /<meta property="og:description" content="[^"]*"\s*\/>/,
-      `<meta property="og:description" content="${description}" />`
-    )
-    .replace(/<meta property="og:url" content="[^"]*"\s*\/>/, `<meta property="og:url" content="${url}" />`)
-    .replace(/<meta property="og:image" content="[^"]*"\s*\/>/, `<meta property="og:image" content="${image}" />`)
-    .replace(
-      /<meta name="twitter:title" content="[^"]*"\s*\/>/,
-      `<meta name="twitter:title" content="${title}" />`
-    )
-    .replace(
-      /<meta name="twitter:description" content="[^"]*"\s*\/>/,
-      `<meta name="twitter:description" content="${description}" />`
-    )
-    .replace(/<meta name="twitter:image" content="[^"]*"\s*\/>/, `<meta name="twitter:image" content="${image}" />`);
-
-  const extraTags: string[] = [];
-  if (meta.publishedTime) {
-    extraTags.push(`  <meta property="article:published_time" content="${meta.publishedTime}" />`);
-  }
-  if (meta.jsonLd) {
-    extraTags.push(`  <script type="application/ld+json">${JSON.stringify(meta.jsonLd)}</script>`);
-  }
-
-  html = extraTags.length
-    ? html.replace('</head>', `${extraTags.join('\n')}\n</head>`)
-    : html;
-
-  return html;
-}
-
-function writeRoute(template: string, routePath: string, meta: PageMeta): void {
-  const dir = routePath === '/' ? DIST_DIR : resolve(DIST_DIR, `.${routePath}`);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(resolve(dir, 'index.html'), injectMeta(template, meta));
-}
-
 async function main(): Promise<void> {
-  const template = readFileSync(resolve(DIST_DIR, 'index.html'), 'utf-8');
-
   const ogDir = resolve(DIST_DIR, 'og');
   mkdirSync(ogDir, { recursive: true });
   for (const post of posts) {
@@ -228,56 +152,16 @@ async function main(): Promise<void> {
     writeFileSync(resolve(ogDir, `${post.slug}.png`), png);
   }
 
-  writeRoute(template, '/', {
-    title: SITE_TITLE,
-    description: `${SITE_DESCRIPTION} TypeScript, Go, and the Backend Service Playbook.`,
-    path: '/',
-    type: 'website',
-  });
-
-  writeRoute(template, '/posts', {
-    title: 'All posts',
-    description: `Every post, in one place — ${posts.length} write-ups on DDD, CQRS, and backend architecture.`,
-    path: '/posts',
-    type: 'website',
-  });
-
-  writeRoute(template, '/privacy-policy', {
-    title: 'Privacy Policy',
-    description: "How this site uses cookies and third-party advertising (Google AdSense).",
-    path: '/privacy-policy',
-    type: 'website',
-  });
-
-  for (const post of posts) {
-    const path = `/posts/${post.slug}`;
-    const image = `${SITE_URL}/og/${post.slug}.png`;
-    writeRoute(template, path, {
-      title: post.title.en,
-      description: post.summary.en,
-      path,
-      type: 'article',
-      image,
-      publishedTime: toIsoDate(post.date),
-      jsonLd: {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: post.title.en,
-        description: post.summary.en,
-        datePublished: toIsoDate(post.date),
-        author: { '@type': 'Person', name: SITE_NAME },
-        image,
-        url: `${SITE_URL}${path}`,
-      },
-    });
-  }
-
   writeFileSync(resolve(DIST_DIR, 'rss.xml'), generateRss());
   writeFileSync(resolve(DIST_DIR, 'atom.xml'), generateAtom());
   writeFileSync(resolve(DIST_DIR, 'sitemap.xml'), generateSitemap());
 
+  // GitHub Pages looks for a flat /404.html at the site root; react-router prerenders the
+  // "/404" route to 404/index.html like any other route, so copy it into place here.
+  copyFileSync(resolve(DIST_DIR, '404', 'index.html'), resolve(DIST_DIR, '404.html'));
+
   console.log(
-    `postbuild: wrote rss.xml, atom.xml, sitemap.xml, ${posts.length} OG images, and static <head> tags for ${posts.length + 2} routes`
+    `postbuild: wrote rss.xml, atom.xml, sitemap.xml, and ${posts.length} OG images (per-route <head> tags are now baked in by react-router prerendering)`
   );
 }
 

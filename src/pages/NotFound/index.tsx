@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
-import { useSeo } from '../../hooks/useSeo';
+import type { MetaFunction } from 'react-router';
 import { useLocale } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
+import { createMeta } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
+
+export const meta: MetaFunction = () =>
+  createMeta({
+    title: uiCopy.en.notFound.seoTitle,
+    description: uiCopy.en.notFound.seoDescription,
+    path: '/404',
+  });
 
 export default function NotFound() {
   const { locale } = useLocale();
   const t = uiCopy[locale];
-
-  useSeo({
-    title: t.notFound.seoTitle,
-    description: t.notFound.seoDescription,
-    path: '/404',
-  });
 
   return (
     <main className="home-page">

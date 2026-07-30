@@ -1,19 +1,21 @@
 import { Link } from 'react-router-dom';
+import type { MetaFunction } from 'react-router';
 import { postsByDate } from '../../data/posts';
-import { useSeo } from '../../hooks/useSeo';
 import { useLocale } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
+import { createMeta } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
+
+export const meta: MetaFunction = () =>
+  createMeta({
+    title: uiCopy.en.archive.seoTitle,
+    description: uiCopy.en.archive.seoDescription(postsByDate.length),
+    path: '/posts',
+  });
 
 export default function Archive() {
   const { locale } = useLocale();
   const t = uiCopy[locale];
-
-  useSeo({
-    title: t.archive.seoTitle,
-    description: t.archive.seoDescription(postsByDate.length),
-    path: '/posts',
-  });
 
   return (
     <main className="home-page">

@@ -1,5 +1,9 @@
 import PostLayout from '../../components/PostLayout';
 import { useLocale } from '../../lib/locale';
+import type { MetaFunction } from 'react-router';
+import { createPostMeta } from '../../lib/seo';
+
+export const meta: MetaFunction = () => createPostMeta('can-an-ai-agent-follow-your-architecture');
 
 const content = {
   en: {

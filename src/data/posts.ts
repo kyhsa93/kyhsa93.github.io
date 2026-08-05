@@ -532,6 +532,20 @@ export const posts: PostMeta[] = [
     tags: ['Tooling', 'Architecture'],
     readMinutes: 11,
   },
+  {
+    slug: 'an-end-to-end-test-that-wasnt',
+    title: {
+      en: "An End-to-End Test That Wasn't",
+      ko: 'End-to-End이 아니었던 End-to-End 테스트',
+    },
+    summary: {
+      en: "NestJS's e2e suite assembled its own approximation of the app instead of booting the real one, and every language's LLM features had only ever run through their own fallback path. Fixing both surfaced a stranger bug: nock and testcontainers fighting over the same patched module.",
+      ko: 'nestjs의 e2e 스위트는 실제 앱을 부팅하는 대신 자기만의 근사치를 조립하고 있었고, 모든 언어의 LLM 기능은 자기 자신의 폴백 경로로만 실행돼왔다. 둘 다 고치는 과정에서 더 이상한 버그가 드러났다: 같은 패치된 모듈을 두고 싸우는 nock과 testcontainers.',
+    },
+    date: '2026.08.04',
+    tags: ['Testing', 'Reliability'],
+    readMinutes: 11,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

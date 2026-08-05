@@ -115,6 +115,10 @@ export default [
   ),
   route('posts/zero-findings-eighty-bugs', 'pages/Post/ZeroFindingsEightyBugs.tsx'),
   route('posts/an-end-to-end-test-that-wasnt', 'pages/Post/AnEndToEndTestThatWasnt.tsx'),
+  route(
+    'posts/the-same-instant-two-different-timestamps',
+    'pages/Post/TheSameInstantTwoDifferentTimestamps.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

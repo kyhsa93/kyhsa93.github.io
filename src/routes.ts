@@ -81,6 +81,10 @@ export default [
     'posts/the-harness-had-never-met-a-second-domain',
     'pages/Post/TheHarnessHadNeverMetASecondDomain.tsx',
   ),
+  route(
+    'posts/a-path-existence-checker-found-a-real-bug-on-day-one',
+    'pages/Post/APathExistenceCheckerFoundARealBugOnDayOne.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

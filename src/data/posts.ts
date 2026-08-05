@@ -546,6 +546,20 @@ export const posts: PostMeta[] = [
     tags: ['Testing', 'Reliability'],
     readMinutes: 11,
   },
+  {
+    slug: 'the-same-instant-two-different-timestamps',
+    title: {
+      en: 'The Same Instant, Two Different Timestamps',
+      ko: '같은 순간, 서로 다른 두 타임스탬프',
+    },
+    summary: {
+      en: 'The same moment, serialized by the same driver, produces a different string depending on the process\'s timezone. Four languages had this bug at the call site and one had it at the process boundary — and the fix belonged in a genuinely different place in each, verified by literally running the tests nine time zones apart.',
+      ko: '같은 순간이 같은 드라이버로 직렬화돼도 프로세스의 시간대에 따라 다른 문자열이 나온다. 4개 언어는 호출 지점에, 1개 언어는 프로세스 경계에 이 버그가 있었다 — 그리고 수정은 언어마다 진짜 다른 자리에 있어야 했다, 시간대를 9시간 떨어뜨려 실제로 테스트를 돌려서 검증했다.',
+    },
+    date: '2026.08.05',
+    tags: ['Backend', 'Reliability'],
+    readMinutes: 11,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

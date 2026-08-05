@@ -490,6 +490,20 @@ export const posts: PostMeta[] = [
     tags: ['Event-driven', 'Reliability'],
     readMinutes: 10,
   },
+  {
+    slug: 'the-automation-that-was-waiting-on-itself',
+    title: {
+      en: 'The Automation That Was Waiting on Itself',
+      ko: '자기 자신을 기다리고 있던 자동화',
+    },
+    summary: {
+      en: "Every PR a Dependabot auto-merge workflow had ever merged did so by winning a race against its own six-hour deadlock — one of its steps was waiting for a check run that could only finish after that step did. Fixing it surfaced a second bug waiting right behind the first, and a class of half-merge left behind by plain GitHub 502s.",
+      ko: 'Dependabot auto-merge 워크플로가 그동안 머지한 PR은 전부 자기 자신의 6시간짜리 데드락을 상대로 한 경쟁에서 이겨서 그렇게 된 것이었다 — 스텝 하나가, 바로 그 스텝이 끝나야만 끝날 수 있는 체크 실행을 기다리고 있었다. 고쳤더니 바로 뒤에서 기다리던 두 번째 버그와, 평범한 GitHub 502가 남기고 간 반쪽짜리 머지들이 드러났다.',
+    },
+    date: '2026.08.04',
+    tags: ['Tooling', 'Automation'],
+    readMinutes: 9,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

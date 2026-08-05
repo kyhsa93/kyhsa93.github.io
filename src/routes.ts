@@ -113,6 +113,7 @@ export default [
     'posts/the-image-nothing-noticed-couldnt-build',
     'pages/Post/TheImageNothingNoticedCouldntBuild.tsx',
   ),
+  route('posts/zero-findings-eighty-bugs', 'pages/Post/ZeroFindingsEightyBugs.tsx'),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

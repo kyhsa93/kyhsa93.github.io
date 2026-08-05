@@ -476,6 +476,20 @@ export const posts: PostMeta[] = [
     tags: ['API Design', 'Testing'],
     readMinutes: 12,
   },
+  {
+    slug: 'the-bug-came-back-wearing-five-different-masks',
+    title: {
+      en: 'The Bug Came Back, Wearing Five Different Masks',
+      ko: '버그가 돌아왔다, 다섯 개의 다른 가면을 쓰고',
+    },
+    summary: {
+      en: 'A week after a benchmark task exposed two languages that could not support a second event subscriber, four real features made every language need one. This time all five broke — from a loud boot-time crash to a silent single-handler drop nothing ever logged.',
+      ko: '이벤트에 두 번째 구독자를 지원하지 못하는 언어 둘을 벤치마크 과제가 찾아낸 지 일주일 뒤, 실제 기능 4개가 모든 언어에 그걸 요구하게 만들었다. 이번엔 5개 언어 전부가 깨졌다 — 시끄러운 부팅 시점 크래시부터 아무 로그도 남기지 않는 조용한 핸들러 드롭까지.',
+    },
+    date: '2026.07.28',
+    tags: ['Event-driven', 'Reliability'],
+    readMinutes: 10,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

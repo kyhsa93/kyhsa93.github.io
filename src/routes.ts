@@ -101,6 +101,10 @@ export default [
     'posts/five-bugs-nobody-was-looking-for',
     'pages/Post/FiveBugsNobodyWasLookingFor.tsx',
   ),
+  route(
+    'posts/the-bug-came-back-wearing-five-different-masks',
+    'pages/Post/TheBugCameBackWearingFiveDifferentMasks.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

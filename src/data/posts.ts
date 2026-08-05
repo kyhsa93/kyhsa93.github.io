@@ -448,6 +448,20 @@ export const posts: PostMeta[] = [
     tags: ['Backend', 'Reliability'],
     readMinutes: 12,
   },
+  {
+    slug: 'the-bug-that-needed-two-subscribers-to-exist',
+    title: {
+      en: 'The Bug That Needed Two Subscribers to Exist',
+      ko: '구독자가 둘이어야만 존재하던 버그',
+    },
+    summary: {
+      en: 'Five languages scoring 100% on an easy synthetic task taught nothing about where they would fail. A four-level difficulty ladder built specifically to exercise unexercised code paths found the ceiling — and its last rung exposed a fan-out bug that had been invisible since nothing had ever subscribed two things to the same event before.',
+      ko: '쉬운 합성 과제에서 5개 언어가 전부 100점을 받는다고 해서 어디서 실패할지가 드러나는 건 아니다. 아직 건드려본 적 없는 코드 경로를 정확히 겨냥해 만든 4단계 난이도 사다리가 그 천장을 찾아냈고, 마지막 단에서 같은 이벤트에 둘이 구독해본 적이 한 번도 없어서 보이지 않던 팬아웃 버그가 드러났다.',
+    },
+    date: '2026.07.21',
+    tags: ['AI Agents', 'Benchmark'],
+    readMinutes: 13,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

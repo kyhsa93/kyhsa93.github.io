@@ -109,6 +109,10 @@ export default [
     'posts/the-automation-that-was-waiting-on-itself',
     'pages/Post/TheAutomationThatWasWaitingOnItself.tsx',
   ),
+  route(
+    'posts/the-image-nothing-noticed-couldnt-build',
+    'pages/Post/TheImageNothingNoticedCouldntBuild.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

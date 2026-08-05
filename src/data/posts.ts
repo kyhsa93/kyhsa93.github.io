@@ -504,6 +504,20 @@ export const posts: PostMeta[] = [
     tags: ['Tooling', 'Automation'],
     readMinutes: 9,
   },
+  {
+    slug: 'the-image-nothing-noticed-couldnt-build',
+    title: {
+      en: "The Image Nothing Noticed Couldn't Build",
+      ko: '아무도 눈치채지 못한 빌드 안 되는 이미지',
+    },
+    summary: {
+      en: 'A Spring Boot 4 migration that checked git history instead of a stale doc, found a workaround for a library a search index insisted did not exist, and ended a day later with the deployable image unable to build — because nothing in CI was watching the file whose meaning had just changed.',
+      ko: '낡은 문서 대신 git 히스토리를 확인하고, 검색 인덱스가 없다고 우기던 라이브러리의 우회책을 찾아냈던 Spring Boot 4 마이그레이션은, 하루 뒤 배포 이미지가 아예 빌드가 안 되는 상태로 끝났다 — 의미가 방금 바뀐 파일을 CI 안 그 무엇도 지켜보고 있지 않았기 때문이다.',
+    },
+    date: '2026.08.04',
+    tags: ['Architecture', 'Tooling'],
+    readMinutes: 10,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

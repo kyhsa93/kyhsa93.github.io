@@ -518,6 +518,20 @@ export const posts: PostMeta[] = [
     tags: ['Architecture', 'Tooling'],
     readMinutes: 10,
   },
+  {
+    slug: 'zero-findings-eighty-bugs',
+    title: {
+      en: 'Zero Findings, Eighty Bugs',
+      ko: '발견 0건, 버그 80건',
+    },
+    summary: {
+      en: 'A path-existence checker reported zero findings before and after a three-language audit round that fixed roughly eighty real issues — stale code quotes, an evaluator that grades itself a perfect score for scanning nothing, and a generator still emitting a bug already fixed in the code it was modeled on.',
+      ko: '경로 존재 여부만 확인하는 체커는 3개 언어 감사 라운드 전후로 계속 발견 0건을 보고했지만, 그 라운드는 실제 문제 약 80건을 고쳤다 — 낡은 코드 인용, 아무것도 스캔하지 않고 스스로에게 만점을 주는 평가기, 그리고 자기가 본뜬 코드에서 이미 고쳐진 버그를 여전히 그대로 뱉어내는 생성기.',
+    },
+    date: '2026.08.04',
+    tags: ['Tooling', 'Architecture'],
+    readMinutes: 11,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

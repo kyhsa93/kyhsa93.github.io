@@ -406,6 +406,20 @@ export const posts: PostMeta[] = [
     tags: ['Tooling', 'Testing'],
     readMinutes: 9,
   },
+  {
+    slug: 'a-path-existence-checker-found-a-real-bug-on-day-one',
+    title: {
+      en: 'A Path-Existence Checker Found a Real Bug on Day One',
+      ko: '경로 존재 여부만 확인하는 스크립트가 첫날 실제 버그를 잡았다',
+    },
+    summary: {
+      en: "No parsing, no understanding of what a code snippet does — just comparing backtick-quoted paths against the real file tree. The exclusion rules that kept it from crying wolf mattered more than the two-pattern check itself, and it still caught a real bug in four docs on its first run.",
+      ko: '파싱도, 코드 스니펫이 뭘 하는지에 대한 이해도 없다 — 백틱 경로를 실제 파일 트리와 비교할 뿐이다. 오탐을 막아준 예외 규칙들이 두 가지 탐지 패턴 자체보다 중요했고, 그럼에도 첫 실행에서 문서 4곳의 진짜 버그를 잡았다.',
+    },
+    date: '2026.07.18',
+    tags: ['Tooling', 'Documentation'],
+    readMinutes: 8,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

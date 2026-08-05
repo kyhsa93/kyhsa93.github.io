@@ -392,6 +392,20 @@ export const posts: PostMeta[] = [
     tags: ['DDD', 'Architecture'],
     readMinutes: 11,
   },
+  {
+    slug: 'the-harness-had-never-met-a-second-domain',
+    title: {
+      en: 'The Harness Had Never Met a Second Domain',
+      ko: '하네스는 두 번째 도메인을 만나본 적이 없었다',
+    },
+    summary: {
+      en: 'Two harness rules had checked out clean for months — because every domain that ever fed them was Account or Card. Building a genuinely unrelated third domain surfaced two false positives, and confirmed the rule meant to catch a real mistake still did.',
+      ko: '하네스 규칙 두 개가 몇 달째 깨끗했던 이유는 지금까지 입력된 도메인이 전부 Account와 Card뿐이었기 때문이다. 완전히 무관한 세 번째 도메인을 만들어보니 오탐 두 건이 드러났고, 진짜 실수를 잡을 규칙은 여전히 그걸 잡는다는 것도 확인됐다.',
+    },
+    date: '2026.07.17',
+    tags: ['Tooling', 'Testing'],
+    readMinutes: 9,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

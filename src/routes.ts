@@ -73,6 +73,10 @@ export default [
     'posts/a-perfect-score-a-broken-feature',
     'pages/Post/APerfectScoreABrokenFeature.tsx',
   ),
+  route(
+    'posts/when-the-docs-and-the-code-agree-to-be-wrong',
+    'pages/Post/WhenTheDocsAndTheCodeAgreeToBeWrong.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

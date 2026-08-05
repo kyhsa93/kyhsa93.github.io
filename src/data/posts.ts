@@ -378,6 +378,20 @@ export const posts: PostMeta[] = [
     tags: ['AI Agents', 'Security'],
     readMinutes: 9,
   },
+  {
+    slug: 'when-the-docs-and-the-code-agree-to-be-wrong',
+    title: {
+      en: 'When the Docs and the Code Agree to Be Wrong',
+      ko: '문서와 코드가 사이좋게 함께 틀렸을 때',
+    },
+    summary: {
+      en: 'Three violations across five languages — a Query reading a write Repository, a domain class carrying JPA, a notification module in the wrong layer. Only one was actually a bug, and the other two reveal why dozens of prior audits never caught any of it.',
+      ko: '다섯 언어에 걸친 위반 세 가지 — 쓰기용 Repository를 읽는 Query, JPA를 그대로 단 도메인 클래스, 잘못된 레이어의 notification 모듈. 진짜 버그는 하나뿐이었고, 나머지 둘은 그 많은 이전 감사가 왜 이걸 하나도 못 잡았는지를 드러낸다.',
+    },
+    date: '2026.07.12',
+    tags: ['DDD', 'Architecture'],
+    readMinutes: 11,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

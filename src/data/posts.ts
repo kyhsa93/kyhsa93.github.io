@@ -420,6 +420,20 @@ export const posts: PostMeta[] = [
     tags: ['Tooling', 'Documentation'],
     readMinutes: 8,
   },
+  {
+    slug: 'the-doc-said-done-half-of-it-wasnt',
+    title: {
+      en: 'The Doc Said "Done." Half of It Wasn\'t.',
+      ko: '문서는 "끝났다"고 했다. 절반만 끝나 있었다.',
+    },
+    summary: {
+      en: "A repository-naming fix that only reached the write-side interface, four rounds of turning that gap into permanent harness rules, and a yield curve — three or four real bugs per round, then two, then zero — that was itself the most useful result.",
+      ko: '쓰기 쪽 인터페이스에만 반영된 Repository 네이밍 수정, 그 갭을 영구적인 하네스 규칙으로 바꾼 네 라운드, 그리고 라운드당 3~4건이던 진짜 버그가 2건, 결국 0건으로 떨어진 수확 곡선 — 그 하락 자체가 가장 쓸모 있는 결과였다.',
+    },
+    date: '2026.07.20',
+    tags: ['Conventions', 'Tooling'],
+    readMinutes: 12,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

@@ -85,6 +85,10 @@ export default [
     'posts/a-path-existence-checker-found-a-real-bug-on-day-one',
     'pages/Post/APathExistenceCheckerFoundARealBugOnDayOne.tsx',
   ),
+  route(
+    'posts/the-doc-said-done-half-of-it-wasnt',
+    'pages/Post/TheDocSaidDoneHalfOfItWasnt.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

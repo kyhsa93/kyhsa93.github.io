@@ -462,6 +462,20 @@ export const posts: PostMeta[] = [
     tags: ['AI Agents', 'Benchmark'],
     readMinutes: 13,
   },
+  {
+    slug: 'five-bugs-nobody-was-looking-for',
+    title: {
+      en: 'Five Bugs Nobody Was Looking For',
+      ko: '아무도 찾고 있지 않던 버그 다섯 개',
+    },
+    summary: {
+      en: "Completing incomplete Swagger docs across five languages, verified by actually booting each app instead of trusting the annotations compiled. What it found had nothing to do with documentation — including a Spring Boot 4 dependency split that left production migrations silently never running.",
+      ko: '미완성 Swagger 문서를 5개 언어에 걸쳐 완성하고, 애노테이션이 컴파일된다고 믿는 대신 실제로 앱을 켜서 검증했다. 찾아낸 건 문서화와는 아무 관계가 없었다 — 프로덕션 마이그레이션이 조용히 한 번도 안 돌게 만든 Spring Boot 4의 의존성 분리 사건도 포함해서.',
+    },
+    date: '2026.07.22',
+    tags: ['API Design', 'Testing'],
+    readMinutes: 12,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

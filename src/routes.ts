@@ -105,6 +105,10 @@ export default [
     'posts/the-bug-came-back-wearing-five-different-masks',
     'pages/Post/TheBugCameBackWearingFiveDifferentMasks.tsx',
   ),
+  route(
+    'posts/the-automation-that-was-waiting-on-itself',
+    'pages/Post/TheAutomationThatWasWaitingOnItself.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

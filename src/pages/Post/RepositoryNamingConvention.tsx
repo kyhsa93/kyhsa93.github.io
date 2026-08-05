@@ -13,7 +13,7 @@ const content = {
         The Naming Rule<br /><em>That Caught Real Bugs</em>
       </>
     ),
-    lede: "A method-naming convention feels like the most boring possible thing to standardize. Then you write a tool that actually checks it, run it once, and it finds three real violations nobody had noticed across four different codebases.",
+    lede: "A method-naming convention feels like the most boring possible thing to standardize. Then you write a tool that actually checks it, run it once, and it finds three real violations nobody had noticed across three different codebases.",
     body: (
       <>
         <p>The Repository pattern itself is a settled idea — one Aggregate Root, one Repository interface in the Domain layer, one implementation in Infrastructure. What's less obvious is how much drift is possible in the method names on that interface, and how much that drift actually costs once several people (or several independently-written language ports) are writing against the same convention.</p>
@@ -77,7 +77,7 @@ class AccountRepository(AccountQuery, ABC):
         실제 버그를 잡아낸<br /><em>네이밍 규칙</em>
       </>
     ),
-    lede: '메서드 네이밍 컨벤션을 표준화하는 건 세상에서 가장 지루한 일처럼 느껴진다. 그런데 그걸 실제로 검사하는 도구를 만들어 딱 한 번 돌려보면, 네 개의 서로 다른 코드베이스에서 아무도 눈치채지 못했던 위반 사례 세 건이 드러난다.',
+    lede: '메서드 네이밍 컨벤션을 표준화하는 건 세상에서 가장 지루한 일처럼 느껴진다. 그런데 그걸 실제로 검사하는 도구를 만들어 딱 한 번 돌려보면, 세 개의 서로 다른 코드베이스에서 아무도 눈치채지 못했던 위반 사례 세 건이 드러난다.',
     body: (
       <>
         <p>Repository 패턴 자체는 이미 정착된 개념이다 — 하나의 Aggregate Root에 Domain 계층의 Repository 인터페이스 하나, Infrastructure의 구현체 하나. 덜 명확한 부분은 그 인터페이스의 메서드 이름에서 얼마나 많은 드리프트(drift)가 생길 수 있는가, 그리고 여러 사람이(혹은 독립적으로 작성된 여러 언어 포트가) 같은 컨벤션을 두고 코드를 작성하게 되면 그 드리프트가 실제로 얼마나 큰 비용이 되는가다.</p>

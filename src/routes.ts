@@ -77,6 +77,10 @@ export default [
     'posts/when-the-docs-and-the-code-agree-to-be-wrong',
     'pages/Post/WhenTheDocsAndTheCodeAgreeToBeWrong.tsx',
   ),
+  route(
+    'posts/the-harness-had-never-met-a-second-domain',
+    'pages/Post/TheHarnessHadNeverMetASecondDomain.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

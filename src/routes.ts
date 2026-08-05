@@ -89,6 +89,10 @@ export default [
     'posts/the-doc-said-done-half-of-it-wasnt',
     'pages/Post/TheDocSaidDoneHalfOfItWasnt.tsx',
   ),
+  route(
+    'posts/two-accounts-one-transaction-five-different-answers',
+    'pages/Post/TwoAccountsOneTransactionFiveDifferentAnswers.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

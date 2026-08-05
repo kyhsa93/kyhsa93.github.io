@@ -434,6 +434,20 @@ export const posts: PostMeta[] = [
     tags: ['Conventions', 'Tooling'],
     readMinutes: 12,
   },
+  {
+    slug: 'two-accounts-one-transaction-five-different-answers',
+    title: {
+      en: 'Two Accounts, One Transaction, Five Different Answers',
+      ko: '두 계좌, 하나의 트랜잭션, 다섯 개의 서로 다른 답',
+    },
+    summary: {
+      en: "A transfer feature needs one thing every implementation already claimed to support: writing two Aggregates atomically. Building it for real found a working mechanism in one language, a regression waiting one edit inside the obvious fix in another, and a doc that had been quietly wrong about its own code in a third.",
+      ko: '송금 기능에 필요한 건 딱 하나, 모든 구현체가 이미 지원한다고 주장했던 것 — 두 Aggregate의 원자적 쓰기. 실제로 만들어보니 한 언어는 메커니즘이 진짜 동작했고, 한 언어는 당연해 보이는 수정 한 걸음 안쪽에 회귀가 도사리고 있었고, 한 언어는 문서가 자기 코드에 대해 조용히 틀려 있었다.',
+    },
+    date: '2026.07.21',
+    tags: ['Backend', 'Reliability'],
+    readMinutes: 12,
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

@@ -97,6 +97,10 @@ export default [
     'posts/the-bug-that-needed-two-subscribers-to-exist',
     'pages/Post/TheBugThatNeededTwoSubscribersToExist.tsx',
   ),
+  route(
+    'posts/five-bugs-nobody-was-looking-for',
+    'pages/Post/FiveBugsNobodyWasLookingFor.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

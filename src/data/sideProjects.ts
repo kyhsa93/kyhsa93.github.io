@@ -31,4 +31,12 @@ export const sideProjects: SideProject[] = [
     },
     url: 'https://kyhsa93.github.io/fove',
   },
+  {
+    title: 'Toddler Milestone Checklist',
+    description: {
+      en: 'An offline-capable PWA for tracking toddler developmental milestones (12–36 months) across four domains, plus a simple growth log. Not a diagnostic tool.',
+      ko: '12~36개월 영유아의 발달을 네 개 영역으로 관찰하고 성장 기록을 남기는 오프라인 지원 PWA입니다. 진단 도구는 아닙니다.',
+    },
+    url: 'https://kyhsa93.github.io/toddler-milestone-checklist/',
+  },
 ];

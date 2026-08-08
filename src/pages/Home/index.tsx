@@ -20,6 +20,8 @@ const sideProjectLinks: (string | undefined)[] = [
   'https://kyhsa93.github.io/fove',
   undefined,
   undefined,
+  'https://github.com/kyhsa93/backend-service-playbook',
+  'https://github.com/kyhsa93/k8s-playbook',
 ];
 
 const getInitialTheme = () => {
@@ -56,7 +58,7 @@ export default function Home() {
           <span>younghoon</span>
         </a>
         <div className="nav-links">
-          <a href="#work">{t.nav.work}</a>
+          <a href="#latest">{t.nav.work}</a>
           <a href="#about">{t.nav.about}</a>
           <button
             className="theme-toggle"
@@ -91,7 +93,7 @@ export default function Home() {
           </h1>
           <p className="intro">{t.home.intro}</p>
           <div className="cta-row">
-            <a className="primary-link" href="#work">
+            <a className="primary-link" href="#latest">
               {t.home.ctaViewProjects} <span aria-hidden="true">↓</span>
             </a>
             <a
@@ -149,67 +151,6 @@ export default function Home() {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="work-section" id="work">
-        <div className="section-heading">
-          <div>
-            <p className="section-kicker">{t.home.workKicker}</p>
-            <h2>{t.home.workHeading}</h2>
-          </div>
-          <a
-            className="all-link"
-            href="https://github.com/kyhsa93"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t.home.viewOnGithub} <span aria-hidden="true"></span>
-          </a>
-        </div>
-        {t.home.projects.map((project) => (
-          <article className="playbook-card" key={project.name}>
-            <div className="playbook-intro">
-              <div className="playbook-icon" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <p className="project-label">{project.label}</p>
-              <p className="playbook-description">{project.description}</p>
-              <a
-                className="playbook-link"
-                href={project.repoUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t.home.openRepository} <span aria-hidden="true"></span>
-              </a>
-            </div>
-            <div className="playbook-details">
-              <div className="principle-list">
-                <p>{project.principlesLabel}</p>
-                <ul>
-                  {project.principles.map((principle, index) => (
-                    <li key={principle}>
-                      <span>0{index + 1}</span>
-                      {principle}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="implementation-list">
-                <p>{project.detailsLabel}</p>
-                <div>
-                  {project.detailItems.map((item) => (
-                    <span key={item.label}>
-                      {item.label} <b>{item.value}</b>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </article>
-        ))}
       </section>
 
       <section className="latest-section" id="latest">

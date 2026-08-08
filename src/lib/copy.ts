@@ -5,17 +5,6 @@ interface SideProjectCopy {
   description: string;
 }
 
-interface WorkProjectCopy {
-  name: string;
-  repoUrl: string;
-  label: string;
-  description: string;
-  principlesLabel: string;
-  principles: string[];
-  detailsLabel: string;
-  detailItems: { label: string; value: string }[];
-}
-
 interface UiCopy {
   nav: {
     mainAriaLabel: string;
@@ -46,11 +35,6 @@ interface UiCopy {
     expertiseHeadingLine2: string;
     expertiseSubheading: string;
     expertiseList: string[];
-    workKicker: string;
-    workHeading: string;
-    viewOnGithub: string;
-    openRepository: string;
-    projects: WorkProjectCopy[];
     latestKicker: string;
     latestHeading: string;
     latestSubheading: string;
@@ -148,56 +132,6 @@ export const uiCopy: Record<Locale, UiCopy> = {
         'CQRS · DDD',
         'Event-driven architecture',
       ],
-      workKicker: 'Open-source work',
-      workHeading: 'Projects I maintain in the open.',
-      viewOnGithub: 'View on GitHub',
-      openRepository: 'Open repository',
-      projects: [
-        {
-          name: 'Backend Service Playbook',
-          repoUrl: 'https://github.com/kyhsa93/backend-service-playbook',
-          label: 'A practical guide for backend services',
-          description:
-            'A single place for the design and implementation principles of DDD-based backend services. It helps teams build services with a consistent structure, without being locked into any one framework.',
-          principlesLabel: 'Included principles',
-          principles: [
-            'Domain-driven design',
-            'Layered architecture',
-            'CQRS & Repository',
-            'Conventions & checklist',
-          ],
-          detailsLabel: 'Implementation guides',
-          detailItems: [
-            { label: 'TypeScript', value: 'NestJS' },
-            { label: 'Go', value: 'Go' },
-            { label: 'Java', value: 'Spring Boot' },
-            { label: 'Kotlin', value: 'Spring Boot' },
-            { label: 'Python', value: 'FastAPI' },
-          ],
-        },
-        {
-          name: 'k8s-playbook',
-          repoUrl: 'https://github.com/kyhsa93/k8s-playbook',
-          label: 'An anti-pattern catalog for Kubernetes deployments',
-          description:
-            'Recurring Kubernetes deployment anti-patterns, each paired with an automated detection harness — validated against real Kustomize/Helm renders and real Argo CD/Flux/Kargo controllers, and reused as a benchmark for how well an AI agent authors manifests that follow the catalog on its own.',
-          principlesLabel: 'Included principles',
-          principles: [
-            'Anti-pattern catalog',
-            'Automated detection harness',
-            'Live-controller validation',
-            'AI-authoring benchmark',
-          ],
-          detailsLabel: 'Harness coverage',
-          detailItems: [
-            { label: 'Workload', value: 'items 1–6' },
-            { label: 'GitOps state', value: 'items 11–13' },
-            { label: 'Config & secrets', value: 'items 7–10' },
-            { label: 'Tenancy', value: 'items 14–15' },
-            { label: 'Networking', value: 'items 16–19' },
-          ],
-        },
-      ],
       latestKicker: 'Latest',
       latestHeading: 'Writing and experimenting.',
       latestSubheading:
@@ -221,6 +155,16 @@ export const uiCopy: Record<Locale, UiCopy> = {
           title: 'Service Architecture Notes',
           description:
             'A personal knowledge base collecting patterns and decisions learned while designing services.',
+        },
+        {
+          title: 'Backend Service Playbook',
+          description:
+            'Design and implementation principles for DDD-based backend services, implemented the same way across five languages.',
+        },
+        {
+          title: 'k8s-playbook',
+          description:
+            'A catalog of recurring Kubernetes deployment anti-patterns, each paired with an automated detection harness.',
         },
       ],
       statusLive: 'Live',
@@ -314,56 +258,6 @@ export const uiCopy: Record<Locale, UiCopy> = {
         'CQRS · DDD',
         '이벤트 기반 아키텍처',
       ],
-      workKicker: '오픈소스 프로젝트',
-      workHeading: '직접 관리하는 오픈소스 프로젝트들.',
-      viewOnGithub: 'GitHub에서 보기',
-      openRepository: '저장소 열기',
-      projects: [
-        {
-          name: 'Backend Service Playbook',
-          repoUrl: 'https://github.com/kyhsa93/backend-service-playbook',
-          label: '백엔드 서비스를 위한 실전 가이드',
-          description:
-            'DDD 기반 백엔드 서비스의 설계 및 구현 원칙을 한곳에 정리했습니다. 특정 프레임워크에 종속되지 않고 일관된 구조로 서비스를 만들 수 있도록 돕습니다.',
-          principlesLabel: '포함된 원칙',
-          principles: [
-            '도메인 주도 설계',
-            '계층형 아키텍처',
-            'CQRS & Repository',
-            '컨벤션 & 체크리스트',
-          ],
-          detailsLabel: '구현 가이드',
-          detailItems: [
-            { label: 'TypeScript', value: 'NestJS' },
-            { label: 'Go', value: 'Go' },
-            { label: 'Java', value: 'Spring Boot' },
-            { label: 'Kotlin', value: 'Spring Boot' },
-            { label: 'Python', value: 'FastAPI' },
-          ],
-        },
-        {
-          name: 'k8s-playbook',
-          repoUrl: 'https://github.com/kyhsa93/k8s-playbook',
-          label: 'Kubernetes 배포를 위한 안티패턴 카탈로그',
-          description:
-            '반복되는 Kubernetes 배포 안티패턴을 정리하고, 각각을 자동 탐지 하네스와 짝지었습니다 — 실제 Kustomize/Helm 렌더 결과와 실제 Argo CD/Flux/Kargo 컨트롤러를 상대로 검증했고, AI 에이전트가 이 카탈로그의 컨벤션을 스스로 따라 매니페스트를 작성할 수 있는지 측정하는 벤치마크로도 재사용됩니다.',
-          principlesLabel: '포함된 원칙',
-          principles: [
-            '안티패턴 카탈로그',
-            '자동 탐지 하네스',
-            '라이브 컨트롤러 검증',
-            'AI 작성 벤치마크',
-          ],
-          detailsLabel: '하네스 커버리지',
-          detailItems: [
-            { label: 'Workload', value: 'items 1–6' },
-            { label: 'GitOps state', value: 'items 11–13' },
-            { label: 'Config & secrets', value: 'items 7–10' },
-            { label: 'Tenancy', value: 'items 14–15' },
-            { label: 'Networking', value: 'items 16–19' },
-          ],
-        },
-      ],
       latestKicker: '최신 글',
       latestHeading: '글쓰기와 실험.',
       latestSubheading: '설계 작업과 작은 실험들에서 배운 교훈을 기록합니다.',
@@ -384,6 +278,14 @@ export const uiCopy: Record<Locale, UiCopy> = {
         {
           title: 'Service Architecture Notes',
           description: '서비스를 설계하며 배운 패턴과 결정들을 모아둔 개인 지식 베이스입니다.',
+        },
+        {
+          title: 'Backend Service Playbook',
+          description: 'DDD 기반 백엔드 서비스의 설계 및 구현 원칙을, 다섯 개 언어에서 동일하게 구현했습니다.',
+        },
+        {
+          title: 'k8s-playbook',
+          description: '반복되는 Kubernetes 배포 안티패턴 카탈로그와, 이를 자동으로 탐지하는 하네스입니다.',
         },
       ],
       statusLive: 'Live',

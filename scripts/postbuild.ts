@@ -115,6 +115,7 @@ function generateSitemap(): string {
   const staticEntries = [
     { loc: `${SITE_URL}/`, lastmod: latestDate, changefreq: 'weekly', priority: '1.0' },
     { loc: `${SITE_URL}/posts`, lastmod: latestDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: `${SITE_URL}/side-projects`, lastmod: latestDate, changefreq: 'monthly', priority: '0.5' },
     { loc: `${SITE_URL}/privacy-policy`, lastmod: latestDate, priority: '0.3' },
   ]
     .map(

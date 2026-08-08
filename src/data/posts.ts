@@ -567,6 +567,81 @@ export const posts: PostMeta[] = [
     tags: ['Backend', 'Reliability'],
     readMinutes: 11,
   },
+  {
+    slug: 'the-list-that-broke-five-harnesses',
+    title: {
+      en: 'The List That Broke Five Harnesses',
+      ko: '다섯 개의 하네스를 동시에 무너뜨린 List',
+    },
+    summary: {
+      en: "Every Kubernetes anti-pattern checker in a five-check harness assumed `---`-separated documents. Naming more than one resource in a single `kubectl get -o yaml` call wraps the result in `kind: List` instead — and every checker silently found zero resources to flag, which looked identical to a clean pass.",
+      ko: '다섯 개짜리 Kubernetes 안티패턴 검사 하네스 전부가 `---`로 구분된 문서를 가정했다. 한 번의 `kubectl get -o yaml` 호출에 리소스를 두 개 이상 대면 결과가 `kind: List`로 감싸지고 — 모든 검사기가 조용히 플래그할 리소스를 0개 찾았는데, 이건 깨끗한 통과처럼 보였다.',
+    },
+    date: '2026.08.08',
+    tags: ['Kubernetes', 'Tooling'],
+    readMinutes: 9,
+    project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
+  },
+  {
+    slug: 'two-tools-the-same-missing-root',
+    title: {
+      en: 'Two Tools, the Same Missing Root',
+      ko: '서로 다른 두 도구, 똑같이 빠뜨린 루트',
+    },
+    summary: {
+      en: "Argo CD's App-of-Apps proof lives entirely on the parent; Flux's dependsOn proof is declared by the child and unverifiable alone. Audit either tree without including its root, and both fail the same way — for what turns out to be the same underlying reason.",
+      ko: "Argo CD의 App-of-Apps 증명은 전적으로 부모에게 있고, Flux의 dependsOn 증명은 자식이 선언하지만 혼자서는 검증이 안 된다. 둘 중 어느 트리든 루트를 빼고 감사하면 똑같이 실패한다 — 알고 보면 같은 근본 이유로.",
+    },
+    date: '2026.08.08',
+    tags: ['Kubernetes', 'GitOps'],
+    readMinutes: 10,
+    project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
+  },
+  {
+    slug: 'a-benchmark-that-can-never-hit-100',
+    title: {
+      en: 'A Benchmark That Can Never Hit 100',
+      ko: '영원히 100점을 받을 수 없는 벤치마크',
+    },
+    summary: {
+      en: 'A scoring harness covers nineteen categories of Kubernetes deployment mistake. One of them — drift — can only exist after a manifest has already been applied, which an authoring benchmark structurally cannot produce or avoid. The honest fix was a permanent, documented ceiling, not a future version.',
+      ko: '채점 하네스가 Kubernetes 배포 실수 19개 카테고리를 다룬다. 그중 하나 — drift — 는 매니페스트가 이미 적용된 뒤에야 존재할 수 있고, 작성 벤치마크는 구조적으로 이걸 일으키거나 막을 수 없다. 정직한 해결책은 미래 버전이 아니라 영구적이고 문서화된 상한선이었다.',
+    },
+    date: '2026.08.08',
+    tags: ['Kubernetes', 'Benchmark'],
+    readMinutes: 9,
+    project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
+  },
+  {
+    slug: 'a-tied-score-two-different-kinds-of-wrong',
+    title: {
+      en: 'A Tied Score, Two Different Kinds of Wrong',
+      ko: '동점인 점수, 서로 다른 두 종류의 잘못',
+    },
+    summary: {
+      en: "Two models scored an identical 9/9 on a Kubernetes manifest-authoring task, independently reproduced. Reading what each one actually wrote found a self-defeating NetworkPolicy in one and a promotion pipeline referencing a resource that doesn't exist in the other — two unrelated defects invisible to a tied harness score.",
+      ko: '두 모델이 Kubernetes 매니페스트 작성 과제에서 동일한 9/9를 받았고, 독립적으로 재확인됐다. 실제로 각자 쓴 걸 읽어보니 한쪽엔 스스로를 무력화하는 NetworkPolicy가, 다른 쪽엔 존재하지 않는 리소스를 참조하는 프로모션 파이프라인이 있었다 — 동점인 하네스 점수엔 보이지 않는, 서로 무관한 결함 두 개.',
+    },
+    date: '2026.08.08',
+    tags: ['Kubernetes', 'AI Agents'],
+    readMinutes: 10,
+    project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
+  },
+  {
+    slug: 'the-defaults-nobody-declared',
+    title: {
+      en: 'The Defaults Nobody Declared',
+      ko: '아무도 선언하지 않은 기본값들',
+    },
+    summary: {
+      en: "A drift checker pointed at a cluster that had just been applied cleanly reported drift everywhere. The cluster wasn't lying — the API server's own admission defaulting had filled in fields Git never mentioned, and a naive full-object comparison had no way to tell the difference.",
+      ko: '방금 깔끔하게 적용된 클러스터를 겨눈 drift 검사기가 온통 drift를 보고했다. 클러스터가 거짓말을 한 게 아니었다 — API 서버 자신의 admission 기본값 채우기가 Git이 언급조차 하지 않은 필드를 채워넣었고, 순진한 전체 객체 비교는 그 차이를 구분할 방법이 없었다.',
+    },
+    date: '2026.08.08',
+    tags: ['Kubernetes', 'Reliability'],
+    readMinutes: 9,
+    project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

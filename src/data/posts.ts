@@ -642,6 +642,24 @@ export const posts: PostMeta[] = [
     readMinutes: 9,
     project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
   },
+  {
+    slug: 'the-factory-knows-where-to-put-it',
+    title: {
+      en: 'The Factory Knows Where to Put It',
+      ko: 'Factory는 어디에 넣을지 알고 있었다',
+    },
+    summary: {
+      en: "Two codebases generate an Aggregate's ID in two different places — one in the constructor, one via a Factory asking Infrastructure for it. Eric Evans' own book has a specific, citable answer for which pattern it actually describes, and it isn't the one either codebase's convention assumes.",
+      ko: '두 코드베이스가 Aggregate의 ID를 서로 다른 자리에서 생성한다 — 하나는 생성자에서, 하나는 Factory가 Infrastructure에 요청해서. Eric Evans의 원저에는 실제로 어느 패턴을 서술하는지에 대한 구체적이고 인용 가능한 답이 있고, 그건 두 코드베이스 각자의 관습이 가정하는 것과 다르다.',
+    },
+    date: '2026.08.08',
+    tags: ['DDD', 'Comparative'],
+    readMinutes: 10,
+    project: {
+      name: 'nestjs-rest-cqrs-example',
+      url: 'https://github.com/kyhsa93/nestjs-rest-cqrs-example',
+    },
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

@@ -17,11 +17,9 @@ export const meta: MetaFunction = () =>
 const latestPosts = postsByDate.slice(0, 3);
 
 const sideProjectLinks: (string | undefined)[] = [
-  'https://kyhsa93.github.io/fove',
-  undefined,
-  undefined,
   'https://github.com/kyhsa93/backend-service-playbook',
   'https://github.com/kyhsa93/k8s-playbook',
+  'https://kyhsa93.github.io/fove',
 ];
 
 const getInitialTheme = () => {

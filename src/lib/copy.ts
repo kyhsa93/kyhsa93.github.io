@@ -143,20 +143,6 @@ export const uiCopy: Record<Locale, UiCopy> = {
       sideProjectsLabel: 'Side projects',
       sideProjects: [
         {
-          title: 'Fove',
-          description: 'A fortune-telling web app based on Korean Saju and MBTI.',
-        },
-        {
-          title: 'Event Flow Visualizer',
-          description:
-            'A visualization experiment for understanding event-driven system flows more easily.',
-        },
-        {
-          title: 'Service Architecture Notes',
-          description:
-            'A personal knowledge base collecting patterns and decisions learned while designing services.',
-        },
-        {
           title: 'Backend Service Playbook',
           description:
             'Design and implementation principles for DDD-based backend services, implemented the same way across five languages.',
@@ -165,6 +151,10 @@ export const uiCopy: Record<Locale, UiCopy> = {
           title: 'k8s-playbook',
           description:
             'A catalog of recurring Kubernetes deployment anti-patterns, each paired with an automated detection harness.',
+        },
+        {
+          title: 'Fove',
+          description: 'A fortune-telling web app based on Korean Saju and MBTI.',
         },
       ],
       statusLive: 'Live',
@@ -268,24 +258,16 @@ export const uiCopy: Record<Locale, UiCopy> = {
       sideProjectsLabel: '사이드 프로젝트',
       sideProjects: [
         {
-          title: 'Fove',
-          description: '한국식 사주와 MBTI를 기반으로 한 운세 웹 앱입니다.',
-        },
-        {
-          title: 'Event Flow Visualizer',
-          description: '이벤트 기반 시스템의 흐름을 더 쉽게 이해하기 위한 시각화 실험입니다.',
-        },
-        {
-          title: 'Service Architecture Notes',
-          description: '서비스를 설계하며 배운 패턴과 결정들을 모아둔 개인 지식 베이스입니다.',
-        },
-        {
           title: 'Backend Service Playbook',
           description: 'DDD 기반 백엔드 서비스의 설계 및 구현 원칙을, 다섯 개 언어에서 동일하게 구현했습니다.',
         },
         {
           title: 'k8s-playbook',
           description: '반복되는 Kubernetes 배포 안티패턴 카탈로그와, 이를 자동으로 탐지하는 하네스입니다.',
+        },
+        {
+          title: 'Fove',
+          description: '한국식 사주와 MBTI를 기반으로 한 운세 웹 앱입니다.',
         },
       ],
       statusLive: 'Live',

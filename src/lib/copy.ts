@@ -5,6 +5,17 @@ interface SideProjectCopy {
   description: string;
 }
 
+interface WorkProjectCopy {
+  name: string;
+  repoUrl: string;
+  label: string;
+  description: string;
+  principlesLabel: string;
+  principles: string[];
+  detailsLabel: string;
+  detailItems: { label: string; value: string }[];
+}
+
 interface UiCopy {
   nav: {
     mainAriaLabel: string;
@@ -38,12 +49,8 @@ interface UiCopy {
     workKicker: string;
     workHeading: string;
     viewOnGithub: string;
-    projectLabel: string;
-    playbookDescription: string;
     openRepository: string;
-    includedPrinciples: string;
-    principles: string[];
-    implementationGuides: string;
+    projects: WorkProjectCopy[];
     latestKicker: string;
     latestHeading: string;
     latestSubheading: string;
@@ -141,21 +148,56 @@ export const uiCopy: Record<Locale, UiCopy> = {
         'CQRS · DDD',
         'Event-driven architecture',
       ],
-      workKicker: 'Open-source project',
-      workHeading: 'Backend Service Playbook',
+      workKicker: 'Open-source work',
+      workHeading: 'Projects I maintain in the open.',
       viewOnGithub: 'View on GitHub',
-      projectLabel: 'A practical guide for backend services',
-      playbookDescription:
-        'A single place for the design and implementation principles of DDD-based backend services. It helps teams build services with a consistent structure, without being locked into any one framework.',
       openRepository: 'Open repository',
-      includedPrinciples: 'Included principles',
-      principles: [
-        'Domain-driven design',
-        'Layered architecture',
-        'CQRS & Repository',
-        'Conventions & checklist',
+      projects: [
+        {
+          name: 'Backend Service Playbook',
+          repoUrl: 'https://github.com/kyhsa93/backend-service-playbook',
+          label: 'A practical guide for backend services',
+          description:
+            'A single place for the design and implementation principles of DDD-based backend services. It helps teams build services with a consistent structure, without being locked into any one framework.',
+          principlesLabel: 'Included principles',
+          principles: [
+            'Domain-driven design',
+            'Layered architecture',
+            'CQRS & Repository',
+            'Conventions & checklist',
+          ],
+          detailsLabel: 'Implementation guides',
+          detailItems: [
+            { label: 'TypeScript', value: 'NestJS' },
+            { label: 'Go', value: 'Go' },
+            { label: 'Java', value: 'Spring Boot' },
+            { label: 'Kotlin', value: 'Spring Boot' },
+            { label: 'Python', value: 'FastAPI' },
+          ],
+        },
+        {
+          name: 'k8s-playbook',
+          repoUrl: 'https://github.com/kyhsa93/k8s-playbook',
+          label: 'An anti-pattern catalog for Kubernetes deployments',
+          description:
+            'Recurring Kubernetes deployment anti-patterns, each paired with an automated detection harness — validated against real Kustomize/Helm renders and real Argo CD/Flux/Kargo controllers, and reused as a benchmark for how well an AI agent authors manifests that follow the catalog on its own.',
+          principlesLabel: 'Included principles',
+          principles: [
+            'Anti-pattern catalog',
+            'Automated detection harness',
+            'Live-controller validation',
+            'AI-authoring benchmark',
+          ],
+          detailsLabel: 'Harness coverage',
+          detailItems: [
+            { label: 'Workload', value: 'items 1–6' },
+            { label: 'GitOps state', value: 'items 11–13' },
+            { label: 'Config & secrets', value: 'items 7–10' },
+            { label: 'Tenancy', value: 'items 14–15' },
+            { label: 'Networking', value: 'items 16–19' },
+          ],
+        },
       ],
-      implementationGuides: 'Implementation guides',
       latestKicker: 'Latest',
       latestHeading: 'Writing and experimenting.',
       latestSubheading:
@@ -273,20 +315,55 @@ export const uiCopy: Record<Locale, UiCopy> = {
         '이벤트 기반 아키텍처',
       ],
       workKicker: '오픈소스 프로젝트',
-      workHeading: 'Backend Service Playbook',
+      workHeading: '직접 관리하는 오픈소스 프로젝트들.',
       viewOnGithub: 'GitHub에서 보기',
-      projectLabel: '백엔드 서비스를 위한 실전 가이드',
-      playbookDescription:
-        'DDD 기반 백엔드 서비스의 설계 및 구현 원칙을 한곳에 정리했습니다. 특정 프레임워크에 종속되지 않고 일관된 구조로 서비스를 만들 수 있도록 돕습니다.',
       openRepository: '저장소 열기',
-      includedPrinciples: '포함된 원칙',
-      principles: [
-        '도메인 주도 설계',
-        '계층형 아키텍처',
-        'CQRS & Repository',
-        '컨벤션 & 체크리스트',
+      projects: [
+        {
+          name: 'Backend Service Playbook',
+          repoUrl: 'https://github.com/kyhsa93/backend-service-playbook',
+          label: '백엔드 서비스를 위한 실전 가이드',
+          description:
+            'DDD 기반 백엔드 서비스의 설계 및 구현 원칙을 한곳에 정리했습니다. 특정 프레임워크에 종속되지 않고 일관된 구조로 서비스를 만들 수 있도록 돕습니다.',
+          principlesLabel: '포함된 원칙',
+          principles: [
+            '도메인 주도 설계',
+            '계층형 아키텍처',
+            'CQRS & Repository',
+            '컨벤션 & 체크리스트',
+          ],
+          detailsLabel: '구현 가이드',
+          detailItems: [
+            { label: 'TypeScript', value: 'NestJS' },
+            { label: 'Go', value: 'Go' },
+            { label: 'Java', value: 'Spring Boot' },
+            { label: 'Kotlin', value: 'Spring Boot' },
+            { label: 'Python', value: 'FastAPI' },
+          ],
+        },
+        {
+          name: 'k8s-playbook',
+          repoUrl: 'https://github.com/kyhsa93/k8s-playbook',
+          label: 'Kubernetes 배포를 위한 안티패턴 카탈로그',
+          description:
+            '반복되는 Kubernetes 배포 안티패턴을 정리하고, 각각을 자동 탐지 하네스와 짝지었습니다 — 실제 Kustomize/Helm 렌더 결과와 실제 Argo CD/Flux/Kargo 컨트롤러를 상대로 검증했고, AI 에이전트가 이 카탈로그의 컨벤션을 스스로 따라 매니페스트를 작성할 수 있는지 측정하는 벤치마크로도 재사용됩니다.',
+          principlesLabel: '포함된 원칙',
+          principles: [
+            '안티패턴 카탈로그',
+            '자동 탐지 하네스',
+            '라이브 컨트롤러 검증',
+            'AI 작성 벤치마크',
+          ],
+          detailsLabel: '하네스 커버리지',
+          detailItems: [
+            { label: 'Workload', value: 'items 1–6' },
+            { label: 'GitOps state', value: 'items 11–13' },
+            { label: 'Config & secrets', value: 'items 7–10' },
+            { label: 'Tenancy', value: 'items 14–15' },
+            { label: 'Networking', value: 'items 16–19' },
+          ],
+        },
       ],
-      implementationGuides: '구현 가이드',
       latestKicker: '최신 글',
       latestHeading: '글쓰기와 실험.',
       latestSubheading: '설계 작업과 작은 실험들에서 배운 교훈을 기록합니다.',

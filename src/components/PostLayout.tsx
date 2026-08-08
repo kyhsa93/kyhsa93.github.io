@@ -21,6 +21,10 @@ export default function PostLayout({ slug, kicker, title, lede, children }: Post
   const meta = posts.find((post) => post.slug === slug);
   const date = meta?.date ?? '';
   const readMinutes = meta?.readMinutes ?? 0;
+  const project = meta?.project ?? {
+    name: 'Backend Service Playbook',
+    url: 'https://github.com/kyhsa93/backend-service-playbook',
+  };
 
   return (
     <main className="post-page">
@@ -52,12 +56,8 @@ export default function PostLayout({ slug, kicker, title, lede, children }: Post
         />
         <footer className="post-footer">
           <Link to="/">{t.nav.postFooterBackHome}</Link>
-          <a
-            href="https://github.com/kyhsa93/backend-service-playbook"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Backend Service Playbook{' '}
+          <a href={project.url} target="_blank" rel="noreferrer">
+            {project.name}{' '}
           </a>
         </footer>
       </article>

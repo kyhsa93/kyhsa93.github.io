@@ -159,65 +159,57 @@ export default function Home() {
           </div>
           <a
             className="all-link"
-            href="https://github.com/kyhsa93/backend-service-playbook"
+            href="https://github.com/kyhsa93"
             target="_blank"
             rel="noreferrer"
           >
             {t.home.viewOnGithub} <span aria-hidden="true"></span>
           </a>
         </div>
-        <article className="playbook-card">
-          <div className="playbook-intro">
-            <div className="playbook-icon" aria-hidden="true">
-              <span />
-              <span />
-              <span />
+        {t.home.projects.map((project) => (
+          <article className="playbook-card" key={project.name}>
+            <div className="playbook-intro">
+              <div className="playbook-icon" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+              <p className="project-label">{project.label}</p>
+              <p className="playbook-description">{project.description}</p>
+              <a
+                className="playbook-link"
+                href={project.repoUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t.home.openRepository} <span aria-hidden="true"></span>
+              </a>
             </div>
-            <p className="project-label">{t.home.projectLabel}</p>
-            <p className="playbook-description">{t.home.playbookDescription}</p>
-            <a
-              className="playbook-link"
-              href="https://github.com/kyhsa93/backend-service-playbook"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t.home.openRepository} <span aria-hidden="true"></span>
-            </a>
-          </div>
-          <div className="playbook-details">
-            <div className="principle-list">
-              <p>{t.home.includedPrinciples}</p>
-              <ul>
-                {t.home.principles.map((principle, index) => (
-                  <li key={principle}>
-                    <span>0{index + 1}</span>
-                    {principle}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="implementation-list">
-              <p>{t.home.implementationGuides}</p>
-              <div>
-                <span>
-                  TypeScript <b>NestJS</b>
-                </span>
-                <span>
-                  Go <b>Go</b>
-                </span>
-                <span>
-                  Java <b>Spring Boot</b>
-                </span>
-                <span>
-                  Kotlin <b>Spring Boot</b>
-                </span>
-                <span>
-                  Python <b>FastAPI</b>
-                </span>
+            <div className="playbook-details">
+              <div className="principle-list">
+                <p>{project.principlesLabel}</p>
+                <ul>
+                  {project.principles.map((principle, index) => (
+                    <li key={principle}>
+                      <span>0{index + 1}</span>
+                      {principle}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="implementation-list">
+                <p>{project.detailsLabel}</p>
+                <div>
+                  {project.detailItems.map((item) => (
+                    <span key={item.label}>
+                      {item.label} <b>{item.value}</b>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </article>
+          </article>
+        ))}
       </section>
 
       <section className="latest-section" id="latest">

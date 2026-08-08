@@ -3,6 +3,11 @@ export interface LocalizedText {
   ko: string;
 }
 
+export interface ProjectLink {
+  name: string;
+  url: string;
+}
+
 export interface PostMeta {
   slug: string;
   title: LocalizedText;
@@ -10,6 +15,8 @@ export interface PostMeta {
   date: string;
   tags: string[];
   readMinutes: number;
+  /** Defaults to Backend Service Playbook when omitted — most posts are about it. */
+  project?: ProjectLink;
 }
 
 // Not necessarily in date order — see `postsByDate` for that.

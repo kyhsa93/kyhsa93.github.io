@@ -8,6 +8,7 @@ export default {
   prerender: [
     '/',
     '/posts',
+    '/side-projects',
     '/privacy-policy',
     '/404',
     ...posts.map((post: PostMeta) => `/posts/${post.slug}`),

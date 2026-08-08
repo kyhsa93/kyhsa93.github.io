@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { MetaFunction } from 'react-router';
 import { postsByDate } from '../../data/posts';
+import { sideProjects } from '../../data/sideProjects';
 import { useLocale } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
 import { createMeta } from '../../lib/seo';
@@ -15,12 +16,6 @@ export const meta: MetaFunction = () =>
   });
 
 const latestPosts = postsByDate.slice(0, 3);
-
-const sideProjectLinks: (string | undefined)[] = [
-  'https://github.com/kyhsa93/backend-service-playbook',
-  'https://github.com/kyhsa93/k8s-playbook',
-  'https://kyhsa93.github.io/fove',
-];
 
 const getInitialTheme = () => {
   if (typeof window === 'undefined') {
@@ -190,9 +185,8 @@ export default function Home() {
               <span>{t.home.labLabel}</span>
               <span>{t.home.sideProjectsLabel}</span>
             </div>
-            {t.home.sideProjects.map((project, index) => {
-              const href = sideProjectLinks[index];
-              const status = href ? t.home.statusLive : t.home.statusInProgress;
+            {sideProjects.map((project, index) => {
+              const status = project.url ? t.home.statusLive : t.home.statusInProgress;
 
               return (
                 <article className="side-project" key={project.title}>
@@ -208,19 +202,22 @@ export default function Home() {
                       {status}
                     </p>
                     <h3>
-                      {href ? (
-                        <a href={href} target="_blank" rel="noreferrer">
+                      {project.url ? (
+                        <a href={project.url} target="_blank" rel="noreferrer">
                           {project.title} <span aria-hidden="true"></span>
                         </a>
                       ) : (
                         project.title
                       )}
                     </h3>
-                    <p>{project.description}</p>
+                    <p>{project.description[locale]}</p>
                   </div>
                 </article>
               );
             })}
+            <Link to="/side-projects" className="coming-link">
+              {t.home.viewAllSideProjects}
+            </Link>
           </div>
         </div>
       </section>

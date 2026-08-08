@@ -3,6 +3,7 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
 export default [
   index('pages/Home/index.tsx'),
   route('posts', 'pages/Archive/index.tsx'),
+  route('side-projects', 'pages/SideProjects/index.tsx'),
   route('privacy-policy', 'pages/PrivacyPolicy/index.tsx'),
 
   route('posts/aggregate-design', 'pages/Post/AggregateDesign.tsx'),

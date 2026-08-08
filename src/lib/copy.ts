@@ -1,10 +1,5 @@
 import type { Locale } from './locale';
 
-interface SideProjectCopy {
-  title: string;
-  description: string;
-}
-
 interface UiCopy {
   nav: {
     mainAriaLabel: string;
@@ -43,7 +38,7 @@ interface UiCopy {
     viewAllPosts: string;
     labLabel: string;
     sideProjectsLabel: string;
-    sideProjects: SideProjectCopy[];
+    viewAllSideProjects: string;
     statusLive: string;
     statusInProgress: string;
   };
@@ -59,6 +54,14 @@ interface UiCopy {
     heading: string;
     writingLabel: string;
     postsCount: (count: number) => string;
+  };
+  sideProjectsArchive: {
+    seoTitle: string;
+    seoDescription: (count: number) => string;
+    kicker: string;
+    heading: string;
+    label: string;
+    projectsCount: (count: number) => string;
   };
   notFound: {
     seoTitle: string;
@@ -141,22 +144,7 @@ export const uiCopy: Record<Locale, UiCopy> = {
       viewAllPosts: 'View all posts →',
       labLabel: 'Lab',
       sideProjectsLabel: 'Side projects',
-      sideProjects: [
-        {
-          title: 'Backend Service Playbook',
-          description:
-            'Design and implementation principles for DDD-based backend services, implemented the same way across five languages.',
-        },
-        {
-          title: 'k8s-playbook',
-          description:
-            'A catalog of recurring Kubernetes deployment anti-patterns, each paired with an automated detection harness.',
-        },
-        {
-          title: 'Fove',
-          description: 'A fortune-telling web app based on Korean Saju and MBTI.',
-        },
-      ],
+      viewAllSideProjects: 'View all side projects →',
       statusLive: 'Live',
       statusInProgress: 'In progress',
     },
@@ -173,6 +161,15 @@ export const uiCopy: Record<Locale, UiCopy> = {
       heading: 'All posts',
       writingLabel: 'Writing',
       postsCount: (count) => `${count} posts`,
+    },
+    sideProjectsArchive: {
+      seoTitle: 'All side projects',
+      seoDescription: (count) =>
+        `Every side project, in one place — ${count} experiments outside the day job.`,
+      kicker: 'Lab',
+      heading: 'All side projects',
+      label: 'Side projects',
+      projectsCount: (count) => `${count} projects`,
     },
     notFound: {
       seoTitle: 'Page Not Found',
@@ -256,20 +253,7 @@ export const uiCopy: Record<Locale, UiCopy> = {
       viewAllPosts: '모든 포스트 보기 →',
       labLabel: 'Lab',
       sideProjectsLabel: '사이드 프로젝트',
-      sideProjects: [
-        {
-          title: 'Backend Service Playbook',
-          description: 'DDD 기반 백엔드 서비스의 설계 및 구현 원칙을, 다섯 개 언어에서 동일하게 구현했습니다.',
-        },
-        {
-          title: 'k8s-playbook',
-          description: '반복되는 Kubernetes 배포 안티패턴 카탈로그와, 이를 자동으로 탐지하는 하네스입니다.',
-        },
-        {
-          title: 'Fove',
-          description: '한국식 사주와 MBTI를 기반으로 한 운세 웹 앱입니다.',
-        },
-      ],
+      viewAllSideProjects: '모든 사이드 프로젝트 보기 →',
       statusLive: 'Live',
       statusInProgress: '진행 중',
     },
@@ -286,6 +270,14 @@ export const uiCopy: Record<Locale, UiCopy> = {
       heading: '전체 포스트',
       writingLabel: '글쓰기',
       postsCount: (count) => `${count}개의 포스트`,
+    },
+    sideProjectsArchive: {
+      seoTitle: '전체 사이드 프로젝트',
+      seoDescription: (count) => `모든 사이드 프로젝트를 한곳에 — 본업 밖에서 진행한 실험 ${count}개.`,
+      kicker: 'Lab',
+      heading: '전체 사이드 프로젝트',
+      label: '사이드 프로젝트',
+      projectsCount: (count) => `${count}개의 프로젝트`,
     },
     notFound: {
       seoTitle: '페이지를 찾을 수 없습니다',

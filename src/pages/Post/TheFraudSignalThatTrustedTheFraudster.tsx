@@ -35,17 +35,7 @@ if (classification.category === 'fraud_suspected'
         <div className="article-note"><strong>Why this passed review the first time</strong><p>Every individual piece was correct: the Technical Service boundary was clean, the fallback-on-failure logic was sound, the threshold was tuned against a real, live model — an earlier 0.5B-parameter model was rejected specifically because it misread a plain billing complaint as fraud. The flaw wasn't in any one file. It was in <em>what kind of input</em> a security-relevant judgment was allowed to depend on, and that question doesn't get answered by careful layering alone.</p></div>
         <h2>The Cut, and How Far It Went</h2>
         <p>The fix was to remove <code>RefundReasonClassifier</code> outright, across all five language implementations this repo maintains in parallel. A second signal sat right next to it, <code>RefundFraudRiskScorer</code> — an ML model scoring the requester's own refund/payment <em>history</em> (frequency, amount ratio, time since payment). That input isn't something a requester can rewrite on a whim, so it doesn't share the flaw above. It stayed, at first.</p>
-        <p>Then the decision changed, mid-round: cut that one too — not because it shared the flaw, but as a separate simplification call. Five languages, two removals each, each one independently re-verified (build, lint, unit tests, e2e tests, the architecture harness, a repo-wide docs-drift checker) rather than assumed correct by analogy to the others:</p>
-        <table>
-          <thead><tr><th>Language</th><th>LLM classifier removed</th><th>ML scorer removed</th></tr></thead>
-          <tbody>
-            <tr><td>nestjs</td><td>0b4861c</td><td>c999357</td></tr>
-            <tr><td>Go</td><td>18ac5f5</td><td>e7c3ec0</td></tr>
-            <tr><td>Java Spring Boot</td><td>0473a41</td><td>d7f6be3</td></tr>
-            <tr><td>Kotlin Spring Boot</td><td>e84ee79</td><td>969bb22</td></tr>
-            <tr><td>FastAPI</td><td colSpan={2}>fb21b6a (both, one pass)</td></tr>
-          </tbody>
-        </table>
+        <p>Then the decision changed, mid-round: cut that one too — not because it shared the flaw, but as a separate simplification call. Five languages, two removals each, each one independently re-verified — build, lint, unit tests, e2e tests, the architecture harness, a repo-wide docs-drift checker — rather than assumed correct by analogy to the others. A fix that's obviously right in one codebase still has to prove itself again in every other implementation carrying the same logic.</p>
         <p>What's left of <code>RefundEligibilityService</code> is two structural checks and nothing else:</p>
         <pre><code>{`// domain/refund-eligibility-service.ts — everything that's left,
 // no fraud judgment of any kind
@@ -98,17 +88,7 @@ if (classification.category === 'fraud_suspected'
         <div className="article-note"><strong>왜 처음엔 리뷰를 통과했나</strong><p>개별 코드는 다 정확했다: Technical Service 경계는 깔끔했고, 실패 시 폴백 로직도 견고했고, 임계값도 실제 모델로 튜닝돼 있었다 — 더 작은 0.5B 모델은 평범한 청구 불만을 사기로 오판해서 애초에 탈락시킨 이력도 있었다. 결함은 어느 한 파일에 있지 않았다. 보안과 직결된 판단이 <em>어떤 종류의 입력</em>에 의존해도 되는지에 대한 질문에 있었고, 이건 아무리 레이어를 잘 나눠도 저절로 답해지지 않는다.</p></div>
         <h2>잘라내기, 그리고 그 범위</h2>
         <p>해결책은 <code>RefundReasonClassifier</code>를 이 저장소가 병렬로 유지하는 다섯 개 언어 구현 전체에서 완전히 제거하는 것이었다. 바로 옆에는 두 번째 신호 <code>RefundFraudRiskScorer</code>가 있었다 — 요청자 본인의 환불/결제 <em>이력</em>(빈도, 금액 비율, 결제 후 경과 시간)을 점수 매기는 ML 모델. 이 입력은 요청자가 마음대로 다시 쓸 수 있는 값이 아니므로 위의 결함을 공유하지 않는다. 그래서 처음엔 남겨두었다.</p>
-        <p>그런데 작업 도중 결정이 바뀌었다: 그것도 잘라내자 — 같은 결함이 있어서가 아니라, 별개의 단순화 결정으로. 다섯 개 언어, 각각 두 번의 제거, 다른 언어를 유추해서 넘어가지 않고 매번 독립적으로 재검증했다(빌드, 린트, 유닛 테스트, e2e 테스트, 아키텍처 하네스, 저장소 전체 docs-drift 검사):</p>
-        <table>
-          <thead><tr><th>언어</th><th>LLM classifier 제거</th><th>ML scorer 제거</th></tr></thead>
-          <tbody>
-            <tr><td>nestjs</td><td>0b4861c</td><td>c999357</td></tr>
-            <tr><td>Go</td><td>18ac5f5</td><td>e7c3ec0</td></tr>
-            <tr><td>Java Spring Boot</td><td>0473a41</td><td>d7f6be3</td></tr>
-            <tr><td>Kotlin Spring Boot</td><td>e84ee79</td><td>969bb22</td></tr>
-            <tr><td>FastAPI</td><td colSpan={2}>fb21b6a (둘 다, 한 번에)</td></tr>
-          </tbody>
-        </table>
+        <p>그런데 작업 도중 결정이 바뀌었다: 그것도 잘라내자 — 같은 결함이 있어서가 아니라, 별개의 단순화 결정으로. 다섯 개 언어, 각각 두 번의 제거, 다른 언어를 유추해서 넘어가지 않고 매번 독립적으로 재검증했다 — 빌드, 린트, 유닛 테스트, e2e 테스트, 아키텍처 하네스, 저장소 전체 docs-drift 검사. 한 코드베이스에서 명백히 옳은 수정이라도, 같은 로직을 담고 있는 다른 모든 구현에서 다시 한번 스스로를 증명해야 한다.</p>
         <p><code>RefundEligibilityService</code>에 남은 건 구조적 검사 두 가지뿐이다:</p>
         <pre><code>{`// domain/refund-eligibility-service.ts — 남은 전부,
 // 사기 판단은 이제 없다

@@ -144,6 +144,10 @@ export default [
     'posts/the-factory-knows-where-to-put-it',
     'pages/Post/TheFactoryKnowsWhereToPutIt.tsx',
   ),
+  route(
+    'posts/a-rule-evans-never-wrote',
+    'pages/Post/ARuleEvansNeverWrote.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

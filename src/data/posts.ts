@@ -660,6 +660,24 @@ export const posts: PostMeta[] = [
       url: 'https://github.com/kyhsa93/nestjs-rest-cqrs-example',
     },
   },
+  {
+    slug: 'a-rule-evans-never-wrote',
+    title: {
+      en: 'A Rule Evans Never Wrote',
+      ko: 'Evans가 쓴 적 없는 규칙',
+    },
+    summary: {
+      en: "Nearly every DDD codebase forbids referencing another Aggregate by direct object reference — ID only. Eric Evans' 2003 book explicitly permits it. The person who actually wrote the ID-only rule, Vaughn Vernon, says so himself, in the same paper that argues for the stricter rule anyway.",
+      ko: '거의 모든 DDD 코드베이스가 다른 Aggregate를 직접 객체 참조하는 걸 금지한다 — ID로만. Eric Evans의 2003년 원저는 명시적으로 그걸 허용한다. 실제로 ID 전용 규칙을 쓴 Vaughn Vernon 본인이, 그럼에도 더 엄격한 규칙을 주장하는 바로 그 논문에서 이 사실을 스스로 밝힌다.',
+    },
+    date: '2026.08.08',
+    tags: ['DDD', 'Comparative'],
+    readMinutes: 10,
+    project: {
+      name: 'backend-service-playbook',
+      url: 'https://github.com/kyhsa93/backend-service-playbook',
+    },
+  },
 ];
 
 export const postsByDate: PostMeta[] = [...posts].sort((a, b) =>

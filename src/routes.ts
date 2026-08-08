@@ -119,6 +119,26 @@ export default [
     'posts/the-same-instant-two-different-timestamps',
     'pages/Post/TheSameInstantTwoDifferentTimestamps.tsx',
   ),
+  route(
+    'posts/the-list-that-broke-five-harnesses',
+    'pages/Post/TheListThatBrokeFiveHarnesses.tsx',
+  ),
+  route(
+    'posts/two-tools-the-same-missing-root',
+    'pages/Post/TwoToolsTheSameMissingRoot.tsx',
+  ),
+  route(
+    'posts/a-benchmark-that-can-never-hit-100',
+    'pages/Post/ABenchmarkThatCanNeverHit100.tsx',
+  ),
+  route(
+    'posts/a-tied-score-two-different-kinds-of-wrong',
+    'pages/Post/ATiedScoreTwoDifferentKindsOfWrong.tsx',
+  ),
+  route(
+    'posts/the-defaults-nobody-declared',
+    'pages/Post/TheDefaultsNobodyDeclared.tsx',
+  ),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

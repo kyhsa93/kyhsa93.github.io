@@ -24,6 +24,13 @@ const THEME_INIT_SCRIPT = `
 })();
 `;
 
+const GA_INIT_SCRIPT = `
+window.dataLayer = window.dataLayer || [];
+function gtag() { dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', 'G-Z1LH7S1ZE5');
+`;
+
 export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
@@ -55,6 +62,9 @@ export function Layout({ children }: { children: ReactNode }) {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1195159445218373"
           crossOrigin="anonymous"
         />
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z1LH7S1ZE5" />
+        <script dangerouslySetInnerHTML={{ __html: GA_INIT_SCRIPT }} />
 
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
 

@@ -6,7 +6,19 @@ export interface SideProject {
   url?: string;
 }
 
+// Ordered oldest-first by actual project start date (verified against each
+// GitHub repo's createdAt), not by when it was added to this list — Fove predates
+// the rest by about a year. The homepage takes the last 3 (see Home/index.tsx),
+// so keeping this in true chronological order keeps that slice meaningful.
 export const sideProjects: SideProject[] = [
+  {
+    title: 'Fove',
+    description: {
+      en: 'A fortune-telling web app based on Korean Saju and MBTI.',
+      ko: '한국식 사주와 MBTI를 기반으로 한 운세 웹 앱입니다.',
+    },
+    url: 'https://kyhsa93.github.io/fove',
+  },
   {
     title: 'Backend Service Playbook',
     description: {
@@ -22,14 +34,6 @@ export const sideProjects: SideProject[] = [
       ko: '반복되는 Kubernetes 배포 안티패턴 카탈로그와, 이를 자동으로 탐지하는 하네스입니다.',
     },
     url: 'https://github.com/kyhsa93/k8s-playbook',
-  },
-  {
-    title: 'Fove',
-    description: {
-      en: 'A fortune-telling web app based on Korean Saju and MBTI.',
-      ko: '한국식 사주와 MBTI를 기반으로 한 운세 웹 앱입니다.',
-    },
-    url: 'https://kyhsa93.github.io/fove',
   },
   {
     title: 'Toddler Milestone Checklist',

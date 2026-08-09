@@ -16,6 +16,7 @@ export const meta: MetaFunction = () =>
   });
 
 const latestPosts = postsByDate.slice(0, 3);
+const latestSideProjects = sideProjects.slice(-3);
 
 const getInitialTheme = () => {
   if (typeof window === 'undefined') {
@@ -185,7 +186,7 @@ export default function Home() {
               <span>{t.home.labLabel}</span>
               <span>{t.home.sideProjectsLabel}</span>
             </div>
-            {sideProjects.map((project, index) => {
+            {latestSideProjects.map((project, index) => {
               const status = project.url ? t.home.statusLive : t.home.statusInProgress;
 
               return (

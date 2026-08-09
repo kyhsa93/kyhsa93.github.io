@@ -43,4 +43,12 @@ export const sideProjects: SideProject[] = [
     },
     url: 'https://kyhsa93.github.io/toddler-milestone-checklist/',
   },
+  {
+    title: 'Econ Realestate Digest',
+    description: {
+      en: 'A daily digest of Korean economic and real estate news and market indicators, rebuilt every morning by a GitHub Actions pipeline with an open-source local LLM summarizing the day.',
+      ko: '한국 경제/부동산 뉴스와 시장 지표를 매일 아침 GitHub Actions 파이프라인으로 자동 갱신하고, 오픈소스 로컬 LLM이 하루 소식을 요약해주는 데일리 다이제스트입니다.',
+    },
+    url: 'https://kyhsa93.github.io/econ-realestate-digest/',
+  },
 ];

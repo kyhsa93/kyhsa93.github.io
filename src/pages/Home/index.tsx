@@ -3,26 +3,30 @@ import { Link } from 'react-router-dom';
 import type { MetaFunction } from 'react-router';
 import { postsByDate } from '../../data/posts';
 import { sideProjects } from '../../data/sideProjects';
-import { useLocale } from '../../lib/locale';
+import { useLocale, localizedPath, localeFromPathname } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
 import { createMeta, SITE_URL, SITE_NAME } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
 
-export const meta: MetaFunction = () =>
-  createMeta({
-    title: uiCopy.en.home.seoTitle,
-    description: uiCopy.en.home.seoDescription,
+export const meta: MetaFunction = ({ location }) => {
+  const locale = localeFromPathname(location.pathname);
+  const homeUrl = `${SITE_URL}${localizedPath('/', locale)}`;
+
+  return createMeta({
+    title: uiCopy[locale].home.seoTitle,
+    description: uiCopy[locale].home.seoDescription,
     path: '/',
+    locale,
     jsonLd: {
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'WebSite',
-          '@id': `${SITE_URL}/#website`,
-          url: `${SITE_URL}/`,
-          name: uiCopy.en.home.seoTitle,
-          description: uiCopy.en.home.seoDescription,
-          inLanguage: 'en',
+          '@id': `${homeUrl}#website`,
+          url: homeUrl,
+          name: uiCopy[locale].home.seoTitle,
+          description: uiCopy[locale].home.seoDescription,
+          inLanguage: locale === 'ko' ? 'ko-KR' : 'en-US',
           author: { '@id': `${SITE_URL}/#person` },
         },
         {
@@ -36,6 +40,7 @@ export const meta: MetaFunction = () =>
       ],
     },
   });
+};
 
 const latestPosts = postsByDate.slice(0, 3);
 const latestSideProjects = sideProjects.slice(-3);
@@ -191,7 +196,7 @@ export default function Home() {
                   <span>{post.tags.join(' · ')}</span>
                 </div>
                 <h3>
-                  <Link to={`/posts/${post.slug}`}>
+                  <Link to={localizedPath(`/posts/${post.slug}`, locale)}>
                     {post.title[locale]}
                     <span aria-hidden="true">→</span>
                   </Link>
@@ -199,7 +204,7 @@ export default function Home() {
                 <p>{post.summary[locale]}</p>
               </article>
             ))}
-            <Link to="/posts" className="coming-link">
+            <Link to={localizedPath('/posts', locale)} className="coming-link">
               {t.home.viewAllPosts}
             </Link>
           </div>
@@ -238,7 +243,7 @@ export default function Home() {
                 </article>
               );
             })}
-            <Link to="/side-projects" className="coming-link">
+            <Link to={localizedPath('/side-projects', locale)} className="coming-link">
               {t.home.viewAllSideProjects}
             </Link>
           </div>
@@ -249,7 +254,7 @@ export default function Home() {
         <p>{t.footer.tagline}</p>
         <div className="footer-links">
           <a href="/rss.xml">{t.footer.rss}</a>
-          <Link to="/privacy-policy">{t.footer.privacy}</Link>
+          <Link to={localizedPath('/privacy-policy', locale)}>{t.footer.privacy}</Link>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             github.com/kyhsa93{' '}
           </a>

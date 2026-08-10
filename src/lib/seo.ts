@@ -1,6 +1,7 @@
 import type { MetaDescriptor } from 'react-router';
 
 import { posts, type PostMeta } from '../data/posts';
+import { localizedPath, type Locale } from './locale';
 
 export const SITE_URL = 'https://kyhsa93.github.io';
 export const SITE_NAME = 'younghoon';
@@ -9,7 +10,9 @@ export const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 interface SeoOptions {
   title: string;
   description: string;
+  /** Canonical (unprefixed/English) path — never include the /ko prefix here. */
   path: string;
+  locale: Locale;
   type?: 'website' | 'article';
   image?: string;
   publishedTime?: string;
@@ -20,18 +23,27 @@ export function createMeta({
   title,
   description,
   path,
+  locale,
   type = 'website',
   image = DEFAULT_IMAGE,
   publishedTime,
   jsonLd,
 }: SeoOptions): MetaDescriptor[] {
-  const url = `${SITE_URL}${path}`;
+  const url = `${SITE_URL}${localizedPath(path, locale)}`;
+  const enUrl = `${SITE_URL}${path}`;
+  const koUrl = `${SITE_URL}${localizedPath(path, 'ko')}`;
   const fullTitle = path === '/' ? title : `${title} · ${SITE_NAME}`;
 
   const descriptors: MetaDescriptor[] = [
     { title: fullTitle },
     { name: 'description', content: description },
     { tagName: 'link', rel: 'canonical', href: url },
+    // Each locale's page declares both variants as alternates and English as
+    // x-default, so Google indexes /ko/* and / separately instead of only
+    // ever seeing whichever one it crawled first.
+    { tagName: 'link', rel: 'alternate', hrefLang: 'en', href: enUrl },
+    { tagName: 'link', rel: 'alternate', hrefLang: 'ko', href: koUrl },
+    { tagName: 'link', rel: 'alternate', hrefLang: 'x-default', href: enUrl },
 
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
@@ -39,6 +51,8 @@ export function createMeta({
     { property: 'og:url', content: url },
     { property: 'og:image', content: image },
     { property: 'og:site_name', content: SITE_NAME },
+    { property: 'og:locale', content: locale === 'ko' ? 'ko_KR' : 'en_US' },
+    { property: 'og:locale:alternate', content: locale === 'ko' ? 'en_US' : 'ko_KR' },
 
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
@@ -61,18 +75,22 @@ function toIsoDate(date: string): string {
   return date.replace(/\./g, '-');
 }
 
-export function createPostMeta(slug: string): MetaDescriptor[] {
+export function createPostMeta(slug: string, locale: Locale): MetaDescriptor[] {
   const post = posts.find((p: PostMeta) => p.slug === slug);
   const path = `/posts/${slug}`;
-  const title = post?.title.en ?? slug;
-  const description = post?.summary.en ?? '';
+  const title = post?.title[locale] ?? slug;
+  const description = post?.summary[locale] ?? '';
   const publishedTime = post ? toIsoDate(post.date) : undefined;
+  // Satori's bundled fonts (scripts/og-image.ts) only cover Latin glyphs, so
+  // Korean posts still reuse the English-titled card rather than rendering
+  // blank/tofu glyphs. Revisit if a Hangul-capable font gets added.
   const image = `${SITE_URL}/og/${slug}.png`;
 
   return createMeta({
     title,
     description,
     path,
+    locale,
     type: 'article',
     image,
     publishedTime,
@@ -82,9 +100,10 @@ export function createPostMeta(slug: string): MetaDescriptor[] {
       headline: title,
       description,
       datePublished: publishedTime,
+      inLanguage: locale === 'ko' ? 'ko-KR' : 'en-US',
       author: { '@type': 'Person', name: 'younghoon' },
       image,
-      url: `${SITE_URL}${path}`,
+      url: `${SITE_URL}${localizedPath(path, locale)}`,
     },
   });
 }

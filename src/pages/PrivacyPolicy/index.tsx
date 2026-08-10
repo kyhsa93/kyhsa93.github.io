@@ -1,16 +1,19 @@
 import { Link } from 'react-router-dom';
 import type { MetaFunction } from 'react-router';
-import { useLocale } from '../../lib/locale';
+import { useLocale, localizedPath, localeFromPathname } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
 import { createMeta } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
 
-export const meta: MetaFunction = () =>
-  createMeta({
-    title: uiCopy.en.privacyPolicy.seoTitle,
-    description: uiCopy.en.privacyPolicy.seoDescription,
+export const meta: MetaFunction = ({ location }) => {
+  const locale = localeFromPathname(location.pathname);
+  return createMeta({
+    title: uiCopy[locale].privacyPolicy.seoTitle,
+    description: uiCopy[locale].privacyPolicy.seoDescription,
     path: '/privacy-policy',
+    locale,
   });
+};
 
 export default function PrivacyPolicy() {
   const { locale } = useLocale();
@@ -19,12 +22,12 @@ export default function PrivacyPolicy() {
   return (
     <main className="home-page">
       <nav className="site-nav" aria-label={t.nav.mainAriaLabel}>
-        <Link className="brand" to="/">
+        <Link className="brand" to={localizedPath('/', locale)}>
           <span className="brand-mark">Y</span>
           <span>younghoon</span>
         </Link>
         <div className="nav-links">
-          <Link to="/">{t.nav.backHome}</Link>
+          <Link to={localizedPath('/', locale)}>{t.nav.backHome}</Link>
           <LanguageToggle />
         </div>
       </nav>

@@ -1,9 +1,10 @@
 import PostLayout from '../../components/PostLayout';
-import { useLocale } from '../../lib/locale';
+import { useLocale, localeFromPathname } from '../../lib/locale';
 import type { MetaFunction } from 'react-router';
 import { createPostMeta } from '../../lib/seo';
 
-export const meta: MetaFunction = () => createPostMeta('a-tied-score-two-different-kinds-of-wrong');
+export const meta: MetaFunction = ({ location }) =>
+  createPostMeta('a-tied-score-two-different-kinds-of-wrong', localeFromPathname(location.pathname));
 
 const content = {
   en: {

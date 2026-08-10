@@ -112,15 +112,40 @@ ${entries}
 function generateSitemap(): string {
   const latestDate = toIsoDate(sortedPosts[0].date);
 
-  const staticEntries = [
-    { loc: `${SITE_URL}/`, lastmod: latestDate, changefreq: 'weekly', priority: '1.0' },
-    { loc: `${SITE_URL}/posts`, lastmod: latestDate, changefreq: 'weekly', priority: '0.8' },
-    { loc: `${SITE_URL}/side-projects`, lastmod: latestDate, changefreq: 'monthly', priority: '0.5' },
-    { loc: `${SITE_URL}/privacy-policy`, lastmod: latestDate, priority: '0.3' },
-    // 이 블로그 SPA의 라우트가 아니라 같은 kyhsa93.github.io 도메인 아래
-    // 별도 저장소에서 배포되는 프로젝트 페이지들 (src/data/sideProjects.ts
-    // 참고) — react-router.config.ts의 prerender 대상이 아니라서 여기 사이트맵에만
-    // 수동으로 추가해야 노출된다.
+  const urlEntry = (u: { loc: string; lastmod: string; changefreq?: string; priority: string }) =>
+    `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${u.lastmod}</lastmod>
+${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <priority>${u.priority}</priority>
+  </url>`;
+
+  // 이 블로그 SPA 자체의 정적 페이지. src/routes.ts에서 prefix('ko', ...)로
+  // 전부 /ko/* 버전도 prerender되므로 두 언어 버전을 같이 올린다.
+  const blogPages = [
+    { path: '/', changefreq: 'weekly', priority: '1.0' },
+    { path: '/posts', changefreq: 'weekly', priority: '0.8' },
+    { path: '/side-projects', changefreq: 'monthly', priority: '0.5' },
+    { path: '/privacy-policy', changefreq: undefined, priority: '0.3' },
+  ];
+
+  const blogEntries = blogPages
+    .flatMap(({ path, changefreq, priority }) => [
+      { loc: `${SITE_URL}${path}`, lastmod: latestDate, changefreq, priority },
+      {
+        loc: `${SITE_URL}${path === '/' ? '/ko' : `/ko${path}`}`,
+        lastmod: latestDate,
+        changefreq,
+        priority,
+      },
+    ])
+    .map(urlEntry)
+    .join('\n');
+
+  // 이 블로그 SPA의 라우트가 아니라 같은 kyhsa93.github.io 도메인 아래
+  // 별도 저장소에서 배포되는 프로젝트 페이지들 (src/data/sideProjects.ts
+  // 참고) — react-router.config.ts의 prerender 대상이 아니고 /ko 버전도
+  // 없어서 원래 URL 하나씩만 수동으로 추가한다.
+  const externalProjectEntries = [
     { loc: `${SITE_URL}/fove`, lastmod: latestDate, changefreq: 'monthly', priority: '0.4' },
     {
       loc: `${SITE_URL}/toddler-milestone-checklist/`,
@@ -135,28 +160,21 @@ function generateSitemap(): string {
       priority: '0.5',
     },
   ]
-    .map(
-      (u) => `  <url>
-    <loc>${u.loc}</loc>
-    <lastmod>${u.lastmod}</lastmod>
-${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <priority>${u.priority}</priority>
-  </url>`
-    )
+    .map(urlEntry)
     .join('\n');
 
   const postEntries = sortedPosts
-    .map(
-      (post) => `  <url>
-    <loc>${SITE_URL}/posts/${post.slug}</loc>
-    <lastmod>${toIsoDate(post.date)}</lastmod>
-    <priority>0.6</priority>
-  </url>`
-    )
+    .flatMap((post) => [
+      { loc: `${SITE_URL}/posts/${post.slug}`, lastmod: toIsoDate(post.date), priority: '0.6' },
+      { loc: `${SITE_URL}/ko/posts/${post.slug}`, lastmod: toIsoDate(post.date), priority: '0.6' },
+    ])
+    .map(urlEntry)
     .join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${staticEntries}
+${blogEntries}
+${externalProjectEntries}
 ${postEntries}
 </urlset>
 `;

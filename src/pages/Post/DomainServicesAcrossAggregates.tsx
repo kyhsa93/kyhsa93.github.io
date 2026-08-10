@@ -1,9 +1,10 @@
 import PostLayout from '../../components/PostLayout';
-import { useLocale } from '../../lib/locale';
+import { useLocale, localeFromPathname } from '../../lib/locale';
 import type { MetaFunction } from 'react-router';
 import { createPostMeta } from '../../lib/seo';
 
-export const meta: MetaFunction = () => createPostMeta('domain-services-across-aggregates');
+export const meta: MetaFunction = ({ location }) =>
+  createPostMeta('domain-services-across-aggregates', localeFromPathname(location.pathname));
 
 const content = {
   en: {

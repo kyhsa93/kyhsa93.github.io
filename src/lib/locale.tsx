@@ -1,41 +1,34 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export type Locale = 'en' | 'ko';
 
 interface LocaleContextValue {
   locale: Locale;
-  setLocale: (locale: Locale) => void;
 }
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
-function getInitialLocale(): Locale {
-  if (typeof window === 'undefined') {
-    return 'en';
-  }
+// Locale is derived entirely from the URL (/ko/* vs unprefixed) so that
+// prerendered HTML and Googlebot's rendered DOM show the right language for
+// the requested path, not whatever a client only toggle/localStorage state
+// happened to default to.
+export function localeFromPathname(pathname: string): Locale {
+  return pathname === '/ko' || pathname.startsWith('/ko/') ? 'ko' : 'en';
+}
 
-  const saved = window.localStorage.getItem('lang');
-
-  if (saved === 'en' || saved === 'ko') {
-    return saved;
-  }
-
-  return 'en';
+// Canonical (unprefixed/English) path in, locale-appropriate path out — for
+// building <Link to> targets that stay within the current language.
+export function localizedPath(path: string, locale: Locale): string {
+  if (locale === 'en') return path;
+  return path === '/' ? '/ko' : `/ko${path}`;
 }
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>(getInitialLocale);
+  const location = useLocation();
+  const locale = localeFromPathname(location.pathname);
 
-  useEffect(() => {
-    document.documentElement.setAttribute('lang', locale);
-    window.localStorage.setItem('lang', locale);
-  }, [locale]);
-
-  return (
-    <LocaleContext.Provider value={{ locale, setLocale }}>
-      {children}
-    </LocaleContext.Provider>
-  );
+  return <LocaleContext.Provider value={{ locale }}>{children}</LocaleContext.Provider>;
 }
 
 export function useLocale(): LocaleContextValue {

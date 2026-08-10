@@ -1,9 +1,10 @@
 import PostLayout from '../../components/PostLayout';
-import { useLocale } from '../../lib/locale';
+import { useLocale, localeFromPathname } from '../../lib/locale';
 import type { MetaFunction } from 'react-router';
 import { createPostMeta } from '../../lib/seo';
 
-export const meta: MetaFunction = () => createPostMeta('reliable-event-driven-systems');
+export const meta: MetaFunction = ({ location }) =>
+  createPostMeta('reliable-event-driven-systems', localeFromPathname(location.pathname));
 
 const content = {
   en: {

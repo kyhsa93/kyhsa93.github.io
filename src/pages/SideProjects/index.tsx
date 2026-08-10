@@ -1,17 +1,20 @@
 import { Link } from 'react-router-dom';
 import type { MetaFunction } from 'react-router';
 import { sideProjects } from '../../data/sideProjects';
-import { useLocale } from '../../lib/locale';
+import { useLocale, localizedPath, localeFromPathname } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
 import { createMeta } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
 
-export const meta: MetaFunction = () =>
-  createMeta({
-    title: uiCopy.en.sideProjectsArchive.seoTitle,
-    description: uiCopy.en.sideProjectsArchive.seoDescription(sideProjects.length),
+export const meta: MetaFunction = ({ location }) => {
+  const locale = localeFromPathname(location.pathname);
+  return createMeta({
+    title: uiCopy[locale].sideProjectsArchive.seoTitle,
+    description: uiCopy[locale].sideProjectsArchive.seoDescription(sideProjects.length),
     path: '/side-projects',
+    locale,
   });
+};
 
 export default function SideProjects() {
   const { locale } = useLocale();
@@ -20,12 +23,12 @@ export default function SideProjects() {
   return (
     <main className="home-page">
       <nav className="site-nav" aria-label={t.nav.mainAriaLabel}>
-        <Link className="brand" to="/">
+        <Link className="brand" to={localizedPath('/', locale)}>
           <span className="brand-mark">Y</span>
           <span>younghoon</span>
         </Link>
         <div className="nav-links">
-          <Link to="/">{t.nav.backHome}</Link>
+          <Link to={localizedPath('/', locale)}>{t.nav.backHome}</Link>
           <LanguageToggle />
         </div>
       </nav>
@@ -72,7 +75,7 @@ export default function SideProjects() {
         <p>{t.footer.tagline}</p>
         <div className="footer-links">
           <a href="/rss.xml">{t.footer.rss}</a>
-          <Link to="/privacy-policy">{t.footer.privacy}</Link>
+          <Link to={localizedPath('/privacy-policy', locale)}>{t.footer.privacy}</Link>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             github.com/kyhsa93 →
           </a>

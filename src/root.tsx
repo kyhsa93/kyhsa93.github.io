@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router';
 
-import { LocaleProvider } from './lib/locale';
+import { LocaleProvider, localeFromPathname } from './lib/locale';
 import { AdConsentProvider } from './lib/adConsent';
 import { ConsentBanner } from './components/ConsentBanner';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -32,8 +32,11 @@ gtag('config', 'G-Z1LH7S1ZE5');
 `;
 
 export function Layout({ children }: { children: ReactNode }) {
+  const location = useLocation();
+  const locale = localeFromPathname(location.pathname);
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <meta charSet="UTF-8" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

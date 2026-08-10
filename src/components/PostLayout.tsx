@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { posts } from '../data/posts';
-import { useLocale } from '../lib/locale';
+import { useLocale, localizedPath } from '../lib/locale';
 import { uiCopy } from '../lib/copy';
 import { AdUnit } from './AdUnit';
 import { LanguageToggle } from './LanguageToggle';
@@ -29,12 +29,12 @@ export default function PostLayout({ slug, kicker, title, lede, children }: Post
   return (
     <main className="post-page">
       <nav className="post-nav" aria-label={t.nav.postAriaLabel}>
-        <Link to="/" className="brand">
+        <Link to={localizedPath('/', locale)} className="brand">
           <span className="brand-mark">Y</span>
           <span>younghoon</span>
         </Link>
         <div className="nav-links">
-          <Link to="/" className="back-link">
+          <Link to={localizedPath('/', locale)} className="back-link">
             {t.nav.backHome}
           </Link>
           <LanguageToggle />
@@ -55,7 +55,7 @@ export default function PostLayout({ slug, kicker, title, lede, children }: Post
           format="horizontal"
         />
         <footer className="post-footer">
-          <Link to="/">{t.nav.postFooterBackHome}</Link>
+          <Link to={localizedPath('/', locale)}>{t.nav.postFooterBackHome}</Link>
           <a href={project.url} target="_blank" rel="noreferrer">
             {project.name}{' '}
           </a>

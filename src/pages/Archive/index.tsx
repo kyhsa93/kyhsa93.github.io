@@ -1,17 +1,20 @@
 import { Link } from 'react-router-dom';
 import type { MetaFunction } from 'react-router';
 import { postsByDate } from '../../data/posts';
-import { useLocale } from '../../lib/locale';
+import { useLocale, localizedPath, localeFromPathname } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
 import { createMeta } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
 
-export const meta: MetaFunction = () =>
-  createMeta({
-    title: uiCopy.en.archive.seoTitle,
-    description: uiCopy.en.archive.seoDescription(postsByDate.length),
+export const meta: MetaFunction = ({ location }) => {
+  const locale = localeFromPathname(location.pathname);
+  return createMeta({
+    title: uiCopy[locale].archive.seoTitle,
+    description: uiCopy[locale].archive.seoDescription(postsByDate.length),
     path: '/posts',
+    locale,
   });
+};
 
 export default function Archive() {
   const { locale } = useLocale();
@@ -20,12 +23,12 @@ export default function Archive() {
   return (
     <main className="home-page">
       <nav className="site-nav" aria-label={t.nav.mainAriaLabel}>
-        <Link className="brand" to="/">
+        <Link className="brand" to={localizedPath('/', locale)}>
           <span className="brand-mark">Y</span>
           <span>younghoon</span>
         </Link>
         <div className="nav-links">
-          <Link to="/">{t.nav.backHome}</Link>
+          <Link to={localizedPath('/', locale)}>{t.nav.backHome}</Link>
           <LanguageToggle />
         </div>
       </nav>
@@ -44,7 +47,7 @@ export default function Archive() {
               <span>{post.tags.join(' · ')}</span>
             </div>
             <h3>
-              <Link to={`/posts/${post.slug}`}>
+              <Link to={localizedPath(`/posts/${post.slug}`, locale)}>
                 {post.title[locale]}
                 <span aria-hidden="true">→</span>
               </Link>
@@ -58,7 +61,7 @@ export default function Archive() {
         <p>{t.footer.tagline}</p>
         <div className="footer-links">
           <a href="/rss.xml">{t.footer.rss}</a>
-          <Link to="/privacy-policy">{t.footer.privacy}</Link>
+          <Link to={localizedPath('/privacy-policy', locale)}>{t.footer.privacy}</Link>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             github.com/kyhsa93 →
           </a>

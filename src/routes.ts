@@ -1,6 +1,27 @@
-import { type RouteConfig, index, route } from '@react-router/dev/routes';
+import {
+  type RouteConfig,
+  type RouteConfigEntry,
+  index,
+  route,
+  prefix,
+} from '@react-router/dev/routes';
 
-export default [
+// route()/index() default a route's id to its file path when none is given,
+// so reusing the same files under prefix('ko', ...) would collide with the
+// unprefixed originals ("duplicate route id") unless every entry gets its
+// own id here first.
+function withKoIds(entries: RouteConfigEntry[]): RouteConfigEntry[] {
+  return entries.map((entry) => ({
+    ...entry,
+    id: `ko-${entry.id ?? entry.file}`,
+    children: entry.children ? withKoIds(entry.children) : entry.children,
+  }));
+}
+
+// Every route below is content that exists in both languages (see
+// src/data/posts.ts's { en, ko } fields) and gets mirrored under /ko/* via
+// prefix() further down — only 404/catch-all stay locale-neutral.
+const contentRoutes = [
   index('pages/Home/index.tsx'),
   route('posts', 'pages/Archive/index.tsx'),
   route('side-projects', 'pages/SideProjects/index.tsx'),
@@ -148,6 +169,11 @@ export default [
     'posts/a-rule-evans-never-wrote',
     'pages/Post/ARuleEvansNeverWrote.tsx',
   ),
+];
+
+export default [
+  ...contentRoutes,
+  ...prefix('ko', withKoIds(contentRoutes)),
 
   route('404', 'pages/NotFound/index.tsx'),
   route('*', 'pages/NotFound/index.tsx', { id: 'catch-all-not-found' }),

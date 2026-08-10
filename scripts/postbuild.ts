@@ -117,6 +117,23 @@ function generateSitemap(): string {
     { loc: `${SITE_URL}/posts`, lastmod: latestDate, changefreq: 'weekly', priority: '0.8' },
     { loc: `${SITE_URL}/side-projects`, lastmod: latestDate, changefreq: 'monthly', priority: '0.5' },
     { loc: `${SITE_URL}/privacy-policy`, lastmod: latestDate, priority: '0.3' },
+    // 이 블로그 SPA의 라우트가 아니라 같은 kyhsa93.github.io 도메인 아래
+    // 별도 저장소에서 배포되는 프로젝트 페이지들 (src/data/sideProjects.ts
+    // 참고) — react-router.config.ts의 prerender 대상이 아니라서 여기 사이트맵에만
+    // 수동으로 추가해야 노출된다.
+    { loc: `${SITE_URL}/fove`, lastmod: latestDate, changefreq: 'monthly', priority: '0.4' },
+    {
+      loc: `${SITE_URL}/toddler-milestone-checklist/`,
+      lastmod: latestDate,
+      changefreq: 'monthly',
+      priority: '0.4',
+    },
+    {
+      loc: `${SITE_URL}/econ-realestate-digest/`,
+      lastmod: latestDate,
+      changefreq: 'daily',
+      priority: '0.5',
+    },
   ]
     .map(
       (u) => `  <url>

@@ -5,7 +5,7 @@ import { postsByDate } from '../../data/posts';
 import { sideProjects } from '../../data/sideProjects';
 import { useLocale } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
-import { createMeta } from '../../lib/seo';
+import { createMeta, SITE_URL, SITE_NAME } from '../../lib/seo';
 import { LanguageToggle } from '../../components/LanguageToggle';
 
 export const meta: MetaFunction = () =>
@@ -13,6 +13,28 @@ export const meta: MetaFunction = () =>
     title: uiCopy.en.home.seoTitle,
     description: uiCopy.en.home.seoDescription,
     path: '/',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': `${SITE_URL}/#website`,
+          url: `${SITE_URL}/`,
+          name: uiCopy.en.home.seoTitle,
+          description: uiCopy.en.home.seoDescription,
+          inLanguage: 'en',
+          author: { '@id': `${SITE_URL}/#person` },
+        },
+        {
+          '@type': 'Person',
+          '@id': `${SITE_URL}/#person`,
+          name: SITE_NAME,
+          url: `${SITE_URL}/`,
+          jobTitle: 'Backend Engineer',
+          sameAs: ['https://github.com/kyhsa93'],
+        },
+      ],
+    },
   });
 
 const latestPosts = postsByDate.slice(0, 3);

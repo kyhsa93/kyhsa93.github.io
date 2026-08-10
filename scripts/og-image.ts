@@ -7,10 +7,21 @@ import { Resvg } from '@resvg/resvg-js';
 
 import type { PostMeta } from '../src/data/posts.ts';
 
+// scripts/ is type-checked under tsconfig.node.json (no jsx, strict Node ESM
+// resolution) — can't import src/lib/locale.tsx (a .tsx file) from here, so
+// this trivial alias is duplicated rather than shared.
+type Locale = 'en' | 'ko';
+
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 
 const extraBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Manrope-ExtraBold.ttf'));
 const semiBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Manrope-SemiBold.ttf'));
+// Manrope has no Hangul glyphs, so Korean titles need a font that does.
+// Registered alongside Manrope in the same weights (700/800) below — satori
+// walks the fontFamily list per character and falls back to whichever font
+// actually covers that glyph, so English and Korean can mix in one string.
+const pretendardBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Pretendard-Bold.otf'));
+const pretendardExtraBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Pretendard-ExtraBold.otf'));
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -21,15 +32,24 @@ const LINE = '#28402a';
 const PAPER_DARK = '#101510';
 const LIME = '#d5fa52';
 
-function titleFontSize(title: string): number {
-  if (title.length > 55) return 50;
-  if (title.length > 35) return 58;
+// Hangul syllable blocks render much wider per character than Latin letters
+// at the same font-size, so a Korean title needs a smaller size at roughly
+// half the character count to fit the same 1020px/~3-line budget.
+function titleFontSize(title: string, locale: Locale): number {
+  const length = title.length;
+  if (locale === 'ko') {
+    if (length > 28) return 50;
+    if (length > 18) return 58;
+    return 68;
+  }
+  if (length > 55) return 50;
+  if (length > 35) return 58;
   return 68;
 }
 
-export async function renderOgImage(post: PostMeta): Promise<Buffer> {
+export async function renderOgImage(post: PostMeta, locale: Locale): Promise<Buffer> {
   const kicker = post.tags.join(' · ').toUpperCase();
-  const title = post.title.en;
+  const title = post.title[locale];
 
   const markup = {
     type: 'div',
@@ -42,7 +62,7 @@ export async function renderOgImage(post: PostMeta): Promise<Buffer> {
         justifyContent: 'space-between',
         padding: '72px',
         backgroundColor: PAPER_DARK,
-        fontFamily: 'Manrope',
+        fontFamily: 'Manrope, Pretendard',
       },
       children: [
         {
@@ -99,7 +119,7 @@ export async function renderOgImage(post: PostMeta): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: {
-                    fontSize: `${titleFontSize(title)}px`,
+                    fontSize: `${titleFontSize(title, locale)}px`,
                     fontWeight: 800,
                     color: INK,
                     lineHeight: 1.2,
@@ -138,6 +158,8 @@ export async function renderOgImage(post: PostMeta): Promise<Buffer> {
     fonts: [
       { name: 'Manrope', data: extraBold, weight: 800, style: 'normal' },
       { name: 'Manrope', data: semiBold, weight: 700, style: 'normal' },
+      { name: 'Pretendard', data: pretendardExtraBold, weight: 800, style: 'normal' },
+      { name: 'Pretendard', data: pretendardBold, weight: 700, style: 'normal' },
     ],
   });
 

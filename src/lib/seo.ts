@@ -81,10 +81,9 @@ export function createPostMeta(slug: string, locale: Locale): MetaDescriptor[] {
   const title = post?.title[locale] ?? slug;
   const description = post?.summary[locale] ?? '';
   const publishedTime = post ? toIsoDate(post.date) : undefined;
-  // Satori's bundled fonts (scripts/og-image.ts) only cover Latin glyphs, so
-  // Korean posts still reuse the English-titled card rather than rendering
-  // blank/tofu glyphs. Revisit if a Hangul-capable font gets added.
-  const image = `${SITE_URL}/og/${slug}.png`;
+  // scripts/postbuild.ts renders a Korean-titled card into og/ko/ alongside
+  // the English one in og/ (scripts/og-image.ts bundles Pretendard for Hangul).
+  const image = locale === 'ko' ? `${SITE_URL}/og/ko/${slug}.png` : `${SITE_URL}/og/${slug}.png`;
 
   return createMeta({
     title,

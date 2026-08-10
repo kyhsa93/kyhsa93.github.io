@@ -74,7 +74,7 @@ export default function SideProjects() {
       <footer>
         <p>{t.footer.tagline}</p>
         <div className="footer-links">
-          <a href="/rss.xml">{t.footer.rss}</a>
+          <a href={locale === 'ko' ? '/rss-ko.xml' : '/rss.xml'}>{t.footer.rss}</a>
           <Link to={localizedPath('/privacy-policy', locale)}>{t.footer.privacy}</Link>
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
             github.com/kyhsa93 →

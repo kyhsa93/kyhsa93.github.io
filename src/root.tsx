@@ -58,6 +58,18 @@ export function Layout({ children }: { children: ReactNode }) {
           title="younghoon — backend engineer"
           href="https://kyhsa93.github.io/atom.xml"
         />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="younghoon — 백엔드 엔지니어"
+          href="https://kyhsa93.github.io/rss-ko.xml"
+        />
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title="younghoon — 백엔드 엔지니어"
+          href="https://kyhsa93.github.io/atom-ko.xml"
+        />
 
         <meta name="google-adsense-account" content="ca-pub-1195159445218373" />
         <script

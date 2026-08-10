@@ -7,9 +7,32 @@ import { renderOgImage } from './og-image.ts';
 
 const SITE_URL = 'https://kyhsa93.github.io';
 const SITE_NAME = 'younghoon';
-const SITE_TITLE = 'younghoon — backend engineer';
-const SITE_DESCRIPTION =
-  'Notes from a backend engineer who designs complex systems with clarity.';
+
+// scripts/ is type-checked under tsconfig.node.json (no jsx, strict Node ESM
+// resolution) — can't import src/lib/locale.tsx or src/lib/copy.ts (which
+// itself has extensionless internal imports only valid under the app's
+// bundler resolution) from here, so both are duplicated in miniature below
+// rather than shared. Keep in sync with src/lib/locale.tsx's localizedPath
+// and src/lib/copy.ts's uiCopy.{en,ko}.home.seoTitle/seoDescription.
+type Locale = 'en' | 'ko';
+
+function localizedPath(path: string, locale: Locale): string {
+  if (locale === 'en') return path;
+  return path === '/' ? '/ko' : `/ko${path}`;
+}
+
+const SITE_META: Record<Locale, { title: string; description: string }> = {
+  en: {
+    title: 'younghoon — backend engineer',
+    description:
+      'Notes from a backend engineer who designs complex systems with clarity. TypeScript, Go, and the Backend Service Playbook.',
+  },
+  ko: {
+    title: 'younghoon — 백엔드 엔지니어',
+    description:
+      '명확하게 복잡한 시스템을 설계하는 백엔드 엔지니어의 기록. TypeScript, Go, 그리고 Backend Service Playbook.',
+  },
+};
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = resolve(SCRIPT_DIR, '../build/client');
@@ -33,32 +56,35 @@ function xmlEscape(value: string): string {
 
 // --- RSS 2.0 -----------------------------------------------------------
 
-function generateRss(): string {
+function generateRss(locale: Locale): string {
   const items = sortedPosts
     .map((post) => {
-      const url = `${SITE_URL}/posts/${post.slug}`;
+      const url = `${SITE_URL}${localizedPath(`/posts/${post.slug}`, locale)}`;
       const categories = post.tags
         .map((tag: string) => `      <category>${xmlEscape(tag)}</category>`)
         .join('\n');
       return `    <item>
-      <title>${xmlEscape(post.title.en)}</title>
+      <title>${xmlEscape(post.title[locale])}</title>
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <pubDate>${toRfc822(post.date)}</pubDate>
-      <description>${xmlEscape(post.summary.en)}</description>
+      <description>${xmlEscape(post.summary[locale])}</description>
 ${categories}
     </item>`;
     })
     .join('\n');
 
+  const feedFile = locale === 'ko' ? 'rss-ko.xml' : 'rss.xml';
+  const siteUrl = `${SITE_URL}${localizedPath('/', locale)}`;
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${xmlEscape(SITE_TITLE)}</title>
-    <link>${SITE_URL}/</link>
-    <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />
-    <description>${xmlEscape(SITE_DESCRIPTION)}</description>
-    <language>en</language>
+    <title>${xmlEscape(SITE_META[locale].title)}</title>
+    <link>${siteUrl}</link>
+    <atom:link href="${SITE_URL}/${feedFile}" rel="self" type="application/rss+xml" />
+    <description>${xmlEscape(SITE_META[locale].description)}</description>
+    <language>${locale}</language>
     <lastBuildDate>${toRfc822(sortedPosts[0].date)}</lastBuildDate>
 ${items}
   </channel>
@@ -68,35 +94,37 @@ ${items}
 
 // --- Atom 1.0 ------------------------------------------------------------
 
-function generateAtom(): string {
+function generateAtom(locale: Locale): string {
   const entries = sortedPosts
     .map((post) => {
-      const url = `${SITE_URL}/posts/${post.slug}`;
+      const url = `${SITE_URL}${localizedPath(`/posts/${post.slug}`, locale)}`;
       const iso = `${toIsoDate(post.date)}T00:00:00Z`;
       const categories = post.tags
         .map((tag: string) => `    <category term="${xmlEscape(tag)}" />`)
         .join('\n');
       return `  <entry>
-    <title>${xmlEscape(post.title.en)}</title>
+    <title>${xmlEscape(post.title[locale])}</title>
     <link href="${url}" />
     <id>${url}</id>
     <updated>${iso}</updated>
     <published>${iso}</published>
-    <summary>${xmlEscape(post.summary.en)}</summary>
+    <summary>${xmlEscape(post.summary[locale])}</summary>
 ${categories}
   </entry>`;
     })
     .join('\n');
 
   const latestIso = `${toIsoDate(sortedPosts[0].date)}T00:00:00Z`;
+  const feedFile = locale === 'ko' ? 'atom-ko.xml' : 'atom.xml';
+  const siteUrl = `${SITE_URL}${localizedPath('/', locale)}`;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>${xmlEscape(SITE_TITLE)}</title>
-  <subtitle>${xmlEscape(SITE_DESCRIPTION)}</subtitle>
-  <link href="${SITE_URL}/atom.xml" rel="self" />
-  <link href="${SITE_URL}/" />
-  <id>${SITE_URL}/</id>
+  <title>${xmlEscape(SITE_META[locale].title)}</title>
+  <subtitle>${xmlEscape(SITE_META[locale].description)}</subtitle>
+  <link href="${SITE_URL}/${feedFile}" rel="self" />
+  <link href="${siteUrl}" />
+  <id>${siteUrl}</id>
   <updated>${latestIso}</updated>
   <author>
     <name>${SITE_NAME}</name>
@@ -182,14 +210,20 @@ ${postEntries}
 
 async function main(): Promise<void> {
   const ogDir = resolve(DIST_DIR, 'og');
+  const ogKoDir = resolve(ogDir, 'ko');
   mkdirSync(ogDir, { recursive: true });
+  mkdirSync(ogKoDir, { recursive: true });
   for (const post of posts) {
-    const png = await renderOgImage(post);
-    writeFileSync(resolve(ogDir, `${post.slug}.png`), png);
+    const enPng = await renderOgImage(post, 'en');
+    writeFileSync(resolve(ogDir, `${post.slug}.png`), enPng);
+    const koPng = await renderOgImage(post, 'ko');
+    writeFileSync(resolve(ogKoDir, `${post.slug}.png`), koPng);
   }
 
-  writeFileSync(resolve(DIST_DIR, 'rss.xml'), generateRss());
-  writeFileSync(resolve(DIST_DIR, 'atom.xml'), generateAtom());
+  writeFileSync(resolve(DIST_DIR, 'rss.xml'), generateRss('en'));
+  writeFileSync(resolve(DIST_DIR, 'rss-ko.xml'), generateRss('ko'));
+  writeFileSync(resolve(DIST_DIR, 'atom.xml'), generateAtom('en'));
+  writeFileSync(resolve(DIST_DIR, 'atom-ko.xml'), generateAtom('ko'));
   writeFileSync(resolve(DIST_DIR, 'sitemap.xml'), generateSitemap());
 
   // GitHub Pages looks for a flat /404.html at the site root; react-router prerenders the
@@ -197,7 +231,7 @@ async function main(): Promise<void> {
   copyFileSync(resolve(DIST_DIR, '404', 'index.html'), resolve(DIST_DIR, '404.html'));
 
   console.log(
-    `postbuild: wrote rss.xml, atom.xml, sitemap.xml, and ${posts.length} OG images (per-route <head> tags are now baked in by react-router prerendering)`
+    `postbuild: wrote rss/atom feeds (en + ko), sitemap.xml, and ${posts.length * 2} OG images (en + ko; per-route <head> tags are now baked in by react-router prerendering)`
   );
 }
 

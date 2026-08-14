@@ -9,16 +9,10 @@ interface LocaleContextValue {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
-// Locale is derived entirely from the URL (/ko/* vs unprefixed) so that
-// prerendered HTML and Googlebot's rendered DOM show the right language for
-// the requested path, not whatever a client only toggle/localStorage state
-// happened to default to.
 export function localeFromPathname(pathname: string): Locale {
   return pathname === '/ko' || pathname.startsWith('/ko/') ? 'ko' : 'en';
 }
 
-// Canonical (unprefixed/English) path in, locale-appropriate path out — for
-// building <Link to> targets that stay within the current language.
 export function localizedPath(path: string, locale: Locale): string {
   if (locale === 'en') return path;
   return path === '/' ? '/ko' : `/ko${path}`;

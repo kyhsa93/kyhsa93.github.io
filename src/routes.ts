@@ -6,10 +6,6 @@ import {
   prefix,
 } from '@react-router/dev/routes';
 
-// route()/index() default a route's id to its file path when none is given,
-// so reusing the same files under prefix('ko', ...) would collide with the
-// unprefixed originals ("duplicate route id") unless every entry gets its
-// own id here first.
 function withKoIds(entries: RouteConfigEntry[]): RouteConfigEntry[] {
   return entries.map((entry) => ({
     ...entry,
@@ -18,9 +14,6 @@ function withKoIds(entries: RouteConfigEntry[]): RouteConfigEntry[] {
   }));
 }
 
-// Every route below is content that exists in both languages (see
-// src/data/posts.ts's { en, ko } fields) and gets mirrored under /ko/* via
-// prefix() further down — only 404/catch-all stay locale-neutral.
 const contentRoutes = [
   index('pages/Home/index.tsx'),
   route('posts', 'pages/Archive/index.tsx'),

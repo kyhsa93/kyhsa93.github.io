@@ -39,7 +39,6 @@ export function AdUnit({ slot, format = 'auto' }: AdUnitProps) {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       pushed.current = true;
     } catch {
-      // adsbygoogle script not loaded yet — ignore
     }
   }, [consent]);
 

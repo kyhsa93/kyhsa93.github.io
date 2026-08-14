@@ -9,9 +9,6 @@ import { ScrollToTop } from './components/ScrollToTop';
 import './index.css';
 import './App.css';
 
-// Runs before paint so a saved/preferred dark theme applies on first render instead of
-// flashing the light default while JS hydrates. Mirrors the logic every page relies on —
-// only Home owns a theme toggle, every other route just needs this applied once, up front.
 const THEME_INIT_SCRIPT = `
 (function () {
   try {

@@ -10,7 +10,6 @@ export const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 interface SeoOptions {
   title: string;
   description: string;
-  /** Canonical (unprefixed/English) path — never include the /ko prefix here. */
   path: string;
   locale: Locale;
   type?: 'website' | 'article';
@@ -38,9 +37,6 @@ export function createMeta({
     { title: fullTitle },
     { name: 'description', content: description },
     { tagName: 'link', rel: 'canonical', href: url },
-    // Each locale's page declares both variants as alternates and English as
-    // x-default, so Google indexes /ko/* and / separately instead of only
-    // ever seeing whichever one it crawled first.
     { tagName: 'link', rel: 'alternate', hrefLang: 'en', href: enUrl },
     { tagName: 'link', rel: 'alternate', hrefLang: 'ko', href: koUrl },
     { tagName: 'link', rel: 'alternate', hrefLang: 'x-default', href: enUrl },
@@ -81,8 +77,6 @@ export function createPostMeta(slug: string, locale: Locale): MetaDescriptor[] {
   const title = post?.title[locale] ?? slug;
   const description = post?.summary[locale] ?? '';
   const publishedTime = post ? toIsoDate(post.date) : undefined;
-  // scripts/postbuild.ts renders a Korean-titled card into og/ko/ alongside
-  // the English one in og/ (scripts/og-image.ts bundles Pretendard for Hangul).
   const image = locale === 'ko' ? `${SITE_URL}/og/ko/${slug}.png` : `${SITE_URL}/og/${slug}.png`;
 
   return createMeta({

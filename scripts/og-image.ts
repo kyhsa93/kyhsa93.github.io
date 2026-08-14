@@ -7,19 +7,12 @@ import { Resvg } from '@resvg/resvg-js';
 
 import type { PostMeta } from '../src/data/posts.ts';
 
-// scripts/ is type-checked under tsconfig.node.json (no jsx, strict Node ESM
-// resolution) — can't import src/lib/locale.tsx (a .tsx file) from here, so
-// this trivial alias is duplicated rather than shared.
 type Locale = 'en' | 'ko';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 
 const extraBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Manrope-ExtraBold.ttf'));
 const semiBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Manrope-SemiBold.ttf'));
-// Manrope has no Hangul glyphs, so Korean titles need a font that does.
-// Registered alongside Manrope in the same weights (700/800) below — satori
-// walks the fontFamily list per character and falls back to whichever font
-// actually covers that glyph, so English and Korean can mix in one string.
 const pretendardBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Pretendard-Bold.otf'));
 const pretendardExtraBold = readFileSync(resolve(SCRIPT_DIR, 'assets/Pretendard-ExtraBold.otf'));
 
@@ -32,9 +25,6 @@ const LINE = '#28402a';
 const PAPER_DARK = '#101510';
 const LIME = '#d5fa52';
 
-// Hangul syllable blocks render much wider per character than Latin letters
-// at the same font-size, so a Korean title needs a smaller size at roughly
-// half the character count to fit the same 1020px/~3-line budget.
 function titleFontSize(title: string, locale: Locale): number {
   const length = title.length;
   if (locale === 'ko') {

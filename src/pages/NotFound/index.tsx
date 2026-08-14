@@ -10,9 +10,6 @@ export const meta: MetaFunction = ({ location }) => {
   return createMeta({
     title: uiCopy[locale].notFound.seoTitle,
     description: uiCopy[locale].notFound.seoDescription,
-    // /404 itself isn't mirrored under /ko (see react-router.config.ts) — it's
-    // GitHub Pages' shared fallback for any unmatched path in either
-    // language, so its own meta path stays unprefixed regardless of locale.
     path: '/404',
     locale,
   });

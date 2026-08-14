@@ -15,11 +15,9 @@ export interface PostMeta {
   date: string;
   tags: string[];
   readMinutes: number;
-  /** Defaults to Backend Service Playbook when omitted — most posts are about it. */
   project?: ProjectLink;
 }
 
-// Not necessarily in date order — see `postsByDate` for that.
 export const posts: PostMeta[] = [
   {
     slug: 'a-perfect-score-a-broken-feature',

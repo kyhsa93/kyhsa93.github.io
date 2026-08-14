@@ -1,5 +1,3 @@
-// 확장자를 붙여 두는 이유: scripts/postbuild.ts가 사이트맵을 만들 때 이 파일을
-// 그대로 import하는데, 그쪽은 module: nodenext라 확장자 없는 경로를 못 찾는다.
 import type { LocalizedText } from './posts.ts';
 
 export interface SideProject {
@@ -8,10 +6,6 @@ export interface SideProject {
   url?: string;
 }
 
-// Ordered oldest-first by actual project start date (verified against each
-// GitHub repo's createdAt), not by when it was added to this list — Fove predates
-// the rest by about a year. The homepage takes the last 3 (see Home/index.tsx),
-// so keeping this in true chronological order keeps that slice meaningful.
 export const sideProjects: SideProject[] = [
   {
     title: 'Fove',

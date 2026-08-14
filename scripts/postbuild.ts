@@ -3,6 +3,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { posts, postsByDate as sortedPosts } from '../src/data/posts.ts';
+import { sideProjects } from '../src/data/sideProjects.ts';
 import { renderOgImage } from './og-image.ts';
 
 const SITE_URL = 'https://kyhsa93.github.io';
@@ -170,24 +171,35 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     .join('\n');
 
   // 이 블로그 SPA의 라우트가 아니라 같은 kyhsa93.github.io 도메인 아래
-  // 별도 저장소에서 배포되는 프로젝트 페이지들 (src/data/sideProjects.ts
-  // 참고) — react-router.config.ts의 prerender 대상이 아니고 /ko 버전도
-  // 없어서 원래 URL 하나씩만 수동으로 추가한다.
-  const externalProjectEntries = [
-    { loc: `${SITE_URL}/fove`, lastmod: latestDate, changefreq: 'monthly', priority: '0.4' },
-    {
-      loc: `${SITE_URL}/toddler-milestone-checklist/`,
+  // 별도 저장소에서 배포되는 프로젝트 페이지들 — react-router.config.ts의
+  // prerender 대상이 아니고 /ko 버전도 없어서 원래 URL 하나씩만 넣는다.
+  //
+  // sideProjects.ts에서 바로 뽑아 쓴다. 예전에는 여기에 URL을 따로 적어뒀는데,
+  // 프로젝트를 등록해도 사이트맵에는 반영되지 않는 어긋남이 실제로 생겼다
+  // (housing-subsidy-radar가 등록 후에도 사이트맵에서 빠져 있었다).
+  // GitHub 저장소로 연결되는 항목은 이 도메인이 아니라 저절로 걸러진다.
+  const ownProjectUrls = sideProjects
+    .map((project) => project.url)
+    .filter((url): url is string => Boolean(url?.startsWith(SITE_URL)));
+
+  // 프로젝트 안의 개별 페이지는 sideProjects.ts에 없다(그쪽은 프로젝트 단위라
+  // 대표 URL만 갖는다). 검색으로 바로 들어올 만한 페이지는 여기 적어준다.
+  const projectSubPages = [`${SITE_URL}/econ-realestate-digest/rates.html`];
+
+  // 매일 데이터가 바뀌는 쪽은 그렇게 알린다. 나머지는 내용이 잘 안 바뀐다.
+  const dailyUpdated = new Set([
+    `${SITE_URL}/econ-realestate-digest/`,
+    `${SITE_URL}/econ-realestate-digest/rates.html`,
+    `${SITE_URL}/housing-subsidy-radar/`,
+  ]);
+
+  const externalProjectEntries = [...ownProjectUrls, ...projectSubPages]
+    .map((loc) => ({
+      loc,
       lastmod: latestDate,
-      changefreq: 'monthly',
-      priority: '0.4',
-    },
-    {
-      loc: `${SITE_URL}/econ-realestate-digest/`,
-      lastmod: latestDate,
-      changefreq: 'daily',
-      priority: '0.5',
-    },
-  ]
+      changefreq: dailyUpdated.has(loc) ? 'daily' : 'monthly',
+      priority: dailyUpdated.has(loc) ? '0.5' : '0.4',
+    }))
     .map(urlEntry)
     .join('\n');
 

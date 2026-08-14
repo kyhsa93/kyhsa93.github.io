@@ -38,8 +38,8 @@ export const sideProjects: SideProject[] = [
   {
     title: 'Toddler Milestone Checklist',
     description: {
-      en: 'An offline-capable PWA for tracking toddler developmental milestones (12–36 months) across four domains, plus a simple growth log. Not a diagnostic tool.',
-      ko: '12~36개월 영유아의 발달을 네 개 영역으로 관찰하고 성장 기록을 남기는 오프라인 지원 PWA입니다. 진단 도구는 아닙니다.',
+      en: 'An offline-capable PWA for tracking developmental milestones (2–36 months) across four domains, plus a growth log with percentiles from birth. Not a diagnostic tool.',
+      ko: '2~36개월 영유아의 발달을 네 개 영역으로 관찰하고, 출생부터의 성장 백분위를 기록하는 오프라인 지원 PWA입니다. 진단 도구는 아닙니다.',
     },
     url: 'https://kyhsa93.github.io/toddler-milestone-checklist/',
   },
@@ -50,5 +50,13 @@ export const sideProjects: SideProject[] = [
       ko: '한국 경제/부동산 뉴스와 시장 지표를 매일 아침 GitHub Actions 파이프라인으로 자동 갱신하고, 오픈소스 로컬 LLM이 하루 소식을 요약해주는 데일리 다이제스트입니다.',
     },
     url: 'https://kyhsa93.github.io/econ-realestate-digest/',
+  },
+  {
+    title: 'Housing Subsidy Radar',
+    description: {
+      en: 'Korean housing subscription notices ordered by how soon they close, alongside housing-related government benefits you can narrow down by region, income and age.',
+      ko: '전국 청약 공고를 접수 마감이 임박한 순서로 보여주고, 주거 관련 정부 지원금을 지역·소득·나이로 좁혀 찾아보는 사이트입니다.',
+    },
+    url: 'https://kyhsa93.github.io/housing-subsidy-radar/',
   },
 ];

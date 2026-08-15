@@ -1,7 +1,10 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export type Locale = 'en' | 'ko';
+import type { Locale } from './urls';
+
+export { localizedPath } from './urls';
+export type { Locale };
 
 interface LocaleContextValue {
   locale: Locale;
@@ -11,11 +14,6 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 
 export function localeFromPathname(pathname: string): Locale {
   return pathname === '/ko' || pathname.startsWith('/ko/') ? 'ko' : 'en';
-}
-
-export function localizedPath(path: string, locale: Locale): string {
-  if (locale === 'en') return path;
-  return path === '/' ? '/ko' : `/ko${path}`;
 }
 
 export function LocaleProvider({ children }: { children: ReactNode }) {

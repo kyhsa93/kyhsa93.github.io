@@ -162,11 +162,19 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     .map((project) => project.url)
     .filter((url): url is string => Boolean(url?.startsWith(SITE_URL)));
 
-  const projectSubPages = [`${SITE_URL}/econ-realestate-digest/rates.html`];
+  const ratePages = [
+    'rates.html',
+    'deposit-rates.html',
+    'saving-rates.html',
+    'mortgage-rates.html',
+    'rent-loan-rates.html',
+  ].map((file) => `${SITE_URL}/econ-realestate-digest/${file}`);
+
+  const projectSubPages = ratePages;
 
   const dailyUpdated = new Set([
     `${SITE_URL}/econ-realestate-digest/`,
-    `${SITE_URL}/econ-realestate-digest/rates.html`,
+    ...ratePages,
     `${SITE_URL}/housing-subsidy-radar/`,
   ]);
 

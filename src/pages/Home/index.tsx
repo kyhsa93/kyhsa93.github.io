@@ -6,11 +6,12 @@ import { sideProjects } from '../../data/sideProjects';
 import { useLocale, localizedPath, localeFromPathname } from '../../lib/locale';
 import { uiCopy } from '../../lib/copy';
 import { createMeta, SITE_URL, SITE_NAME } from '../../lib/seo';
+import { canonicalUrl } from '../../lib/urls';
 import { LanguageToggle } from '../../components/LanguageToggle';
 
 export const meta: MetaFunction = ({ location }) => {
   const locale = localeFromPathname(location.pathname);
-  const homeUrl = `${SITE_URL}${localizedPath('/', locale)}`;
+  const homeUrl = canonicalUrl(localizedPath('/', locale));
 
   return createMeta({
     title: uiCopy[locale].home.seoTitle,

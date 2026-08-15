@@ -4,17 +4,16 @@ import { fileURLToPath } from 'node:url';
 
 import { posts, postsByDate as sortedPosts } from '../src/data/posts.ts';
 import { sideProjects } from '../src/data/sideProjects.ts';
+import {
+  canonicalUrl,
+  canonicalizeUrl,
+  localizedPath,
+  SITE_URL,
+  type Locale,
+} from '../src/lib/urls.ts';
 import { renderOgImage } from './og-image.ts';
 
-const SITE_URL = 'https://kyhsa93.github.io';
 const SITE_NAME = 'younghoon';
-
-type Locale = 'en' | 'ko';
-
-function localizedPath(path: string, locale: Locale): string {
-  if (locale === 'en') return path;
-  return path === '/' ? '/ko' : `/ko${path}`;
-}
 
 const SITE_META: Record<Locale, { title: string; description: string }> = {
   en: {
@@ -53,7 +52,7 @@ function xmlEscape(value: string): string {
 function generateRss(locale: Locale): string {
   const items = sortedPosts
     .map((post) => {
-      const url = `${SITE_URL}${localizedPath(`/posts/${post.slug}`, locale)}`;
+      const url = canonicalUrl(localizedPath(`/posts/${post.slug}`, locale));
       const categories = post.tags
         .map((tag: string) => `      <category>${xmlEscape(tag)}</category>`)
         .join('\n');
@@ -69,7 +68,7 @@ ${categories}
     .join('\n');
 
   const feedFile = locale === 'ko' ? 'rss-ko.xml' : 'rss.xml';
-  const siteUrl = `${SITE_URL}${localizedPath('/', locale)}`;
+  const siteUrl = canonicalUrl(localizedPath('/', locale));
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -90,7 +89,7 @@ ${items}
 function generateAtom(locale: Locale): string {
   const entries = sortedPosts
     .map((post) => {
-      const url = `${SITE_URL}${localizedPath(`/posts/${post.slug}`, locale)}`;
+      const url = canonicalUrl(localizedPath(`/posts/${post.slug}`, locale));
       const iso = `${toIsoDate(post.date)}T00:00:00Z`;
       const categories = post.tags
         .map((tag: string) => `    <category term="${xmlEscape(tag)}" />`)
@@ -109,7 +108,7 @@ ${categories}
 
   const latestIso = `${toIsoDate(sortedPosts[0].date)}T00:00:00Z`;
   const feedFile = locale === 'ko' ? 'atom-ko.xml' : 'atom.xml';
-  const siteUrl = `${SITE_URL}${localizedPath('/', locale)}`;
+  const siteUrl = canonicalUrl(localizedPath('/', locale));
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -147,9 +146,9 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
 
   const blogEntries = blogPages
     .flatMap(({ path, changefreq, priority }) => [
-      { loc: `${SITE_URL}${path}`, lastmod: latestDate, changefreq, priority },
+      { loc: canonicalUrl(path), lastmod: latestDate, changefreq, priority },
       {
-        loc: `${SITE_URL}${path === '/' ? '/ko' : `/ko${path}`}`,
+        loc: canonicalUrl(localizedPath(path, 'ko')),
         lastmod: latestDate,
         changefreq,
         priority,
@@ -160,7 +159,8 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
 
   const ownProjectUrls = sideProjects
     .map((project) => project.url)
-    .filter((url): url is string => Boolean(url?.startsWith(SITE_URL)));
+    .filter((url): url is string => Boolean(url?.startsWith(SITE_URL)))
+    .map(canonicalizeUrl);
 
   const digestSubPages = [
     'rates.html',
@@ -176,11 +176,13 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
 
   const projectSubPages = digestSubPages;
 
-  const dailyUpdated = new Set([
-    `${SITE_URL}/econ-realestate-digest/`,
-    ...digestSubPages,
-    `${SITE_URL}/housing-subsidy-radar/`,
-  ]);
+  const dailyUpdated = new Set(
+    [
+      `${SITE_URL}/econ-realestate-digest/`,
+      ...digestSubPages,
+      `${SITE_URL}/housing-subsidy-radar/`,
+    ].map(canonicalizeUrl)
+  );
 
   const externalProjectEntries = [...ownProjectUrls, ...projectSubPages]
     .map((loc) => ({
@@ -194,8 +196,16 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
 
   const postEntries = sortedPosts
     .flatMap((post) => [
-      { loc: `${SITE_URL}/posts/${post.slug}`, lastmod: toIsoDate(post.date), priority: '0.6' },
-      { loc: `${SITE_URL}/ko/posts/${post.slug}`, lastmod: toIsoDate(post.date), priority: '0.6' },
+      {
+        loc: canonicalUrl(`/posts/${post.slug}`),
+        lastmod: toIsoDate(post.date),
+        priority: '0.6',
+      },
+      {
+        loc: canonicalUrl(`/ko/posts/${post.slug}`),
+        lastmod: toIsoDate(post.date),
+        priority: '0.6',
+      },
     ])
     .map(urlEntry)
     .join('\n');

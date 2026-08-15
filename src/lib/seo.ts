@@ -1,9 +1,9 @@
 import type { MetaDescriptor } from 'react-router';
 
 import { posts, type PostMeta } from '../data/posts';
-import { localizedPath, type Locale } from './locale';
+import { canonicalUrl, localizedPath, SITE_URL, type Locale } from './urls';
 
-export const SITE_URL = 'https://kyhsa93.github.io';
+export { SITE_URL };
 export const SITE_NAME = 'younghoon';
 export const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
@@ -28,9 +28,9 @@ export function createMeta({
   publishedTime,
   jsonLd,
 }: SeoOptions): MetaDescriptor[] {
-  const url = `${SITE_URL}${localizedPath(path, locale)}`;
-  const enUrl = `${SITE_URL}${path}`;
-  const koUrl = `${SITE_URL}${localizedPath(path, 'ko')}`;
+  const url = canonicalUrl(localizedPath(path, locale));
+  const enUrl = canonicalUrl(path);
+  const koUrl = canonicalUrl(localizedPath(path, 'ko'));
   const fullTitle = path === '/' ? title : `${title} · ${SITE_NAME}`;
 
   const descriptors: MetaDescriptor[] = [
@@ -96,7 +96,7 @@ export function createPostMeta(slug: string, locale: Locale): MetaDescriptor[] {
       inLanguage: locale === 'ko' ? 'ko-KR' : 'en-US',
       author: { '@type': 'Person', name: 'younghoon' },
       image,
-      url: `${SITE_URL}${localizedPath(path, locale)}`,
+      url: canonicalUrl(localizedPath(path, locale)),
     },
   });
 }

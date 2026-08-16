@@ -169,6 +169,10 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     .map(canonicalizeUrl);
 
   const digestSubPages = [
+    'realestate.html',
+    'apartment-sale.html',
+    'apartment-jeonse.html',
+    'apartment-rent.html',
     'rates.html',
     'deposit-rates.html',
     'saving-rates.html',

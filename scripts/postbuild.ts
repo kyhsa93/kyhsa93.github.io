@@ -35,6 +35,12 @@ function toIsoDate(date: string): string {
   return date.replace(/\./g, '-');
 }
 
+// 매일 갱신되는 프로젝트 페이지의 lastmod로 쓴다. 사이트가 한국 시간대 기준으로
+// 돌아가므로 날짜도 KST로 끊는다(UTC로 끊으면 오전 9시 전 배포가 하루 전으로 적힌다).
+function buildDateKst(): string {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' });
+}
+
 function toRfc822(date: string): string {
   return new Date(`${toIsoDate(date)}T00:00:00Z`).toUTCString();
 }
@@ -184,13 +190,22 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     ].map(canonicalizeUrl)
   );
 
+  // 매일 갱신되는 프로젝트는 lastmod에 블로그 최신 글 날짜를 쓰면 안 된다. 다이제스트는
+  // 하루 네 번 내용이 바뀌는데 글을 안 쓰면 이 날짜가 몇 주씩 고정되고, 그러면 sitemap이
+  // "changefreq=daily인데 lastmod는 8일 전"이라는 앞뒤 안 맞는 신호를 보낸다. 크롤러가
+  // 다시 올 이유를 못 찾는 건 당연하다. 실제로 GSC에서 이 페이지들이 색인되지 않은
+  // 상태로 확인됐다. 여기는 배포 날짜를 적는다 - 배포될 때마다 그 페이지들은 실제로
+  // 새 내용을 담고 있다.
   const externalProjectEntries = [...ownProjectUrls, ...projectSubPages]
-    .map((loc) => ({
-      loc,
-      lastmod: latestDate,
-      changefreq: dailyUpdated.has(loc) ? 'daily' : 'monthly',
-      priority: dailyUpdated.has(loc) ? '0.5' : '0.4',
-    }))
+    .map((loc) => {
+      const daily = dailyUpdated.has(loc);
+      return {
+        loc,
+        lastmod: daily ? buildDateKst() : latestDate,
+        changefreq: daily ? 'daily' : 'monthly',
+        priority: daily ? '0.5' : '0.4',
+      };
+    })
     .map(urlEntry)
     .join('\n');
 

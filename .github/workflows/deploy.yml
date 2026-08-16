@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - main
+  # sitemap의 lastmod는 빌드 시점에 박히는데, 여기 걸린 프로젝트 페이지들(다이제스트 등)은
+  # 자기 저장소에서 하루 네 번 갱신된다. push 때만 배포하면 글을 안 쓰는 동안 sitemap이
+  # "매일 바뀜"이라 해놓고 몇 주 전 날짜를 가리키게 되고, 크롤러가 다시 올 이유를 못 찾는다.
+  # 하루 한 번 다시 빌드해서 날짜를 실제와 맞춘다(KST 06:30, Actions cron은 늦게 뜰 수 있다).
+  schedule:
+    - cron: "30 21 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: read

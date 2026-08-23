@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -132,6 +132,66 @@ ${entries}
 `;
 }
 
+
+/**
+ * 라우터가 남기는 껍데기 파일에서 광고를 걷어낸다.
+ *
+ * `__spa-fallback.html`은 본문이 한 글자도 없는데 200으로 살아 있고, head는 다른
+ * 페이지와 똑같이 만들어져서 애드센스 스크립트까지 그대로 들고 있다. 콘텐츠가 없는
+ * 페이지에 광고를 두는 것은 애드센스 정책이 직접 금지하는 것이다.
+ *
+ * React 쪽에서 못 막는 이유는 이 파일이 라우트 하나를 그려서 나오는 것이 아니라
+ * 프레임워크가 클라이언트 라우팅용으로 따로 찍는 산출물이라서다. 그래서 찍힌 다음에
+ * 손본다. robots.txt가 크롤링을 막고 있지만 그건 발견을 막을 뿐이고, 주소를 직접
+ * 아는 사람에게는 여전히 광고가 실린 빈 페이지가 뜬다.
+ */
+function stripAdsFromEmptyShell() {
+  const shell = resolve(DIST_DIR, '__spa-fallback.html');
+  if (!existsSync(shell)) return;
+
+  const before = readFileSync(shell, 'utf-8');
+  const after = before
+    .replace(
+      /<script[^>]*pagead2\.googlesyndication\.com[^>]*><\/script>/g,
+      ''
+    )
+    .replace('content="index, follow"', 'content="noindex, follow"');
+
+  if (after !== before) writeFileSync(shell, after);
+}
+
+/**
+ * 본문 없는 페이지에 광고가 다시 붙으면 빌드를 세운다.
+ *
+ * 이 저장소에는 테스트 러너가 없으므로 빌드가 그 자리를 대신한다. 여기서 막는 것은
+ * 실수 한 줄이 아니라 애드센스 정책 위반이고, 하필 지금은 재심사가 도는 중이라
+ * 조용히 배포되면 안 된다.
+ *
+ * 뒤집힌 실수도 같이 본다 — 진짜 페이지에서 광고가 통째로 사라지는 것.
+ */
+function assertNoAdsOnEmptyPages() {
+  const AD = 'pagead2.googlesyndication.com';
+
+  // `404/index.html`도 같이 본다. 복사본만 보면 원본이 더러운 채로 남는다.
+  for (const file of ['404.html', '404/index.html', '__spa-fallback.html']) {
+    const path = resolve(DIST_DIR, file);
+    if (!existsSync(path)) continue;
+    const html = readFileSync(path, 'utf-8');
+    if (html.includes(AD)) {
+      throw new Error(
+        `${file}에 애드센스 스크립트가 남아 있습니다. 본문이 없는 페이지에 광고를 두면 안 됩니다.`
+      );
+    }
+    if (!html.includes('content="noindex')) {
+      throw new Error(`${file}에 noindex가 없습니다.`);
+    }
+  }
+
+  const home = readFileSync(resolve(DIST_DIR, 'index.html'), 'utf-8');
+  if (!home.includes(AD)) {
+    throw new Error('첫 화면에서 애드센스 스크립트가 사라졌습니다. 빼는 범위가 너무 넓습니다.');
+  }
+}
 
 function generateSitemap(): string {
   const latestDate = toIsoDate(sortedPosts[0].date);
@@ -312,8 +372,12 @@ async function main(): Promise<void> {
   writeFileSync(resolve(DIST_DIR, 'atom.xml'), generateAtom('en'));
   writeFileSync(resolve(DIST_DIR, 'atom-ko.xml'), generateAtom('ko'));
   writeFileSync(resolve(DIST_DIR, 'sitemap.xml'), generateSitemap());
-
+  // 404.html은 여기서 만들어진다. 검사는 그 뒤라야 한다 — 앞에 두었더니 지난 빌드가
+  // 남긴 파일을 읽고 통과했고, 광고를 일부러 되돌려 놓은 빌드조차 그대로 성공했다.
   copyFileSync(resolve(DIST_DIR, '404', 'index.html'), resolve(DIST_DIR, '404.html'));
+
+  stripAdsFromEmptyShell();
+  assertNoAdsOnEmptyPages();
 
   console.log(
     `postbuild: wrote rss/atom feeds (en + ko), sitemap.xml, and ${posts.length * 2} OG images (en + ko; per-route <head> tags are now baked in by react-router prerendering)`

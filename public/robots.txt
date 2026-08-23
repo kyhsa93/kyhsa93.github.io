@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+# 라우터가 만드는 껍데기 파일. 본문이 한 글자도 없는데 200으로 살아 있어서,
+# 색인되면 "내용 없는 페이지"가 사이트에 한 장 생긴다.
+Disallow: /__spa-fallback.html
 
 Sitemap: https://kyhsa93.github.io/sitemap.xml

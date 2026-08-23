@@ -169,6 +169,10 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     .map(canonicalizeUrl);
 
   const digestSubPages = [
+    // 읽을거리 두 장. 데이터 페이지와 달리 매일 바뀌지 않지만, 애드센스 심사에서
+    // 사이트가 무엇으로 만들어졌는지를 말하는 것은 이쪽이다 — 집계 기준과 만든 사람.
+    'method.html',
+    'about.html',
     'realestate.html',
     'apartment-sale.html',
     'apartment-jeonse.html',
@@ -200,15 +204,41 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     'district-gangnam.html',
     'district-songpa.html',
     'district-gangdong.html',
+    // 예산대별 페이지. 자치구 페이지와 같은 이유로 여기 있어야 하는데 빠져 있었다 —
+    // 열여덟 장이 통째로 사이트맵 밖이었고, 다이제스트 안에서도 실거래 검색 한 곳에서만
+    // 링크가 걸려 사실상 어디서도 닿지 않았다.
+    //
+    // 그리고 이쪽이 자치구 페이지보다 오히려 값이 나간다. "10억대로 살 수 있는 서울
+    // 아파트"는 네이버부동산도 호갱노노도 페이지로 만들지 않는 형태다 — 그런 곳은
+    // 필터를 주지 페이지를 주지 않는다. 검색에는 페이지가 없으면 순위도 없다.
+    'budget-3eok.html',
+    'budget-4eok.html',
+    'budget-5eok.html',
+    'budget-6eok.html',
+    'budget-7eok.html',
+    'budget-8eok.html',
+    'budget-9eok.html',
+    'budget-10eok.html',
+    'budget-11eok.html',
+    'budget-12eok.html',
+    'budget-13eok.html',
+    'budget-14eok.html',
+    'budget-15eok.html',
+    'budget-16eok.html',
+    'budget-17eok.html',
+    'budget-18eok.html',
+    'budget-19eok.html',
+    'budget-20eok.html',
     'rates.html',
     'deposit-rates.html',
     'saving-rates.html',
     'mortgage-rates.html',
     'rent-loan-rates.html',
-    'news.html',
-    'realestate-news.html',
-    'stock-news.html',
-    'rate-news.html',
+    // 뉴스 네 장은 여기 없다. 색인에서 뺐기 때문이다 — 남의 기사 제목과 그 AI 요약은
+    // 우리가 만든 것이 아니고, 애드센스가 "가치가 별로 없는 콘텐츠"로 반려한 사이트에서
+    // 가장 변호하기 어려운 자산이 그것이다. 페이지 자체에 noindex가 붙어 있으니
+    // 사이트맵에 남겨 두는 것은 크롤러에게 서로 다른 말을 두 번 하는 셈이 된다.
+    // 승인 뒤에 되돌린다면 이 목록과 그쪽 meta를 같이 되돌려야 한다.
   ].map((file) => `${SITE_URL}/econ-realestate-digest/${file}`);
 
   const projectSubPages = digestSubPages;

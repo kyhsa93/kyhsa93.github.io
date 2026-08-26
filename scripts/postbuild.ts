@@ -264,6 +264,12 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     'district-gangnam.html',
     'district-songpa.html',
     'district-gangdong.html',
+    // 전세와 월세 중 어느 쪽이 싼지를 자치구·면적대별로 내는 화면. 실거래와 금리를
+    // 한곳에서 받는 사이트라야 만들 수 있는 형태라 검색에 같은 것이 잘 없다.
+    'jeonse-vs-wolse.html',
+    // 해제된 거래와 등기가 끝나지 않은 거래. 원본을 여섯 달치 들고 있어야 셀 수 있는
+    // 숫자라 언론이 프레임으로만 다루고 표로는 잘 내놓지 않는다.
+    'cancelled-deals.html',
     // 예산대별 페이지. 자치구 페이지와 같은 이유로 여기 있어야 하는데 빠져 있었다 —
     // 열여덟 장이 통째로 사이트맵 밖이었고, 다이제스트 안에서도 실거래 검색 한 곳에서만
     // 링크가 걸려 사실상 어디서도 닿지 않았다.

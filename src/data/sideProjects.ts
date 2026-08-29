@@ -40,10 +40,10 @@ export const sideProjects: SideProject[] = [
     url: 'https://kyhsa93.github.io/toddler-milestone-checklist/',
   },
   {
-    title: 'Econ Realestate Digest',
+    title: '집계 (Jipgye)',
     description: {
-      en: 'A daily digest of Korean economic and real estate news and market indicators, rebuilt every morning by a GitHub Actions pipeline with an open-source local LLM summarizing the day.',
-      ko: '한국 경제/부동산 뉴스와 시장 지표를 매일 아침 GitHub Actions 파이프라인으로 자동 갱신하고, 오픈소스 로컬 LLM이 하루 소식을 요약해주는 데일리 다이제스트입니다.',
+      en: 'Seoul apartment transactions and Korean deposit and loan rates, collected daily and worked out for the person about to sign: whether jeonse or monthly rent costs less, and whether renewing beats signing anew. Districts with too few reported deals get no average.',
+      ko: '서울 아파트 실거래와 예적금·대출 금리를 매일 모아, 계약을 앞둔 사람이 필요한 것을 계산해 보여줍니다. 전세와 월세 중 어느 쪽이 싼지, 지금 갱신이 새로 구하는 것보다 싼지. 표본이 모자란 자치구는 평균을 내지 않습니다.',
     },
     url: 'https://kyhsa93.github.io/econ-realestate-digest/',
   },

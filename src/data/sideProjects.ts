@@ -45,7 +45,7 @@ export const sideProjects: SideProject[] = [
       en: 'Seoul apartment transactions and Korean deposit and loan rates, collected daily and worked out for the person about to sign: whether jeonse or monthly rent costs less, and whether renewing beats signing anew. Districts with too few reported deals get no average.',
       ko: '서울 아파트 실거래와 예적금·대출 금리를 매일 모아, 계약을 앞둔 사람이 필요한 것을 계산해 보여줍니다. 전세와 월세 중 어느 쪽이 싼지, 지금 갱신이 새로 구하는 것보다 싼지. 표본이 모자란 자치구는 평균을 내지 않습니다.',
     },
-    url: 'https://kyhsa93.github.io/econ-realestate-digest/',
+    url: 'https://kyhsa93.github.io/jipgye/',
   },
   {
     title: 'Housing Subsidy Radar',

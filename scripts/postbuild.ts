@@ -193,6 +193,87 @@ function assertNoAdsOnEmptyPages() {
   }
 }
 
+// 집계(옛 econ-realestate-digest)에서 색인 대상으로 삼은 화면들. 사이트맵과
+// 옛 주소 리다이렉트가 같은 목록을 봐야 한 쪽만 고치는 일이 안 생긴다.
+const JIPGYE_PAGES = [
+  // 읽을거리 두 장. 데이터 페이지와 달리 매일 바뀌지 않지만, 애드센스 심사에서
+  // 사이트가 무엇으로 만들어졌는지를 말하는 것은 이쪽이다 — 집계 기준과 만든 사람.
+  'method.html',
+  'about.html',
+  'realestate.html',
+  'apartment-sale.html',
+  'apartment-jeonse.html',
+  'apartment-rent.html',
+  // 자치구별 시세 페이지. "강남구 아파트 시세"처럼 지역 단위로 검색하는 사람의 착지점이라
+  // 사이트맵에 없으면 발견 경로가 다이제스트 안쪽 링크뿐이다.
+  'district-jongno.html',
+  'district-jung.html',
+  'district-yongsan.html',
+  'district-seongdong.html',
+  'district-gwangjin.html',
+  'district-dongdaemun.html',
+  'district-jungnang.html',
+  'district-seongbuk.html',
+  'district-gangbuk.html',
+  'district-dobong.html',
+  'district-nowon.html',
+  'district-eunpyeong.html',
+  'district-seodaemun.html',
+  'district-mapo.html',
+  'district-yangcheon.html',
+  'district-gangseo.html',
+  'district-guro.html',
+  'district-geumcheon.html',
+  'district-yeongdeungpo.html',
+  'district-dongjak.html',
+  'district-gwanak.html',
+  'district-seocho.html',
+  'district-gangnam.html',
+  'district-songpa.html',
+  'district-gangdong.html',
+  // 전세와 월세 중 어느 쪽이 싼지를 자치구·면적대별로 내는 화면. 실거래와 금리를
+  // 한곳에서 받는 사이트라야 만들 수 있는 형태라 검색에 같은 것이 잘 없다.
+  'jeonse-vs-wolse.html',
+  // 해제된 거래와 등기가 끝나지 않은 거래. 원본을 여섯 달치 들고 있어야 셀 수 있는
+  // 숫자라 언론이 프레임으로만 다루고 표로는 잘 내놓지 않는다.
+  'cancelled-deals.html',
+  // 예산대별 페이지. 자치구 페이지와 같은 이유로 여기 있어야 하는데 빠져 있었다 —
+  // 열여덟 장이 통째로 사이트맵 밖이었고, 다이제스트 안에서도 실거래 검색 한 곳에서만
+  // 링크가 걸려 사실상 어디서도 닿지 않았다.
+  //
+  // 그리고 이쪽이 자치구 페이지보다 오히려 값이 나간다. "10억대로 살 수 있는 서울
+  // 아파트"는 네이버부동산도 호갱노노도 페이지로 만들지 않는 형태다 — 그런 곳은
+  // 필터를 주지 페이지를 주지 않는다. 검색에는 페이지가 없으면 순위도 없다.
+  'budget-3eok.html',
+  'budget-4eok.html',
+  'budget-5eok.html',
+  'budget-6eok.html',
+  'budget-7eok.html',
+  'budget-8eok.html',
+  'budget-9eok.html',
+  'budget-10eok.html',
+  'budget-11eok.html',
+  'budget-12eok.html',
+  'budget-13eok.html',
+  'budget-14eok.html',
+  'budget-15eok.html',
+  'budget-16eok.html',
+  'budget-17eok.html',
+  'budget-18eok.html',
+  'budget-19eok.html',
+  'budget-20eok.html',
+  'rates.html',
+  'deposit-rates.html',
+  'saving-rates.html',
+  'mortgage-rates.html',
+  'rent-loan-rates.html',
+  // 뉴스 네 장은 여기 없다. 색인에서 뺐기 때문이다 — 남의 기사 제목과 그 AI 요약은
+  // 우리가 만든 것이 아니고, 애드센스가 "가치가 별로 없는 콘텐츠"로 반려한 사이트에서
+  // 가장 변호하기 어려운 자산이 그것이다. 페이지 자체에 noindex가 붙어 있으니
+  // 사이트맵에 남겨 두는 것은 크롤러에게 서로 다른 말을 두 번 하는 셈이 된다.
+  // 승인 뒤에 되돌린다면 이 목록과 그쪽 meta를 같이 되돌려야 한다.
+];
+
 function generateSitemap(): string {
   const latestDate = toIsoDate(sortedPosts[0].date);
 
@@ -228,90 +309,13 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     .filter((url): url is string => Boolean(url?.startsWith(SITE_URL)))
     .map(canonicalizeUrl);
 
-  const digestSubPages = [
-    // 읽을거리 두 장. 데이터 페이지와 달리 매일 바뀌지 않지만, 애드센스 심사에서
-    // 사이트가 무엇으로 만들어졌는지를 말하는 것은 이쪽이다 — 집계 기준과 만든 사람.
-    'method.html',
-    'about.html',
-    'realestate.html',
-    'apartment-sale.html',
-    'apartment-jeonse.html',
-    'apartment-rent.html',
-    // 자치구별 시세 페이지. "강남구 아파트 시세"처럼 지역 단위로 검색하는 사람의 착지점이라
-    // 사이트맵에 없으면 발견 경로가 다이제스트 안쪽 링크뿐이다.
-    'district-jongno.html',
-    'district-jung.html',
-    'district-yongsan.html',
-    'district-seongdong.html',
-    'district-gwangjin.html',
-    'district-dongdaemun.html',
-    'district-jungnang.html',
-    'district-seongbuk.html',
-    'district-gangbuk.html',
-    'district-dobong.html',
-    'district-nowon.html',
-    'district-eunpyeong.html',
-    'district-seodaemun.html',
-    'district-mapo.html',
-    'district-yangcheon.html',
-    'district-gangseo.html',
-    'district-guro.html',
-    'district-geumcheon.html',
-    'district-yeongdeungpo.html',
-    'district-dongjak.html',
-    'district-gwanak.html',
-    'district-seocho.html',
-    'district-gangnam.html',
-    'district-songpa.html',
-    'district-gangdong.html',
-    // 전세와 월세 중 어느 쪽이 싼지를 자치구·면적대별로 내는 화면. 실거래와 금리를
-    // 한곳에서 받는 사이트라야 만들 수 있는 형태라 검색에 같은 것이 잘 없다.
-    'jeonse-vs-wolse.html',
-    // 해제된 거래와 등기가 끝나지 않은 거래. 원본을 여섯 달치 들고 있어야 셀 수 있는
-    // 숫자라 언론이 프레임으로만 다루고 표로는 잘 내놓지 않는다.
-    'cancelled-deals.html',
-    // 예산대별 페이지. 자치구 페이지와 같은 이유로 여기 있어야 하는데 빠져 있었다 —
-    // 열여덟 장이 통째로 사이트맵 밖이었고, 다이제스트 안에서도 실거래 검색 한 곳에서만
-    // 링크가 걸려 사실상 어디서도 닿지 않았다.
-    //
-    // 그리고 이쪽이 자치구 페이지보다 오히려 값이 나간다. "10억대로 살 수 있는 서울
-    // 아파트"는 네이버부동산도 호갱노노도 페이지로 만들지 않는 형태다 — 그런 곳은
-    // 필터를 주지 페이지를 주지 않는다. 검색에는 페이지가 없으면 순위도 없다.
-    'budget-3eok.html',
-    'budget-4eok.html',
-    'budget-5eok.html',
-    'budget-6eok.html',
-    'budget-7eok.html',
-    'budget-8eok.html',
-    'budget-9eok.html',
-    'budget-10eok.html',
-    'budget-11eok.html',
-    'budget-12eok.html',
-    'budget-13eok.html',
-    'budget-14eok.html',
-    'budget-15eok.html',
-    'budget-16eok.html',
-    'budget-17eok.html',
-    'budget-18eok.html',
-    'budget-19eok.html',
-    'budget-20eok.html',
-    'rates.html',
-    'deposit-rates.html',
-    'saving-rates.html',
-    'mortgage-rates.html',
-    'rent-loan-rates.html',
-    // 뉴스 네 장은 여기 없다. 색인에서 뺐기 때문이다 — 남의 기사 제목과 그 AI 요약은
-    // 우리가 만든 것이 아니고, 애드센스가 "가치가 별로 없는 콘텐츠"로 반려한 사이트에서
-    // 가장 변호하기 어려운 자산이 그것이다. 페이지 자체에 noindex가 붙어 있으니
-    // 사이트맵에 남겨 두는 것은 크롤러에게 서로 다른 말을 두 번 하는 셈이 된다.
-    // 승인 뒤에 되돌린다면 이 목록과 그쪽 meta를 같이 되돌려야 한다.
-  ].map((file) => `${SITE_URL}/econ-realestate-digest/${file}`);
+  const digestSubPages = JIPGYE_PAGES.map((file) => `${SITE_URL}/jipgye/${file}`);
 
   const projectSubPages = digestSubPages;
 
   const dailyUpdated = new Set(
     [
-      `${SITE_URL}/econ-realestate-digest/`,
+      `${SITE_URL}/jipgye/`,
       ...digestSubPages,
       `${SITE_URL}/housing-subsidy-radar/`,
     ].map(canonicalizeUrl)
@@ -361,6 +365,46 @@ ${postEntries}
 `;
 }
 
+// 저장소 이름을 econ-realestate-digest에서 jipgye로 바꾸면서 옛 주소가 통째로 404가 됐다.
+// GitHub Pages는 저장소를 renaming해도 프로젝트 사이트 경로를 리다이렉트해 주지 않는다
+// (배포 뒤 실제로 404를 확인했다). 그 경로는 이제 임자가 없어 이 루트 사이트로 떨어지므로
+// 여기서 옛 주소마다 새 주소로 보내는 한 장을 깔아 둔다.
+//
+// 정적 호스팅이라 301은 못 쓴다. meta refresh + canonical이 쓸 수 있는 최선이고, 크롤러는
+// 이 조합을 리다이렉트로 읽는다. noindex는 넣지 않는다 - 넣으면 넘겨줄 신호까지 같이 막는다.
+// 색인 밖이던 뉴스 네 장과 실거래 검색도 넣는다. 공유된 링크는 색인과 상관없이 살아 있다.
+const LEGACY_DIR = 'econ-realestate-digest';
+const LEGACY_EXTRA_PAGES = [
+  'news.html',
+  'realestate-news.html',
+  'stock-news.html',
+  'rate-news.html',
+  'deal-search.html',
+];
+
+function writeLegacyRedirects(): void {
+  const dir = resolve(DIST_DIR, LEGACY_DIR);
+  mkdirSync(dir, { recursive: true });
+
+  for (const file of ['', ...JIPGYE_PAGES, ...LEGACY_EXTRA_PAGES]) {
+    const target = `${SITE_URL}/jipgye/${file}`;
+    const html = `<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=${target}">
+<link rel="canonical" href="${target}">
+<title>집계로 옮겼습니다</title>
+</head>
+<body>
+<p>이 주소는 <a href="${target}">${target}</a>로 옮겼습니다.</p>
+</body>
+</html>
+`;
+    writeFileSync(resolve(dir, file || 'index.html'), html);
+  }
+}
+
 async function main(): Promise<void> {
   const ogDir = resolve(DIST_DIR, 'og');
   const ogKoDir = resolve(ogDir, 'ko');
@@ -378,6 +422,7 @@ async function main(): Promise<void> {
   writeFileSync(resolve(DIST_DIR, 'atom.xml'), generateAtom('en'));
   writeFileSync(resolve(DIST_DIR, 'atom-ko.xml'), generateAtom('ko'));
   writeFileSync(resolve(DIST_DIR, 'sitemap.xml'), generateSitemap());
+  writeLegacyRedirects();
   // 404.html은 여기서 만들어진다. 검사는 그 뒤라야 한다 — 앞에 두었더니 지난 빌드가
   // 남긴 파일을 읽고 통과했고, 광고를 일부러 되돌려 놓은 빌드조차 그대로 성공했다.
   copyFileSync(resolve(DIST_DIR, '404', 'index.html'), resolve(DIST_DIR, '404.html'));

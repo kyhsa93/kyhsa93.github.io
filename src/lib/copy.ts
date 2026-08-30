@@ -22,9 +22,10 @@ interface UiCopy {
     intro: string;
     ctaViewProjects: string;
     ctaVisitGithub: string;
-    systemOverview: string;
-    online: string;
-    systemNote: string;
+    findingKicker: string;
+    findingLooked: string;
+    findingWas: string;
+    findingRead: string;
     expertiseKicker: string;
     expertiseHeadingLine1: string;
     expertiseHeadingLine2: string;
@@ -46,6 +47,14 @@ interface UiCopy {
     tagline: string;
     rss: string;
     privacy: string;
+  };
+  consent: {
+    ariaLabel: string;
+    bodyBefore: string;
+    privacyLink: string;
+    bodyAfter: string;
+    decline: string;
+    accept: string;
   };
   archive: {
     seoTitle: string;
@@ -113,15 +122,16 @@ export const uiCopy: Record<Locale, UiCopy> = {
       seoDescription:
         'Notes from a backend engineer who designs complex systems with clarity. TypeScript, Go, and the Backend Service Playbook.',
       eyebrow: 'Backend engineer',
-      headlineLine1: 'Designing complex systems',
-      headlineEm: 'with clarity.',
+      headlineLine1: 'What the doc said.',
+      headlineEm: 'What the code did.',
       intro:
-        "I build backend systems that run reliably in containerized environments, mainly with TypeScript and Go. I'm especially interested in domain-driven design and event-driven architecture.",
-      ctaViewProjects: 'View projects',
+        'I write about the moments when two things that should have matched did not — a doc and the code under it, a green test run and a broken feature, one architecture and five languages that each read it differently. Backend work, mostly in TypeScript, Go, Java, Kotlin, and Python.',
+      ctaViewProjects: 'Read the latest',
       ctaVisitGithub: 'Visit GitHub',
-      systemOverview: 'system / overview',
-      online: 'online',
-      systemNote: 'from request to reliable delivery',
+      findingKicker: 'A recent finding',
+      findingLooked: 'looked like',
+      findingWas: 'was',
+      findingRead: 'Read it',
       expertiseKicker: 'What I work with',
       expertiseHeadingLine1: 'Practical building blocks',
       expertiseHeadingLine2: 'for distributed systems.',
@@ -152,6 +162,14 @@ export const uiCopy: Record<Locale, UiCopy> = {
       tagline: 'Let’s build something resilient.',
       rss: 'RSS',
       privacy: 'Privacy',
+    },
+    consent: {
+      ariaLabel: 'Cookie and ad consent',
+      bodyBefore: 'This site uses cookies to show relevant ads. See the ',
+      privacyLink: 'privacy policy',
+      bodyAfter: ' for details.',
+      decline: 'Decline',
+      accept: 'Accept',
     },
     archive: {
       seoTitle: 'All posts',
@@ -223,15 +241,16 @@ export const uiCopy: Record<Locale, UiCopy> = {
       seoDescription:
         '명확하게 복잡한 시스템을 설계하는 백엔드 엔지니어의 기록. TypeScript, Go, 그리고 Backend Service Playbook.',
       eyebrow: '백엔드 엔지니어',
-      headlineLine1: '복잡한 시스템을',
-      headlineEm: '명확하게 설계합니다.',
+      headlineLine1: '문서에 적힌 것.',
+      headlineEm: '코드가 한 것.',
       intro:
-        '주로 TypeScript와 Go로, 컨테이너 환경에서 안정적으로 동작하는 백엔드 시스템을 만듭니다. 도메인 주도 설계와 이벤트 기반 아키텍처에 특히 관심이 많습니다.',
-      ctaViewProjects: '프로젝트 보기',
+        '일치해야 할 두 가지가 어긋난 순간을 기록합니다 — 문서와 그 아래의 코드, 통과한 테스트와 깨져 있던 기능, 하나의 아키텍처와 그걸 제각기 다르게 읽은 다섯 개 언어. 주로 TypeScript, Go, Java, Kotlin, Python으로 하는 백엔드 작업입니다.',
+      ctaViewProjects: '최신 글 읽기',
       ctaVisitGithub: 'GitHub 방문',
-      systemOverview: 'system / overview',
-      online: '온라인',
-      systemNote: '요청부터 신뢰할 수 있는 전달까지',
+      findingKicker: '최근 기록 하나',
+      findingLooked: '이렇게 보였다',
+      findingWas: '실제로는',
+      findingRead: '읽기',
       expertiseKicker: '다루는 기술',
       expertiseHeadingLine1: '분산 시스템을 위한',
       expertiseHeadingLine2: '실용적인 빌딩 블록.',
@@ -261,6 +280,14 @@ export const uiCopy: Record<Locale, UiCopy> = {
       tagline: '견고한 무언가를 함께 만들어봐요.',
       rss: 'RSS',
       privacy: '개인정보처리방침',
+    },
+    consent: {
+      ariaLabel: '쿠키 및 광고 동의',
+      bodyBefore: '이 사이트는 관련 있는 광고를 보여주기 위해 쿠키를 사용합니다. 자세한 내용은 ',
+      privacyLink: '개인정보처리방침',
+      bodyAfter: '에 있습니다.',
+      decline: '거부',
+      accept: '동의',
     },
     archive: {
       seoTitle: '전체 포스트',

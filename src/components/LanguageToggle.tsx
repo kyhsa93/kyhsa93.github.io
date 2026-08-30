@@ -19,7 +19,7 @@ export function LanguageToggle() {
       aria-label="Switch language"
       onClick={toggleLocale}
     >
-      <span aria-hidden="true">🌐</span>
+      {locale === 'ko' ? 'EN' : 'KO'}
     </button>
   );
 }

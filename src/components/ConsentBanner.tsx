@@ -1,28 +1,29 @@
 import { Link } from 'react-router-dom';
 import { useAdConsent } from '../lib/adConsent';
+import { useLocale, localizedPath } from '../lib/locale';
+import { uiCopy } from '../lib/copy';
 
 export function ConsentBanner() {
   const { consent, grant, deny } = useAdConsent();
+  const { locale } = useLocale();
+  const t = uiCopy[locale].consent;
 
   if (consent !== null) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-label="Cookie and ad consent"
-      className="consent-banner"
-    >
+    <div role="dialog" aria-label={t.ariaLabel} className="consent-banner">
       <div className="consent-banner-card">
         <p>
-          This site uses cookies to show relevant ads. See the{' '}
-          <Link to="/privacy-policy">privacy policy</Link> for details.
+          {t.bodyBefore}
+          <Link to={localizedPath('/privacy-policy', locale)}>{t.privacyLink}</Link>
+          {t.bodyAfter}
         </p>
         <div className="consent-banner-actions">
           <button type="button" onClick={deny} className="consent-deny">
-            Decline
+            {t.decline}
           </button>
           <button type="button" onClick={grant} className="consent-grant">
-            Accept
+            {t.accept}
           </button>
         </div>
       </div>

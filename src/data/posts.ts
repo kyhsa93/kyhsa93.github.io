@@ -8,6 +8,19 @@ export interface ProjectLink {
   url: string;
 }
 
+/**
+ * A post's finding, compressed to the two halves that disagreed.
+ *
+ * `looked` is what the situation reported about itself; `was` is what it turned
+ * out to be. Only posts whose finding genuinely reduces to such a pair carry
+ * this — the home page features the most recent one that does, so leaving it
+ * off a post simply keeps the previous feature in place.
+ */
+export interface Discrepancy {
+  looked: LocalizedText;
+  was: LocalizedText;
+}
+
 export interface PostMeta {
   slug: string;
   title: LocalizedText;
@@ -16,6 +29,7 @@ export interface PostMeta {
   tags: string[];
   readMinutes: number;
   project?: ProjectLink;
+  discrepancy?: Discrepancy;
 }
 
 export const posts: PostMeta[] = [
@@ -578,6 +592,10 @@ export const posts: PostMeta[] = [
     date: '2026.08.08',
     tags: ['Kubernetes', 'Tooling'],
     readMinutes: 9,
+    discrepancy: {
+      looked: { en: 'Zero resources flagged.', ko: '플래그된 리소스 0개.' },
+      was: { en: 'Zero resources read.', ko: '읽어낸 리소스가 0개.' },
+    },
     project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
   },
   {
@@ -623,6 +641,10 @@ export const posts: PostMeta[] = [
     date: '2026.08.08',
     tags: ['Kubernetes', 'AI Agents'],
     readMinutes: 10,
+    discrepancy: {
+      looked: { en: 'Both models scored 9 / 9.', ko: '두 모델 모두 9 / 9.' },
+      was: { en: 'Both were broken, differently.', ko: '둘 다 서로 다른 데가 깨져 있었다.' },
+    },
     project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
   },
   {
@@ -638,6 +660,10 @@ export const posts: PostMeta[] = [
     date: '2026.08.08',
     tags: ['Kubernetes', 'Reliability'],
     readMinutes: 9,
+    discrepancy: {
+      looked: { en: 'The cluster had drifted.', ko: '클러스터가 drift했다.' },
+      was: { en: 'The API server had filled the blanks.', ko: 'API 서버가 빈칸을 채운 것이었다.' },
+    },
     project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },
   },
   {

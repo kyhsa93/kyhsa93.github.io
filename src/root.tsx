@@ -94,6 +94,7 @@ export function Layout({ children }: { children: ReactNode }) {
         />
 
         <meta name="naver-site-verification" content="5380f459e39023c44e13549272dda1be8c9714e3" />
+        <meta name="google-site-verification" content="b9PSf-SPz9LAsvNvpIhSOXs1tJqSJMHEz6eLGQ_rtkc" />
         <meta name="google-adsense-account" content="ca-pub-1195159445218373" />
         {!notFound && (
           <script

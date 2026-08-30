@@ -41,14 +41,11 @@ export default function SideProjects() {
           <span>{t.sideProjectsArchive.projectsCount(sideProjects.length)}</span>
         </div>
         <div className="side-project-column">
-          {sideProjects.map((project, index) => {
+          {sideProjects.map((project) => {
             const status = project.url ? t.home.statusLive : t.home.statusInProgress;
 
             return (
               <article className="side-project" key={project.title}>
-                <div className={`project-orb orb-${index + 1}`} aria-hidden="true">
-                  <span />
-                </div>
                 <div>
                   <p className="project-status">
                     <i />

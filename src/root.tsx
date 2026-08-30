@@ -15,7 +15,6 @@ import { ConsentBanner } from './components/ConsentBanner';
 import { ScrollToTop } from './components/ScrollToTop';
 
 import './index.css';
-import './App.css';
 
 const THEME_INIT_SCRIPT = `
 (function () {
@@ -61,6 +60,12 @@ export function Layout({ children }: { children: ReactNode }) {
     <html lang={locale}>
       <head>
         <meta charSet="UTF-8" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Gothic+A1:wght@400;500;700&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+        />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/pwa-192x192.png" />
         <link rel="manifest" href="/manifest.webmanifest" />

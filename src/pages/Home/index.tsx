@@ -46,6 +46,10 @@ export const meta: MetaFunction = ({ location }) => {
 const latestPosts = postsByDate.slice(0, 3);
 const latestSideProjects = sideProjects.slice(-3);
 
+// 히어로에 세우는 한 건. 가장 최근에 discrepancy를 단 글을 고르므로, 새 글이
+// 그 필드 없이 올라와도 히어로가 비지 않는다.
+const featuredFinding = postsByDate.find((post) => post.discrepancy);
+
 const getInitialTheme = () => {
   if (typeof window === 'undefined') {
     return 'light';
@@ -93,7 +97,7 @@ export default function Home() {
               )
             }
           >
-            <span aria-hidden="true">{theme === 'dark' ? '☀️' : '🌙'}</span>
+            {theme === 'dark' ? t.nav.light : t.nav.dark}
           </button>
           <LanguageToggle />
           <a href="https://github.com/kyhsa93" target="_blank" rel="noreferrer">
@@ -103,55 +107,63 @@ export default function Home() {
       </nav>
 
       <section className="hero" id="top">
-        <div className="hero-copy">
-          <p className="eyebrow">
-            <span />
-            {t.home.eyebrow}
-          </p>
-          <h1>
-            {t.home.headlineLine1}
-            <br />
-            <em>{t.home.headlineEm}</em>
-          </h1>
-          <p className="intro">{t.home.intro}</p>
-          <div className="cta-row">
-            <a className="primary-link" href="#latest">
-              {t.home.ctaViewProjects} <span aria-hidden="true">↓</span>
-            </a>
-            <a
-              className="text-link"
-              href="https://github.com/kyhsa93"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t.home.ctaVisitGithub} <span aria-hidden="true"></span>
-            </a>
-          </div>
-        </div>
-
-        <div
-          className="system-card"
-          aria-label="System architecture illustration"
-        >
-          <div className="system-card-heading">
-            <span>{t.home.systemOverview}</span>
-            <span className="status">
-              <i /> {t.home.online}
-            </span>
-          </div>
-          <div className="architecture">
-            <div className="node client">client</div>
-            <div className="connector connector-one" />
-            <div className="node api">API</div>
-            <div className="connector connector-two" />
-            <div className="node service">service</div>
-            <div className="connector connector-three" />
-            <div className="data-nodes">
-              <div className="node database">database</div>
-              <div className="node queue">events</div>
+        <p className="eyebrow">
+          <span />
+          {t.home.eyebrow}
+        </p>
+        <h1>
+          {t.home.headlineLine1}
+          <em>{t.home.headlineEm}</em>
+        </h1>
+        <div className="hero-body">
+          <div className="hero-copy">
+            <p className="intro">{t.home.intro}</p>
+            <div className="cta-row">
+              <a className="primary-link" href="#latest">
+                {t.home.ctaViewProjects} <span aria-hidden="true">↓</span>
+              </a>
+              <a
+                className="text-link"
+                href="https://github.com/kyhsa93"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t.home.ctaVisitGithub} <span aria-hidden="true"></span>
+              </a>
             </div>
           </div>
-          <p className="system-note">{t.home.systemNote}</p>
+
+        {featuredFinding?.discrepancy ? (
+          <Link
+            className="finding"
+            to={localizedPath(`/posts/${featuredFinding.slug}`, locale)}
+          >
+            <p className="finding-kicker">
+              {t.home.findingKicker}
+              <time>{featuredFinding.date}</time>
+            </p>
+            <div className="finding-pair">
+              <div className="finding-half">
+                <span className="finding-half-label">{t.home.findingLooked}</span>
+                <span className="finding-half-text">
+                  {featuredFinding.discrepancy.looked[locale]}
+                </span>
+              </div>
+              <div className="finding-half finding-half-actual">
+                <span className="finding-half-label">{t.home.findingWas}</span>
+                <span className="finding-half-text">
+                  {featuredFinding.discrepancy.was[locale]}
+                </span>
+              </div>
+            </div>
+            <p className="finding-source">
+              {featuredFinding.title[locale]}
+              <span className="finding-read">
+                {t.home.findingRead} <span aria-hidden="true">→</span>
+              </span>
+            </p>
+          </Link>
+          ) : null}
         </div>
       </section>
 
@@ -166,11 +178,8 @@ export default function Home() {
           <p>{t.home.expertiseSubheading}</p>
         </div>
         <ul className="expertise-list">
-          {t.home.expertiseList.map((item, index) => (
-            <li key={item}>
-              <span>0{index + 1}</span>
-              {item}
-            </li>
+          {t.home.expertiseList.map((item) => (
+            <li key={item}>{item}</li>
           ))}
         </ul>
       </section>
@@ -214,17 +223,11 @@ export default function Home() {
               <span>{t.home.labLabel}</span>
               <span>{t.home.sideProjectsLabel}</span>
             </div>
-            {latestSideProjects.map((project, index) => {
+            {latestSideProjects.map((project) => {
               const status = project.url ? t.home.statusLive : t.home.statusInProgress;
 
               return (
                 <article className="side-project" key={project.title}>
-                  <div
-                    className={`project-orb orb-${index + 1}`}
-                    aria-hidden="true"
-                  >
-                    <span />
-                  </div>
                   <div>
                     <p className="project-status">
                       <i />

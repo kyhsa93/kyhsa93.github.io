@@ -145,7 +145,16 @@ p { margin-top: 0; }
   font-weight: 700;
 }
 
-.nav-links a { text-decoration: none; text-underline-offset: 5px; }
+/* 누를 수 있는 크기. 글자 높이만으로는 17px밖에 안 돼서 모바일에서 돌아가는
+   링크가 제일 작은 표적이었다. */
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  text-decoration: none;
+  text-underline-offset: 5px;
+}
+
 .nav-links a:hover { text-decoration: underline; }
 
 .theme-toggle,
@@ -724,7 +733,13 @@ footer a { color: var(--ink); }
   .site-nav, .post-nav { height: 70px; }
 
   .nav-links { gap: var(--s3); font-size: .74rem; }
-  .nav-links a:nth-child(-n + 2) { display: none; }
+
+  /*
+   * 좁은 화면에서 접는 것은 홈의 페이지 내 앵커(#latest, #about)뿐이다.
+   * 위치로 골라내면(:nth-child(-n+2)) 다른 페이지에서는 첫 항목이 "← Home"
+   * 이어서 돌아가는 링크가 통째로 사라진다. href로 고른다.
+   */
+  .nav-links a[href^="#"] { display: none; }
 
   .hero { padding: var(--s7) 0 var(--s6); }
   .hero-body { grid-template-columns: 1fr; gap: var(--s6); margin-top: var(--s5); }
@@ -744,7 +759,11 @@ footer a { color: var(--ink); }
   .expertise-section, .latest-section, .archive-section { padding: var(--s6) 0; }
 
   .latest-grid { grid-template-columns: 1fr; gap: var(--s5); }
-  .side-project-column { padding: var(--s3) var(--s4); }
+  /*
+   * 상자를 없앤다. 테두리와 좌우 여백이 393px에서 읽는 폭의 12%를 가져가는데,
+   * 위의 .content-label이 이미 이 목록이 어디서 시작하는지 표시하고 있다.
+   */
+  .side-project-column { padding: 0; border: 0; }
 
   .post-header { padding: var(--s6) 0 var(--s5); }
   .article-body { padding-top: var(--s5); font-size: .96rem; }

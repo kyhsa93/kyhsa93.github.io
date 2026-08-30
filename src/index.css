@@ -360,11 +360,14 @@ footer a { color: var(--ink); }
  * ------------------------------------------------------------------------- */
 
 .expertise-section,
-.latest-section,
-.archive-section {
+.latest-section {
   padding: var(--s7) 0;
   border-top: 1px solid var(--line);
 }
+
+/* nav 밑줄이 이미 구분선 역할을 하므로 여기에 border-top을 또 두면 길이가 다른
+   가로선 두 개가 1px 간격으로 겹쳐 보인다. */
+.archive-section { padding: var(--s7) 0; }
 
 .latest-section { padding-bottom: var(--s8); }
 .archive-section { padding-bottom: var(--s8); }
@@ -510,6 +513,15 @@ footer a { color: var(--ink); }
 
 .project-status i { width: 5px; height: 5px; background: currentColor; }
 
+/*
+ * 읽는 면에는 길이 제한이 있어야 한다. 포스트 본문은 .post-content가 720px로
+ * 묶어 주는데, 전체 목록·사이드 프로젝트·개인정보처리방침은 같은 .article-body와
+ * .post-item을 1180px 컨테이너에 그대로 놓고 있어서 한 줄이 180자까지 갔다.
+ * 가운데 정렬은 포스트 페이지를 따른 것이다. 거기도 .post-content가 .post-page
+ * 안에서 가운데로 모이므로, 목록에서 글로 넘어갈 때 읽는 칼럼의 위치가 바뀌지 않는다.
+ */
+.archive-section { max-width: 760px; margin-inline: auto; }
+
 .archive-heading {
   margin: var(--s3) 0 var(--s5);
   font-size: clamp(1.9rem, 3.4vw, 2.9rem);
@@ -520,6 +532,9 @@ footer a { color: var(--ink); }
 /* ---------------------------------------------------------------------------
  * Post page
  * ------------------------------------------------------------------------- */
+
+.archive-section .post-item h3 { font-size: 1.14rem; }
+.archive-section .post-item p { font-size: .86rem; }
 
 .post-page {
   width: min(1040px, calc(100% - 48px));

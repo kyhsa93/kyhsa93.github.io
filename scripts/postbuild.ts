@@ -268,7 +268,10 @@ const JIPGYE_PAGES = [
   'budget-18eok.html',
   'budget-19eok.html',
   'budget-20eok.html',
-  'rates.html',
+  // rates.html은 여기 없다. 상품군 탭 넷 가운데 예금을 먼저 그리는 파일이라
+  // deposit-rates.html과 본문이 글자까지 같고, 둘 다 색인에 두면 검색엔진에는
+  // 완전히 같은 페이지 두 장이다. 내비게이션이 닿는 자리로는 그대로 살아 있고
+  // 페이지 자체에 noindex가 붙었다. 옛 주소는 아래 LEGACY_EXTRA_PAGES가 받는다.
   'deposit-rates.html',
   'saving-rates.html',
   'mortgage-rates.html',
@@ -381,6 +384,7 @@ ${postEntries}
 // 색인 밖이던 뉴스 네 장과 실거래 검색도 넣는다. 공유된 링크는 색인과 상관없이 살아 있다.
 const LEGACY_DIR = 'econ-realestate-digest';
 const LEGACY_EXTRA_PAGES = [
+  'rates.html',
   'news.html',
   'realestate-news.html',
   'stock-news.html',

@@ -85,6 +85,10 @@ const contentRoutes = [
     'pages/Post/NotEveryReportNeedsAServer.tsx',
   ),
   route(
+    'posts/half-the-site-was-a-copy-of-itself',
+    'pages/Post/HalfTheSiteWasACopyOfItself.tsx',
+  ),
+  route(
     'posts/a-perfect-score-a-broken-feature',
     'pages/Post/APerfectScoreABrokenFeature.tsx',
   ),

@@ -34,6 +34,30 @@ export interface PostMeta {
 
 export const posts: PostMeta[] = [
   {
+    slug: 'half-the-site-was-a-copy-of-itself',
+    title: {
+      en: 'Half the Site Was a Copy of Itself',
+      ko: '사이트의 절반은 사이트 자신의 복사본이었다',
+    },
+    summary: {
+      en: 'Every page passed a word-count check and had a distinct title, URL, and numbers. Slightly under half of all text on the site still existed on more than one page. The fifteen-line measurement that found it, and three structurally different ways a page duplicates its neighbour without anyone deciding it should.',
+      ko: '모든 페이지가 분량 검사를 통과했고 제목도 URL도 숫자도 달랐다. 그런데도 사이트 전체 텍스트의 절반 가까이가 한 장 이상에 존재했다. 그걸 찾아낸 열다섯 줄짜리 측정과, 아무도 그러기로 정한 적 없는데 페이지가 옆 페이지를 베끼게 되는 세 가지 방식.',
+    },
+    date: '2026.09.01',
+    tags: ['Content', 'Auditing'],
+    readMinutes: 8,
+    discrepancy: {
+      looked: {
+        en: 'Eighty pages, each with its own title, URL and heading.',
+        ko: '여든 장. 제목도 URL도 머리글도 다 달랐다.',
+      },
+      was: {
+        en: 'Five distinct bodies, because every section keyed on the same five-value field.',
+        ko: '본문 다섯 종. 모든 절이 같은 다섯 갈래 필드 하나를 키로 쓰고 있었다.',
+      },
+    },
+  },
+  {
     slug: 'a-perfect-score-a-broken-feature',
     title: {
       en: 'A Perfect Score, A Broken Feature',

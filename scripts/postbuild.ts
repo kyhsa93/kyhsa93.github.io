@@ -422,6 +422,32 @@ function writeLegacyRedirects(): void {
   }
 }
 
+const MOVED_GAMES = [{ from: 'heli-game', to: 'karda', name: '카르다 전선' }];
+
+function writeMovedGames(): void {
+  for (const game of MOVED_GAMES) {
+    const dir = resolve(DIST_DIR, game.from);
+    mkdirSync(dir, { recursive: true });
+    const target = `${SITE_URL}/${game.to}/`;
+    writeFileSync(
+      resolve(dir, 'index.html'),
+      `<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=${target}">
+<link rel="canonical" href="${target}">
+<title>${game.name}(으)로 옮겼습니다</title>
+</head>
+<body>
+<p>이 게임은 <a href="${target}">${target}</a>로 옮겼습니다.</p>
+</body>
+</html>
+`,
+    );
+  }
+}
+
 async function main(): Promise<void> {
   const ogDir = resolve(DIST_DIR, 'og');
   const ogKoDir = resolve(ogDir, 'ko');
@@ -440,6 +466,7 @@ async function main(): Promise<void> {
   writeFileSync(resolve(DIST_DIR, 'atom-ko.xml'), generateAtom('ko'));
   writeFileSync(resolve(DIST_DIR, 'sitemap.xml'), generateSitemap());
   writeLegacyRedirects();
+  writeMovedGames();
   // 404.html은 여기서 만들어진다. 검사는 그 뒤라야 한다 — 앞에 두었더니 지난 빌드가
   // 남긴 파일을 읽고 통과했고, 광고를 일부러 되돌려 놓은 빌드조차 그대로 성공했다.
   copyFileSync(resolve(DIST_DIR, '404', 'index.html'), resolve(DIST_DIR, '404.html'));

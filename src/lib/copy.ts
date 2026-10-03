@@ -201,24 +201,24 @@ export const uiCopy: Record<Locale, UiCopy> = {
     },
     privacyPolicy: {
       seoTitle: 'Privacy Policy',
-      seoDescription: 'How this site uses cookies and third-party advertising (Google AdSense).',
+      seoDescription: 'How this site uses cookies, analytics (Google Analytics 4) and third-party advertising (Google AdSense).',
       kicker: 'Legal',
       heading: 'Privacy Policy',
       intro:
-        "This is a personal blog. It doesn't require an account, doesn't collect personal information through any form, and stores only two small preferences in your browser's local storage: your light/dark theme choice and your response to the cookie-consent banner below.",
+        "This is a personal blog. It doesn't require an account and doesn't collect personal information through any form. It does use Google Analytics 4 to measure visits and Google AdSense to show ads, as described below. In your browser's local storage it keeps only two small preferences: your light/dark theme choice and your response to the cookie-consent banner below.",
       advertisingHeading: 'Advertising (Google AdSense)',
       advertisingBody1:
-        'This site shows ads served by Google AdSense. Google and its partners may use cookies and similar technologies to serve ads based on your prior visits to this or other websites. You can opt out of personalized advertising by visiting',
+        'This site shows ads served by Google AdSense. The AdSense script is loaded on the blog pages regardless of the banner, and Google and its partners may use cookies and similar technologies to serve ads based on your prior visits to this or other websites. You can opt out of personalized advertising by visiting',
       adSettingsLink: "Google's Ad Settings",
       advertisingBody2:
-        ', or by declining the cookie banner shown on this site — declining prevents ad scripts from loading at all for the rest of your visit.',
+        '. On the blog pages you can also decline the cookie banner — declining stops ad units from being shown, but the AdSense script itself and Google Analytics still load. The banner applies to the blog pages only: sub-projects on this domain such as /jipgye/ load Google Analytics and AdSense without showing this banner.',
       cookiesHeading: 'Cookies and Local Storage',
       cookiesBody:
-        "Beyond the AdSense scripts described above, this site itself sets no tracking cookies. Your consent choice, once made, is remembered in your browser's local storage so the banner doesn't reappear on every page — clearing your browser data resets it.",
+        "This site uses Google Analytics 4 on the blog pages and on sub-projects such as /jipgye/. It records which pages are viewed, how the visit arrived (referrer), the approximate region, device and browser type, and on some sub-project pages events such as searches or clicks. Google Analytics sets its own cookies (such as _ga) to tell repeat visits apart. Beyond Google Analytics and the AdSense scripts described above, this site itself sets no tracking cookies. Your consent choice, once made, is remembered in your browser's local storage so the banner doesn't reappear on every page — clearing your browser data resets it.",
       thirdPartiesHeading: 'Third Parties',
-      thirdPartiesBody1: 'This site is hosted on GitHub Pages. Ads are served by Google AdSense, subject to',
+      thirdPartiesBody1: 'This site is hosted on GitHub Pages. Visit statistics are collected by Google Analytics 4. Ads are served by Google AdSense, subject to',
       googlePolicyLink: "Google's own advertising policy",
-      thirdPartiesBody2: '. No other third-party analytics or tracking services are used.',
+      thirdPartiesBody2: '. No third-party analytics or tracking services other than Google Analytics 4 and Google AdSense are used.',
       contactHeading: 'Contact',
       contactBody: 'Questions about this policy can be raised via',
     },
@@ -318,24 +318,24 @@ export const uiCopy: Record<Locale, UiCopy> = {
     },
     privacyPolicy: {
       seoTitle: '개인정보처리방침',
-      seoDescription: '이 사이트가 쿠키와 제3자 광고(Google AdSense)를 사용하는 방식에 대한 안내입니다.',
+      seoDescription: '이 사이트가 쿠키, 방문 분석(Google Analytics 4), 제3자 광고(Google AdSense)를 사용하는 방식에 대한 안내입니다.',
       kicker: 'Legal',
       heading: '개인정보처리방침',
       intro:
-        '이 사이트는 개인 블로그입니다. 계정이 필요하지 않으며, 어떤 폼을 통해서도 개인정보를 수집하지 않습니다. 브라우저의 로컬 스토리지에는 라이트/다크 테마 선택과 아래 쿠키 동의 배너에 대한 응답, 이 두 가지 작은 값만 저장됩니다.',
+        '이 사이트는 개인 블로그입니다. 계정이 필요하지 않으며, 어떤 폼을 통해서도 개인정보를 수집하지 않습니다. 다만 아래에 적은 대로 방문 측정에 Google Analytics 4를, 광고 표시에 Google AdSense를 사용합니다. 브라우저의 로컬 스토리지에는 라이트/다크 테마 선택과 아래 쿠키 동의 배너에 대한 응답, 이 두 가지 작은 값만 저장됩니다.',
       advertisingHeading: '광고 (Google AdSense)',
       advertisingBody1:
-        '이 사이트는 Google AdSense를 통해 광고를 표시합니다. Google과 파트너사는 이 사이트나 다른 사이트를 방문한 기록을 바탕으로 쿠키 및 유사 기술을 사용해 광고를 제공할 수 있습니다. 다음 페이지를 방문해 맞춤 광고를 거부할 수 있습니다:',
+        '이 사이트는 Google AdSense를 통해 광고를 표시합니다. AdSense 스크립트는 배너 응답과 관계없이 블로그 페이지에서 로드되며, Google과 파트너사는 이 사이트나 다른 사이트를 방문한 기록을 바탕으로 쿠키 및 유사 기술을 사용해 광고를 제공할 수 있습니다. 다음 페이지를 방문해 맞춤 광고를 거부할 수 있습니다:',
       adSettingsLink: 'Google 광고 설정',
       advertisingBody2:
-      '. 또는 이 사이트의 쿠키 배너에서 거부를 선택할 수 있으며, 이 경우 남은 방문 시간 동안 광고 스크립트 자체가 로드되지 않습니다.',
+        '. 블로그 페이지에서는 쿠키 배너에서 거부를 선택할 수도 있으며, 이 경우 광고 단위가 표시되지 않습니다. 다만 AdSense 스크립트 자체와 Google Analytics는 거부와 관계없이 로드됩니다. 이 배너는 블로그 페이지에만 적용되며, /jipgye/ 같은 이 도메인의 하위 프로젝트는 배너 없이 Google Analytics와 AdSense를 로드합니다.',
       cookiesHeading: '쿠키 및 로컬 스토리지',
       cookiesBody:
-        '위에서 설명한 AdSense 스크립트 외에, 이 사이트 자체는 추적 쿠키를 설정하지 않습니다. 한 번 선택한 동의 여부는 브라우저의 로컬 스토리지에 저장되어 매 페이지마다 배너가 다시 표시되지 않으며, 브라우저 데이터를 삭제하면 초기화됩니다.',
+        '이 사이트는 블로그 페이지와 /jipgye/ 같은 하위 프로젝트에서 Google Analytics 4를 사용합니다. 어떤 페이지를 봤는지, 어디서 들어왔는지(리퍼러), 대략적인 지역, 기기와 브라우저 종류, 일부 하위 프로젝트 페이지에서는 검색·클릭 같은 이벤트가 기록됩니다. Google Analytics는 재방문을 구분하기 위해 자체 쿠키(_ga 등)를 설정합니다. Google Analytics와 위에서 설명한 AdSense 스크립트 외에, 이 사이트 자체는 추적 쿠키를 설정하지 않습니다. 한 번 선택한 동의 여부는 브라우저의 로컬 스토리지에 저장되어 매 페이지마다 배너가 다시 표시되지 않으며, 브라우저 데이터를 삭제하면 초기화됩니다.',
       thirdPartiesHeading: '제3자',
-      thirdPartiesBody1: '이 사이트는 GitHub Pages에서 호스팅됩니다. 광고는 Google AdSense가 제공하며, 다음 정책을 따릅니다:',
+      thirdPartiesBody1: '이 사이트는 GitHub Pages에서 호스팅됩니다. 방문 통계는 Google Analytics 4가 수집합니다. 광고는 Google AdSense가 제공하며, 다음 정책을 따릅니다:',
       googlePolicyLink: 'Google 광고 정책',
-      thirdPartiesBody2: '. 그 외 다른 제3자 분석이나 추적 서비스는 사용하지 않습니다.',
+      thirdPartiesBody2: '. Google Analytics 4와 Google AdSense 외에 다른 제3자 분석이나 추적 서비스는 사용하지 않습니다.',
       contactHeading: '문의',
       contactBody: '이 방침에 대한 문의는 다음을 통해 남길 수 있습니다:',
     },

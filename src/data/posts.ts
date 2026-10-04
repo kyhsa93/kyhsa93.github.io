@@ -177,7 +177,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'How a boring find/save/delete naming convention, once automated, immediately found violations nobody had noticed across four different codebases.',
-      ko: '지루하기 짝이 없는 find/save/delete 네이밍 컨벤션을 자동화하자, 네 개의 코드베이스에서 아무도 눈치채지 못한 위반 사례가 바로 드러난 이야기.',
+      ko: '지루하기 짝이 없는 find/save/delete 네이밍 컨벤션을 검사로 자동화했더니, 코드베이스 4곳에서 아무도 몰랐던 위반이 곧바로 나왔다.',
     },
     date: '2026.07.21',
     tags: ['Repository Pattern', 'Conventions'],
@@ -285,11 +285,11 @@ export const posts: PostMeta[] = [
     slug: 'from-docs-to-runnable-code',
     title: {
       en: 'From Docs to Runnable Code in One Command',
-      ko: '명령어 하나로 문서에서 실행 가능한 코드까지',
+      ko: '문서에서 명령 한 번으로 돌아가는 코드까지',
     },
     summary: {
       en: 'Turning a written reference template into a scaffolding generator, and the bugs found by actually running it.',
-      ko: '문서로 작성된 레퍼런스 템플릿을 스캐폴딩 생성기로 바꾸고, 실제로 실행해보며 발견한 버그들.',
+      ko: '글로 된 참조 템플릿을 스캐폴딩 생성기로 바꿨다. 그리고 직접 돌려 보면서 버그를 찾았다.',
     },
     date: '2026.07.17',
     tags: ['Tooling', 'Developer Experience'],
@@ -429,7 +429,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'Three violations across five languages — a Query reading a write Repository, a domain class carrying JPA, a notification module in the wrong layer. Only one was actually a bug, and the other two reveal why dozens of prior audits never caught any of it.',
-      ko: '다섯 언어에 걸친 위반 세 가지 — 쓰기용 Repository를 읽는 Query, JPA를 그대로 단 도메인 클래스, 잘못된 레이어의 notification 모듈. 진짜 버그는 하나뿐이었고, 나머지 둘은 그 많은 이전 감사가 왜 이걸 하나도 못 잡았는지를 드러낸다.',
+      ko: '5개 언어에서 위반 세 가지가 나왔다. 쓰기용 Repository로 읽는 Query, JPA 애노테이션을 단 도메인 클래스, 엉뚱한 레이어에 놓인 notification 모듈이다. 진짜 버그는 하나뿐이었고, 나머지 둘을 보면 그 많은 감사가 왜 하나도 못 잡았는지 알 수 있다.',
     },
     date: '2026.07.12',
     tags: ['DDD', 'Architecture'],
@@ -457,7 +457,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: "No parsing, no understanding of what a code snippet does — just comparing backtick-quoted paths against the real file tree. The exclusion rules that kept it from crying wolf mattered more than the two-pattern check itself, and it still caught a real bug in four docs on its first run.",
-      ko: '파싱도, 코드 스니펫이 뭘 하는지에 대한 이해도 없다 — 백틱 경로를 실제 파일 트리와 비교할 뿐이다. 오탐을 막아준 예외 규칙들이 두 가지 탐지 패턴 자체보다 중요했고, 그럼에도 첫 실행에서 문서 4곳의 진짜 버그를 잡았다.',
+      ko: '파싱도 하지 않고 코드 스니펫이 무슨 일을 하는지도 모른다. 백틱으로 적힌 경로를 실제 파일 트리와 대조할 뿐이다. 탐지 패턴 2개보다 오탐을 막은 예외 규칙이 더 중요했는데, 그런 도구가 첫 실행에서 문서 4곳의 버그를 잡았다.',
     },
     date: '2026.07.18',
     tags: ['Tooling', 'Documentation'],
@@ -470,8 +470,8 @@ export const posts: PostMeta[] = [
       ko: '문서는 "끝났다"고 했다. 절반만 끝나 있었다.',
     },
     summary: {
-      en: "A repository-naming fix that only reached the write-side interface, four rounds of turning that gap into permanent harness rules, and a yield curve — three or four real bugs per round, then two, then zero — that was itself the most useful result.",
-      ko: '쓰기 쪽 인터페이스에만 반영된 Repository 네이밍 수정, 그 갭을 영구적인 하네스 규칙으로 바꾼 네 라운드, 그리고 라운드당 3~4건이던 진짜 버그가 2건, 결국 0건으로 떨어진 수확 곡선 — 그 하락 자체가 가장 쓸모 있는 결과였다.',
+      en: "A repository-naming fix that only reached the write-side interface, the work of turning that gap into permanent harness rules, and a yield curve (three or four real bugs per batch of rules, then two, then zero) that was itself the most useful result.",
+      ko: 'Repository 네이밍 수정이 쓰기 쪽 인터페이스에만 들어가 있었다. 그 빈틈을 하네스 규칙으로 바꿔 나가는 동안 버그는 3~4건씩 나오다가 2건, 0건으로 줄었다. 이 수확 곡선이 가장 쓸모 있는 결과였다.',
     },
     date: '2026.07.20',
     tags: ['Conventions', 'Tooling'],
@@ -630,7 +630,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: "Argo CD's App-of-Apps proof lives entirely on the parent; Flux's dependsOn proof is declared by the child and unverifiable alone. Audit either tree without including its root, and both fail the same way — for what turns out to be the same underlying reason.",
-      ko: "Argo CD의 App-of-Apps 증명은 전적으로 부모에게 있고, Flux의 dependsOn 증명은 자식이 선언하지만 혼자서는 검증이 안 된다. 둘 중 어느 트리든 루트를 빼고 감사하면 똑같이 실패한다 — 알고 보면 같은 근본 이유로.",
+      ko: "Argo CD App-of-Apps는 증거가 전부 부모에 있고, Flux dependsOn은 자식이 선언하지만 그것만으로는 검증이 안 된다. 어느 트리든 루트를 빼고 감사하면 똑같이 실패하고, 따져 보면 이유도 같다.",
     },
     date: '2026.08.08',
     tags: ['Kubernetes', 'GitOps'],
@@ -698,7 +698,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: "Two codebases generate an Aggregate's ID in two different places — one in the constructor, one via a Factory asking Infrastructure for it. Eric Evans' own book has a specific, citable answer for which pattern it actually describes, and it isn't the one either codebase's convention assumes.",
-      ko: '두 코드베이스가 Aggregate의 ID를 서로 다른 자리에서 생성한다 — 하나는 생성자에서, 하나는 Factory가 Infrastructure에 요청해서. Eric Evans의 원저에는 실제로 어느 패턴을 서술하는지에 대한 구체적이고 인용 가능한 답이 있고, 그건 두 코드베이스 각자의 관습이 가정하는 것과 다르다.',
+      ko: '두 코드베이스가 Aggregate의 ID를 서로 다른 곳에서 만든다. 하나는 생성자에서, 다른 하나는 Factory가 Infrastructure에 요청해서 만든다. Eric Evans의 원저에는 어느 패턴을 설명하는지 인용할 수 있는 구체적인 답이 있고, 그 답은 두 코드베이스의 관례가 가정하는 것과 다르다.',
     },
     date: '2026.08.08',
     tags: ['DDD', 'Comparative'],

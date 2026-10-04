@@ -84,6 +84,7 @@ const contentRoutes = [
     'posts/not-every-report-needs-a-server',
     'pages/Post/NotEveryReportNeedsAServer.tsx',
   ),
+  route('posts/one-container-per-agent', 'pages/Post/OneContainerPerAgent.tsx'),
   route(
     'posts/half-the-site-was-a-copy-of-itself',
     'pages/Post/HalfTheSiteWasACopyOfItself.tsx',

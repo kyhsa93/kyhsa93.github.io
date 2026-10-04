@@ -34,6 +34,20 @@ export interface PostMeta {
 
 export const posts: PostMeta[] = [
   {
+    slug: 'one-container-per-agent',
+    title: {
+      en: 'One Container per AI Agent',
+      ko: 'AI 에이전트마다 컨테이너 하나씩',
+    },
+    summary: {
+      en: 'Design notes for running several coding agents on one machine without stepping on each other: a container per agent so the unit of isolation is also the unit of cleanup, agent-to-agent messages over the network, nested containers only when needed, credentials that are shared without being baked in, and a cgroup-only alternative tested with systemd.',
+      ko: '머신 하나에서 코딩 에이전트 여러 개가 서로 밟지 않게 돌리는 설계를 정리했다. 에이전트마다 컨테이너를 줘서 격리 단위와 회수 단위를 맞추고, 에이전트끼리는 네트워크로 주고받고, 중첩 컨테이너는 필요할 때만 쓰고, 인증 정보는 이미지에 굽지 않고 나눠 준다. systemd로 시험해 본 cgroup만 쓰는 가벼운 방법도 같이 적었다.',
+    },
+    date: '2026.10.04',
+    tags: ['AI Agents', 'Docker'],
+    readMinutes: 12,
+  },
+  {
     slug: 'half-the-site-was-a-copy-of-itself',
     title: {
       en: 'Half the Site Was a Copy of Itself',

@@ -64,8 +64,8 @@ export const posts: PostMeta[] = [
       ko: '완벽한 점수, 작동하지 않는 기능',
     },
     summary: {
-      en: 'Same doc, same task, two models, run at the same time in separate worktrees. Both self-reported a perfect harness score. Only one of them, independently reproduced against real Postgres and LocalStack, worked.',
-      ko: '같은 문서와 같은 과제를 두 모델에게 주고, worktree를 따로 만들어 동시에 돌렸다. 둘 다 하네스 점수가 만점이라고 스스로 보고했다. 실제 Postgres와 LocalStack 위에서 따로 재현해 보니, 제대로 동작한 쪽은 하나뿐이었다.',
+      en: 'Same doc, same task, two models, run at the same time in separate worktrees. Both self-reported a perfect score from the automated architecture checker. Only one of them, independently reproduced against real Postgres and LocalStack, worked.',
+      ko: '같은 문서와 같은 과제를 두 모델에게 주고, worktree를 따로 만들어 동시에 돌렸다. 둘 다 자동 아키텍처 검사에서 만점을 받았다고 스스로 보고했다. 실제 Postgres와 LocalStack 위에서 따로 재현해 보니, 제대로 동작한 쪽은 하나뿐이었다.',
     },
     date: '2026.07.28',
     tags: ['AI Agents', 'Benchmark'],
@@ -274,8 +274,8 @@ export const posts: PostMeta[] = [
       ko: 'AI 에이전트는 정해 둔 아키텍처를 따를 수 있을까?',
     },
     summary: {
-      en: 'Reusing an architecture-compliance harness as an AI benchmark, across five difficulty levels and five languages.',
-      ko: '아키텍처 준수를 검사하던 하네스를 AI 벤치마크로 돌려써 봤다. 난이도 5단계와 5개 언어로 돌린 결과를 정리했다.',
+      en: 'How to measure whether an AI agent finds and follows documented design rules on its own: a sparse task, a score you rerun yourself, and difficulty raised one decision at a time.',
+      ko: 'AI 에이전트가 문서로 정해 둔 설계 규칙을 스스로 찾아 따르는지 재는 법을 정리했다. 과제는 성기게 주고, 채점은 직접 다시 돌리고, 난이도는 판단 하나씩 올린다.',
     },
     date: '2026.07.21',
     tags: ['AI Agents', 'Benchmark'],

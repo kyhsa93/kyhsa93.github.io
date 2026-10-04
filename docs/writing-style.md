@@ -6,13 +6,19 @@
 
 ## 1. 건드리지 말 것
 
-- **사실과 숫자 값.** 80장은 80장이고 51.7%는 51.7%다. 표기만 바꾼다(`여든 장` → `80장`). 영어판에 없는 주장이나 사례를 새로 넣지 않는다.
+- **사실과 숫자 값.** 80장은 80장이고 51.7%는 51.7%다. 표기만 바꾼다(`여든 장` → `80장`). 영어판에 없는 주장이나 사례를 새로 넣지 않는다. 어림 표현도 사실이다. `roughly eighty`는 `약 80건`이지 `80건 가까이`(80 아래라는 뜻)나 `80건 넘게`가 아니다. `real questions`를 `a few questions`처럼 원문에 없는 수량으로 바꾸지도 않는다.
 - **영어판이 사실의 기준이다.** 한국어판이 영어판과 뜻이 다르면 영어판에 맞춘다. 예: `more than one page`를 `한 장 이상`으로 옮긴 곳이 있는데, 뜻은 `두 장 이상`이다(`HalfTheSiteWasACopyOfItself.tsx`, `posts.ts`). 이런 오역은 고친다.
 - **코드.** `<pre><code>` 블록, 코드 상수(`const ..._SNIPPET`), `<code>` 안의 식별자, 파일 경로, 명령어는 한 글자도 바꾸지 않는다.
 - **링크.** `href`는 그대로 둔다. 링크 문구는 자기 글 안에서만 다듬는다(다른 글 제목을 인용한 문구를 맞추러 남의 파일을 열지 않는다).
 - **JSX 구조.** 태그 종류와 순서, `className`, `<h2>` 개수와 순서, `article-note` 개수, 표의 행·열, `<em>`/`<strong>` 위치의 대략적인 수. 절을 합치거나 쪼개지 않는다. 문단(`<p>`) 수는 쪼개거나 합쳐도 되지만 절 안에서만.
 - **메타.** `slug`, 파일명, 컴포넌트 이름, `date`, `tags`, `kicker`(한국어판도 영어 그대로 둔다), `readMinutes`.
-- **AdSense 규칙(`CLAUDE.md`의 "AdSense content guidelines").** 본문에 PR·이슈 번호, 커밋 해시, 내부 라운드·세션 횟수를 **넣지 않는다**. 이미 들어 있는 것을 발견하면 지운다. 이건 위의 "JSX 구조 유지"보다 우선한다. 현재 알려진 곳: `NarrowWhatNeverWho.tsx`의 언어별 표 두 개(en·ko)에 커밋 해시 열이 있다. 그 열만 빼고 나머지 열은 남긴다.
+- **AdSense 규칙(`CLAUDE.md`의 "AdSense content guidelines").** 본문에 PR·이슈 번호, 커밋 해시, 내부 라운드·세션 횟수를 **넣지 않는다**. 이미 들어 있는 것을 발견하면 지운다. 이건 위의 "JSX 구조 유지"보다 우선하고, 영어판에도 똑같이 적용한다(4절 범위 밖이어도 고친다). 커밋 해시 열이 있던 `NarrowWhatNeverWho.tsx`의 표는 시범에서 그 열만 뺐다. 5절 점검의 `ids` 열이 0이 아니면 같은 종류가 남은 것이다.
+- **내부 라운드·세션 표현.** 횟수와 서수(`세 번째 라운드`, `네 라운드 뒤`, `이번 라운드`, `the fourth round`)는 en·ko 모두 지운다. `TheDocSaidDoneHalfOfItWasnt`처럼 글의 뼈대가 라운드 순서인 글은 횟수 대신 무엇이 계기였는지로 잇는다. 숫자 없는 `round`는 영어판에서는 그대로 둬도 되지만, 한국어판에서는 `라운드`라고 쓰지 않고 뜻대로 옮긴다.
+  - `다른 라운드가 몇 주 전에 고친 버그` → `몇 주 전 프로덕션에서 이미 고친 버그`
+  - `이전 라운드가 버그 하나를 고친 적이 있었다` → `그 전에 프로덕션 버그를 하나 고친 적이 있다`
+  - `기능 개발 한두 라운드씩 뒤처져` → `실제 파일이 기능 작업을 한두 번 더 거치는 동안 문서는 그대로였다`
+  - `세 라운드가 더 이어졌고, 총 15개` → `같은 질문으로 몇 번 더 훑었고, 모두 15개` (결과 숫자 15는 남긴다. 지우는 건 작업 횟수다)
+  - `감사 라운드 전후로` → `감사 전후로`
 - **날짜.** 게시 날짜를 바꾸거나 꾸미지 않는다.
 
 ## 2. 기본 문체
@@ -149,6 +155,8 @@ AI 글의 가장 큰 표지다. 문단마다 마지막 문장이 교훈 한 줄(
 
 - 전: `이 측정을 돌린 사이트에서는 이 단계를 빠뜨렸다가, 존재하지도 않는 표의 가로 폭을 재서 없는 문제를 하나 만들어 낸 적이 있다.` (HalfTheSiteWasACopyOfItself)
 - 후: `나도 이 단계를 한 번 빠뜨렸다가, 있지도 않은 표의 가로 폭을 재서 없는 문제를 하나 만든 적이 있다.`
+- `이 저장소는`, `this repository's own convention` 같은 자리는 `내 저장소는`으로 바꾼다.
+- 반대로 독자 일반을 가리키는 `your own`은 `내`가 아니라 `자기`로 옮긴다. `chatting with your own tabular data`를 `내 정형 데이터와 대화하는`이라고 쓰면 글쓴이의 데이터 얘기가 된다. `자기 정형 데이터를 두고 대화하는`이 맞다.
 
 ## 4. 영어판 규칙(짧게)
 
@@ -158,37 +166,60 @@ AI 글의 가장 큰 표지다. 문단마다 마지막 문장이 교훈 한 줄(
 - `actually`(166회), `real`(224회), `exactly`(90회), `silently`/`quietly`(66회), `genuinely`(21회)는 뜻을 더하지 않으면 지운다.
 - 문단 끝 경구(`X is a claim about what was checked. It was never a claim about what was true.`)는 글마다 1번.
 - `Not X. Y.` / `isn't X — it's Y` 대비는 글마다 2번 이하. `Here is …`, `The general form:` 같은 머리말은 문장으로.
+- 대시를 콜론으로 바꿀 때 한 문장에 콜론이 둘 생기면 안 된다. `<strong>Translate</strong>: an LLM turns the question into a structured filter: transaction …`은 뒤쪽을 괄호로 묶는다(`… into a structured filter (transaction <code>type</code>, …).`). 목록 머리의 대시는 영어에서 자연스러우니 3~4개 안이면 남겨도 된다.
+- 위 네 가지 말고는 고치지 않는다. 어휘를 바꾸다 수량이나 뜻이 바뀌면(`real questions` → `a few questions`) 되돌린다.
 
 ## 5. 고친 뒤 점검
 
-아래 명령은 한국어판(`content.ko`)만 세어 글마다 출력한다. 다시 쓴 글은 목표 열을 넘지 않아야 한다. 숫자는 신호일 뿐이니, 넘으면 그 자리를 읽고 판단한다.
+아래 명령은 글마다 한 줄씩 출력한다. 다시 쓴 글은 목표 열을 넘지 않아야 한다. 숫자는 신호일 뿐이니, 넘으면 그 자리를 읽고 판단한다. `ids`만 파일 전체(en·ko)를 세고, 나머지는 한국어판(`content.ko`)에서 `<pre><code>` 블록과 인라인 `<code>`를 뺀 본문만 센다.
 
 ```sh
 cd src/pages/Post
-for f in *.tsx; do
-  ko=$(awk '/^  ko: \{/,/^export default/' "$f" | sed 's#<pre><code>.*</code></pre>##')
-  printf '%-48s dash=%s adv=%s numko=%s ineun=%s dangsin=%s\n' "$f" \
-    "$(grep -o '—' <<<"$ko" | wc -l)" \
-    "$(grep -oE '실제로|정확히|조용히|진짜|바로 그' <<<"$ko" | wc -l)" \
-    "$(grep -oE '(^|[^가-힣])(열|스물|서른|마흔|쉰|예순|일흔|여든|아흔)[가-힣]* ?(장|개|건|줄|명|종)' <<<"$ko" | wc -l)" \
-    "$(grep -oE '(^|[ >.])이는 ' <<<"$ko" | wc -l)" \
-    "$(grep -o '당신' <<<"$ko" | wc -l)"
-done
+LC_ALL=C perl -CSD -Mutf8 -0777 -ne '
+  my ($ko) = /^  ko: \{(.*?)^export default/ms or next;
+  $ko =~ s{<pre><code>.*?</code></pre>}{}gs;
+  $ko =~ s{<code>.*?</code>}{}gs;
+  (my $all = $_) =~ s{href="[^"]*"}{}g;
+  sub n { my ($s, $re) = @_; scalar(() = $s =~ /$re/g) }
+  printf "%-48s dash=%d adv=%d numko=%d ineun=%d dangsin=%d colon=%d anira=%d round=%d ids=%d\n", $ARGV,
+    n($ko, qr/—/),
+    n($ko, qr/실제로|정확히|조용히|진짜|바로 그/),
+    n($ko, qr/(?<!\p{Hangul})(?:열|스물|서른|마흔|쉰|예순|일흔|여든|아흔)\p{Hangul}* ?(?:장|개|건|줄|명|종)/),
+    n($ko, qr/(?:^|[ >.])이는 /m),
+    n($ko, qr/당신/),
+    n($ko, qr/\p{Hangul}[)"\x{201D}]?:(?=\s|<)/),
+    n($ko, qr/아니라/),
+    n($ko, qr/라운드|세션/),
+    n($all, qr/\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|(?<![&\w])#\d{1,4}\b/);
+' *.tsx
 ```
 
-| 열 | 목표 |
-|---|---|
-| `dash` | 3 이하 |
-| `adv` | 5 이하 |
-| `numko` | 0 |
-| `ineun` | 0 |
-| `dangsin` | 0 |
+| 열 | 뜻 | 목표 |
+|---|---|---|
+| `dash` | 대시(R1) | 3 이하 |
+| `adv` | 직역 부사(R5) | 5 이하 |
+| `numko` | 10 이상 한글 수사(R2) | 0 |
+| `ineun` | `이는` 주어(R6) | 0 |
+| `dangsin` | `당신` | 0 |
+| `colon` | 한글 바로 뒤 콜론(R4) | 0 |
+| `anira` | `~가 아니라`(R8) | 2 이하 |
+| `round` | `라운드`·`세션`(1절) | 0 |
+| `ids` | 커밋 해시·`#123` 번호(1절, en 포함) | 0 |
+
+이 명령을 이렇게 쓴 이유. 고치기 전에 알아 둘 것.
+
+- **`grep`의 `[가-힣]`은 쓰지 않는다.** 이 머신(GNU grep 3.7, `LANG=C.UTF-8`)에서는 `Invalid collation character`로 실패하고, `LC_ALL=C`로 돌리면 오류 없이 바이트 단위로 엉뚱하게 센다. `grep -P '\p{Hangul}'`도 `LC_ALL=C`에서는 0을 낸다. 위의 `perl -CSD -Mutf8`은 로케일과 상관없이 같은 값을 낸다(2026-10-04, C.UTF-8과 C 두 로케일에서 확인).
+- **코드 블록은 줄 단위로 거를 수 없다.** `sed`는 한 줄씩 보므로 여러 줄짜리 `<pre><code>`를 못 지우고, 그 안의 대시와 콜론이 본문 수치에 섞인다. 그래서 `-0777`로 파일을 통째로 읽고 `.*?`(최소 일치)로 지운다.
+- **`&#123;`는 이슈 번호가 아니다.** JSX 중괄호를 엔티티로 쓴 곳이 있어 `#\d+`만으로는 오탐이 난다. `(?<![&\w])`가 그것을 거른다.
+- 시범 2편의 결과(고치기 전 → 후)로 명령을 검증했다. `ZeroFindingsEightyBugs`는 dash 17→0, adv 13→1, colon 7→0, round 4→0. `NarrowWhatNeverWho`는 dash 25→0, colon 6→0, anira 5→1, ids 10→0.
 
 타입 검사(`npx tsc --noEmit -p tsconfig.app.json`), 빌드(`npm run build`), 린트(`npx oxlint --config oxlint.json .`)는 저장소 `CLAUDE.md`의 "Verifying a change before committing" 절을 따른다.
 
 ## 6. 다시 쓰기 우선순위
 
 진단 기준: 위 점검 명령의 수치(대시·콜론·대비·한글 수사 밀도, 문장 길이)와 본문 표본 읽기. 2026-10-04 기준.
+
+시범 2편(`ZeroFindingsEightyBugs`, `NarrowWhatNeverWho`)은 2026-10-04 이 지침대로 다시 썼다. 다시 쓰기 전에 그 두 편의 한국어판을 먼저 읽고 말투를 맞추면 된다.
 
 **심함(21편) — 먼저**
 

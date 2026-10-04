@@ -120,8 +120,8 @@ export const posts: PostMeta[] = [
       ko: 'Aggregate 설계: 트랜잭션 경계와 불변식',
     },
     summary: {
-      en: "What actually decides an Aggregate boundary, and how the Domain layer generates its own ID.",
-      ko: 'Aggregate 경계를 실제로 결정하는 것은 무엇이며, Domain 계층은 어떻게 스스로 ID를 생성하는가.',
+      en: "What decides an Aggregate boundary, and how the Domain layer generates its own ID.",
+      ko: '무엇이 Aggregate 경계를 정하는지, Domain 계층이 ID를 어떻게 스스로 만드는지 정리했다.',
     },
     date: '2026.07.22',
     tags: ['DDD', 'Tactical Design'],
@@ -131,11 +131,11 @@ export const posts: PostMeta[] = [
     slug: 'domain-services-across-aggregates',
     title: {
       en: "Domain Services: When a Rule Doesn't Belong to One Aggregate",
-      ko: 'Domain Service: 규칙이 하나의 Aggregate에 속하지 않을 때',
+      ko: 'Domain Service: 규칙이 한 Aggregate에 속하지 않을 때',
     },
     summary: {
       en: 'A real RefundEligibilityService example for logic that has to read two Aggregates at once.',
-      ko: '두 개의 Aggregate를 동시에 읽어야 하는 로직을 위한 실제 RefundEligibilityService 사례.',
+      ko: 'Aggregate 두 개를 한꺼번에 읽어야 하는 로직을, 실제로 쓰는 RefundEligibilityService 코드로 풀었다.',
     },
     date: '2026.07.18',
     tags: ['DDD', 'Tactical Design'],
@@ -145,11 +145,11 @@ export const posts: PostMeta[] = [
     slug: 'talking-across-bounded-contexts',
     title: {
       en: 'Talking Across Bounded Contexts',
-      ko: 'Bounded Context 간의 소통',
+      ko: 'Bounded Context 사이의 소통',
     },
     summary: {
       en: 'Choosing between a synchronous Adapter and an asynchronous Integration Event, with a real compensating-transaction example.',
-      ko: '동기 Adapter와 비동기 Integration Event 중 무엇을 선택할 것인가, 실제 보상 트랜잭션(compensating transaction) 사례와 함께.',
+      ko: '동기 Adapter와 비동기 Integration Event 중 어느 쪽을 고를지, 실제 보상 트랜잭션(compensating transaction) 예제와 함께 따져 본다.',
     },
     date: '2026.07.11',
     tags: ['DDD', 'Integration'],
@@ -162,8 +162,8 @@ export const posts: PostMeta[] = [
       ko: '실전 CQRS: Query가 Repository를 쓸 수 없는 이유',
     },
     summary: {
-      en: 'A real cross-language bug where a Query Handler used a write-capable Repository — and the docs agreed it was fine.',
-      ko: 'Query Handler가 쓰기 가능한 Repository를 사용했던 실제 다언어 버그 — 문서조차 문제없다고 했다.',
+      en: 'A real cross-language bug where a Query Handler used a write-capable Repository, and the docs agreed it was fine.',
+      ko: 'Query Handler가 쓰기까지 되는 Repository를 쓰고 있었다. 여러 언어에서 같은 버그가 나왔는데, 문서마저 괜찮다고 적혀 있었다.',
     },
     date: '2026.07.12',
     tags: ['CQRS', 'Architecture'],
@@ -233,7 +233,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'Why a Scheduler should only enqueue, and the real bugs multi-instance Cron jobs surfaced.',
-      ko: 'Scheduler는 왜 enqueue만 해야 하는가, 그리고 다중 인스턴스 Cron job이 드러낸 실제 버그들.',
+      ko: 'Scheduler는 왜 enqueue만 해야 하는지, 인스턴스가 여럿일 때 Cron job에서 어떤 버그가 나왔는지 정리했다.',
     },
     date: '2026.07.21',
     tags: ['Scheduling', 'Backend'],
@@ -317,7 +317,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'A record of the thought process for organizing complex requirements into Aggregates and Bounded Contexts.',
-      ko: '복잡한 요구사항을 Aggregate와 Bounded Context로 정리하는 사고 과정 기록.',
+      ko: '복잡한 요구사항을 Aggregate와 Bounded Context로 나눠 가며 무엇을 생각했는지 적었다.',
     },
     date: '2026.07.19',
     tags: ['DDD', 'Architecture'],
@@ -327,11 +327,11 @@ export const posts: PostMeta[] = [
     slug: 'reliable-event-driven-systems',
     title: {
       en: 'Reliability in Event-Driven Systems',
-      ko: '이벤트 기반 시스템에서의 신뢰성',
+      ko: '이벤트 기반 시스템의 신뢰성',
     },
     summary: {
       en: 'Practical patterns for handling message delivery failures and duplicate processing.',
-      ko: '메시지 전달 실패와 중복 처리를 다루기 위한 실용적인 패턴들.',
+      ko: '메시지 전달이 실패하거나 같은 메시지를 두 번 처리하게 될 때 쓰는 실용적인 패턴을 정리했다.',
     },
     date: '2026.07.19',
     tags: ['Event-driven', 'Backend'],
@@ -715,8 +715,8 @@ export const posts: PostMeta[] = [
       ko: 'Evans가 쓴 적 없는 규칙',
     },
     summary: {
-      en: "Nearly every DDD codebase forbids referencing another Aggregate by direct object reference — ID only. Eric Evans' 2003 book explicitly permits it. The person who actually wrote the ID-only rule, Vaughn Vernon, says so himself, in the same paper that argues for the stricter rule anyway.",
-      ko: '거의 모든 DDD 코드베이스가 다른 Aggregate를 직접 객체 참조하는 걸 금지한다 — ID로만. Eric Evans의 2003년 원저는 명시적으로 그걸 허용한다. 실제로 ID 전용 규칙을 쓴 Vaughn Vernon 본인이, 그럼에도 더 엄격한 규칙을 주장하는 바로 그 논문에서 이 사실을 스스로 밝힌다.',
+      en: "Nearly every DDD codebase forbids referencing another Aggregate by direct object reference (ID only). Eric Evans' 2003 book explicitly permits it. The person who wrote the ID-only rule, Vaughn Vernon, says so himself, in the same paper that argues for the stricter rule anyway.",
+      ko: '거의 모든 DDD 코드베이스가 다른 Aggregate를 객체로 직접 참조하지 말고 ID로만 참조하게 한다. 그런데 Eric Evans의 2003년 원저는 직접 참조를 분명히 허용한다. ID로만 참조하라는 규칙을 쓴 Vaughn Vernon도 이 사실을 스스로 밝힌다. 그것도 더 엄격한 규칙을 주장하는 같은 논문 안에서다.',
     },
     date: '2026.08.08',
     tags: ['DDD', 'Comparative'],

@@ -498,8 +498,8 @@ export const posts: PostMeta[] = [
       ko: '구독자가 둘이어야만 존재하던 버그',
     },
     summary: {
-      en: 'Five languages scoring 100% on an easy synthetic task taught nothing about where they would fail. A four-level difficulty ladder built specifically to exercise unexercised code paths found the ceiling — and its last rung exposed a fan-out bug that had been invisible since nothing had ever subscribed two things to the same event before.',
-      ko: '쉬운 합성 과제에서 5개 언어가 모두 100점을 받아도, 어디서 무너질지는 알 수 없었다. 한 번도 돌지 않은 코드 경로를 겨냥해 4단계 난이도 사다리를 만들자 천장이 보였다. 마지막 단에서는 팬아웃 버그가 나왔다. 같은 이벤트를 둘이 구독한 적이 없어서 그동안 안 보이던 버그였다.',
+      en: 'When every candidate scores 100% on an easy task, the test has said nothing about where any of them would fail. Raising the difficulty of an AI coding task one design decision at a time, across five language implementations of the same design, found the ceiling. The last rung exposed a fan-out bug that had been invisible because nothing had ever subscribed two things to the same event before.',
+      ko: '쉬운 과제에서 모두가 100점을 받으면, 그 테스트는 누가 어디서 무너질지 알려 주지 않는다. 같은 설계를 구현한 5개 언어에서 AI 코딩 과제의 난이도를 설계 판단 하나씩 올리자 천장이 보였다. 마지막 단에서는 팬아웃 버그가 나왔다. 같은 이벤트를 둘이 구독한 적이 없어서 그동안 안 보이던 버그였다.',
     },
     date: '2026.07.21',
     tags: ['AI Agents', 'Benchmark'],
@@ -526,8 +526,8 @@ export const posts: PostMeta[] = [
       ko: '다섯 가지 가면을 쓰고 돌아온 버그',
     },
     summary: {
-      en: 'A week after a benchmark task exposed two languages that could not support a second event subscriber, four real features made every language need one. This time all five broke — from a loud boot-time crash to a silent single-handler drop nothing ever logged.',
-      ko: '벤치마크 과제에서 이벤트 구독자를 둘 붙이지 못하는 언어 2개를 찾은 지 일주일 뒤, 실제 기능 4개가 모든 언어에 같은 걸 요구했다. 이번엔 5개 언어가 모두 깨졌다. 부팅 때 요란하게 죽는 경우부터, 로그 한 줄 없이 핸들러 하나가 빠지는 경우까지 있었다.',
+      en: 'Event dispatch that has only ever run one handler per event has not shown it can run two. When four real features gave an event its second subscriber in five language implementations of the same design, all five broke, each differently, from a loud boot-time crash to a silent single-handler drop nothing ever logged.',
+      ko: '이벤트마다 핸들러를 하나만 돌려 본 디스패치 코드는 둘을 돌릴 수 있다는 걸 보여 준 적이 없다. 같은 설계를 구현한 5개 언어에서 실제 기능 4개가 한 이벤트에 두 번째 구독자를 붙이자, 5개 모두 저마다 다르게 깨졌다. 부팅 때 요란하게 죽는 경우부터, 로그 한 줄 없이 핸들러 하나가 빠지는 경우까지 있었다.',
     },
     date: '2026.07.28',
     tags: ['Event-driven', 'Reliability'],

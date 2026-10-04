@@ -14,16 +14,16 @@ const content = {
         A Second Fraud Signal:<br /><em>Scoring History, Not Reading It</em>
       </>
     ),
-    lede: "RefundReasonClassifier reads what a customer says. RefundFraudRiskScorer looks at what they've done — refund count, rejection rate, amount ratio, time since payment — and, like the classifier, still doesn't get the final vote.",
+    lede: "RefundReasonClassifier reads what a customer says. RefundFraudRiskScorer looks at what they've done (refund count, rejection rate, amount ratio, time since payment) and, like the classifier, still doesn't get the final vote.",
     body: (
       <>
-        <div className="article-note"><strong>Update — 2026.07.26</strong><p><code>RefundFraudRiskScorer</code> described below has since been removed too — not because it shared the flaw covered in <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">The Fraud Signal That Trusted the Fraudster</a> (the requester's own history isn't something they can rewrite on request), but as a separate simplification decision made in the same round. <code>RefundEligibilityService</code> now carries no fraud-risk judgment of any kind. The source link at the bottom of this post now points to the last commit where the file still existed.</p></div>
-        <p>Two Technical Services now feed <code>RefundEligibilityService</code>, and they're deliberately different shapes of "machine learning." <code>RefundReasonClassifier</code> is an LLM reading free text. <code>RefundFraudRiskScorer</code> is a hand-rolled logistic regression reading structured numbers — no LLM, no external API by default, just four features and a sigmoid.</p>
+        <div className="article-note"><strong>Update — 2026.07.26</strong><p><code>RefundFraudRiskScorer</code> described below has since been removed too. It didn't share the flaw covered in <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">The Fraud Signal That Trusted the Fraudster</a> (the requester's own history isn't something they can rewrite on request); it went as a separate simplification decision made at the same time. <code>RefundEligibilityService</code> now carries no fraud-risk judgment of any kind. The source link at the bottom of this post now points to the last commit where the file still existed.</p></div>
+        <p>Two Technical Services now feed <code>RefundEligibilityService</code>, and they're deliberately different shapes of "machine learning." <code>RefundReasonClassifier</code> is an LLM reading free text. <code>RefundFraudRiskScorer</code> is a hand-rolled logistic regression reading structured numbers. By default there's no LLM and no external API, just four features and a sigmoid.</p>
         <h2>The Interface, and Two Implementations Behind It</h2>
         <pre><code>{`interface RefundFraudRiskScorer {
     fun score(features: RefundRiskFeatures): Double
 }`}</code></pre>
-        <p>Two classes implement it, selected by config rather than by the caller — <code>RequestRefundService</code> depends only on the interface and never knows which one is live.</p>
+        <p>Two classes implement it, selected by config rather than by the caller. <code>RequestRefundService</code> depends only on the interface and never knows which one is live.</p>
         <h2>The Feature Vector</h2>
         <p>Everything the model sees comes from the requester's own history, assembled by the Application layer from the Payment and Refund Aggregates plus a repository summary query:</p>
         <pre><code>{`val mlFraudRiskScore =
@@ -77,9 +77,9 @@ const content = {
     }
     return LogisticModel(weights, bias)
 }`}</code></pre>
-        <p>The fixed random seed matters here: the generated dataset — and therefore the trained weights — is identical on every run. It's explicitly a stand-in; the interface is what matters, not the model's actual predictive power.</p>
+        <p>The fixed random seed matters here: the generated dataset, and therefore the trained weights, is identical on every run. It's explicitly a stand-in; the interface is what matters, not the model's predictive power.</p>
         <h2>Swappable by Config, Not by Rewrite</h2>
-        <p>The same native/HTTP toggle already used for the LLM classifier shows up here too — a config property picks between an in-process computation and a call to the shared <code>services/fraud-risk-scorer</code> microservice:</p>
+        <p>The same native/HTTP toggle already used for the LLM classifier shows up here too. A config property picks between an in-process computation and a call to the shared <code>services/fraud-risk-scorer</code> microservice:</p>
         <pre><code>{`@ConfigurationProperties(prefix = "fraud-scorer")
 data class FraudScorerProperties(
     val mode: String = "native",
@@ -87,7 +87,7 @@ data class FraudScorerProperties(
 ) {
     val isHttpMode: Boolean get() = mode == "http"
 }`}</code></pre>
-        <p>The HTTP implementation fails open — any network error, non-2xx, or malformed response returns a score of <code>0.0</code> rather than blocking the refund:</p>
+        <p>The HTTP implementation fails open. Any network error, non-2xx, or malformed response returns a score of <code>0.0</code> rather than blocking the refund:</p>
         <pre><code>{`override fun score(features: RefundRiskFeatures): Double =
     try {
         val response = httpClient.send(buildRequest(features), HttpResponse.BodyHandlers.ofString())
@@ -113,9 +113,9 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
 }`}</code></pre>
         <p>The Domain Service is the only place both numbers meet, and it's still the only place that decides what they mean.</p>
         <h2>The Bug a Shared Test Owner Caused</h2>
-        <p>Adding a history-aware scorer to an E2E suite with shared test fixtures created a real, deterministic failure elsewhere in this repo — not a flaky one. Multiple test methods reusing the same owner ID against a Testcontainers Postgres instance (no per-test reset) meant later tests inherited rejected-refund history from earlier ones, pushing the native score past the 0.8 threshold and misclassifying a legitimately valid refund as high-risk.</p>
-        <p>The two ports that hit this fixed it two different ways, worth naming precisely rather than claiming one shared technique. The java-springboot port forces its entire E2E suite into HTTP mode against an unreachable address, so scoring deterministically falls back to <code>0</code> for every test. The nestjs port instead left native scoring live for the rest of the suite and gave only the one affected test its own dedicated owner ID — a narrower fix, same underlying cause.</p>
-        <div className="article-note"><strong>Deterministic, not flaky</strong><p>It's worth naming the difference: a flaky test fails unpredictably for reasons unrelated to the code under test. This failure happened every time, in the same order, for the same reason — accumulated state from earlier tests changing the input to a later one. That's a test-isolation bug wearing a "flaky test" costume, and it's worth looking twice before reaching for a retry-on-failure fix instead of an isolation fix.</p></div>
+        <p>Adding a history-aware scorer to an E2E suite with shared test fixtures created a deterministic failure elsewhere in this repo, not a flaky one. Multiple test methods reusing the same owner ID against a Testcontainers Postgres instance (no per-test reset) meant later tests inherited rejected-refund history from earlier ones, pushing the native score past the 0.8 threshold and misclassifying a legitimately valid refund as high-risk.</p>
+        <p>The two ports that hit this fixed it two different ways, and it's worth naming both rather than claiming one shared technique. The java-springboot port forces its entire E2E suite into HTTP mode against an unreachable address, so scoring deterministically falls back to <code>0</code> for every test. The nestjs port instead left native scoring live for the rest of the suite and gave only the one affected test its own dedicated owner ID. That's a narrower fix for the same underlying cause.</p>
+        <div className="article-note"><strong>Deterministic, not flaky</strong><p>It's worth naming the difference: a flaky test fails unpredictably for reasons unrelated to the code under test. This failure happened every time, in the same order, for the same reason: accumulated state from earlier tests changing the input to a later one. That's a test-isolation bug wearing a "flaky test" costume, and it's worth looking twice before reaching for a retry-on-failure fix instead of an isolation fix.</p></div>
         <div className="article-note"><strong>Further reading in the repo</strong><p>
           <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a> — the Technical Service pattern (this example has since been replaced, see the update note above) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/0473a4140ecb3fc3446fbbc847ab9a136e984f43/implementations/kotlin-springboot/examples/src/main/kotlin/com/example/accountservice/payment/infrastructure/RefundFraudRiskScorerNativeImpl.kt" target="_blank" rel="noreferrer">RefundFraudRiskScorerNativeImpl.kt</a> — the training/scoring code as it existed, pinned to the last commit before removal
         </p></div>
@@ -126,21 +126,21 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
     kicker: 'Machine Learning · Architecture',
     title: (
       <>
-        두 번째 사기 신호:<br /><em>이력을 읽는 게 아니라 점수로 매긴다</em>
+        두 번째 사기 신호는<br /><em>이력을 숫자로 매긴다</em>
       </>
     ),
-    lede: 'RefundReasonClassifier는 고객이 뭐라고 말했는지를 읽는다. RefundFraudRiskScorer는 고객이 실제로 뭘 했는지 — 환불 횟수, 거절 비율, 금액 비율, 결제 후 경과 시간 — 를 본다. 그리고 classifier와 마찬가지로, 여전히 최종 결정권은 없다.',
+    lede: 'RefundReasonClassifier는 고객이 한 말을 읽는다. RefundFraudRiskScorer는 고객이 해 온 일을 본다. 환불 횟수, 거절 비율, 금액 비율, 결제 뒤 지난 시간이다. 그래도 classifier와 마찬가지로 최종 결정은 이 모델이 내리지 않는다.',
     body: (
       <>
-        <div className="article-note"><strong>정정 — 2026.07.26</strong><p>여기서 다루는 <code>RefundFraudRiskScorer</code>도 이후 제거되었다 — <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">사기꾼을 그대로 믿은 사기 탐지 신호</a>에서 다룬 결함을 공유해서가 아니라(요청자 본인의 이력은 요청 시점에 마음대로 다시 쓸 수 있는 값이 아니다), 같은 라운드에서 내려진 별개의 단순화 결정 때문이다. <code>RefundEligibilityService</code>에는 이제 어떤 형태의 사기 판단도 남아있지 않다. 이 글 하단의 소스 링크는 이제 이 파일이 마지막으로 존재했던 커밋을 가리킨다.</p></div>
-        <p>이제 두 개의 Technical Service가 <code>RefundEligibilityService</code>에 신호를 공급하는데, 둘은 의도적으로 서로 다른 형태의 "머신러닝"이다. <code>RefundReasonClassifier</code>는 자유 텍스트를 읽는 LLM이다. <code>RefundFraudRiskScorer</code>는 구조화된 숫자를 읽는, 직접 만든 로지스틱 회귀다 — 기본값으로는 LLM도, 외부 API도 없이 네 개의 feature와 시그모이드만 있다.</p>
-        <h2>인터페이스, 그리고 그 뒤의 두 구현체</h2>
+        <div className="article-note"><strong>정정(2026.07.26)</strong><p>이 글의 <code>RefundFraudRiskScorer</code>도 나중에 지웠다. <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">사기꾼을 그대로 믿은 사기 탐지 신호</a>에서 다룬 결함 때문은 아니다. 요청자 본인의 이력은 요청할 때 마음대로 고쳐 쓸 수 있는 값이 아니다. 같은 때에 따로 내린 단순화 결정으로 함께 빠졌다. 이제 <code>RefundEligibilityService</code>에는 사기 여부를 따지는 판단이 하나도 없다. 글 아래쪽 소스 링크는 이 파일이 마지막으로 남아 있던 커밋을 가리킨다.</p></div>
+        <p><code>RefundEligibilityService</code>에 신호를 넣는 Technical Service가 이제 둘이다. 둘 다 "머신러닝"이지만 일부러 모양을 다르게 했다. <code>RefundReasonClassifier</code>는 자유 텍스트를 읽는 LLM이다. <code>RefundFraudRiskScorer</code>는 정형 숫자를 읽는 로지스틱 회귀이고, 직접 짰다. 기본 설정에서는 LLM도 외부 API도 쓰지 않는다. feature 4개와 시그모이드가 전부다.</p>
+        <h2>인터페이스 하나, 구현체 둘</h2>
         <pre><code>{`interface RefundFraudRiskScorer {
     fun score(features: RefundRiskFeatures): Double
 }`}</code></pre>
-        <p>두 개의 클래스가 이 인터페이스를 구현하며, 선택은 호출자가 아니라 설정(config)이 한다 — <code>RequestRefundService</code>는 오직 인터페이스에만 의존하고, 어느 쪽이 실제로 동작하고 있는지 전혀 알지 못한다.</p>
+        <p>이 인터페이스를 구현한 클래스가 2개 있고, 어느 쪽을 쓸지는 호출하는 쪽이 아니라 설정이 정한다. <code>RequestRefundService</code>는 인터페이스만 알고, 지금 어느 구현체가 돌고 있는지는 모른다.</p>
         <h2>Feature 벡터</h2>
-        <p>모델이 보는 모든 값은 요청자 본인의 이력에서 나오며, Application 계층이 Payment와 Refund Aggregate, 그리고 repository 요약 쿼리로부터 조립한다:</p>
+        <p>모델이 보는 값은 모두 요청자 본인의 이력에서 나온다. Application 계층이 Payment와 Refund Aggregate, repository 요약 쿼리에서 값을 모아 다음처럼 조립한다.</p>
         <pre><code>{`val mlFraudRiskScore =
     refundFraudRiskScorer.score(
         RefundRiskFeatures(
@@ -154,8 +154,8 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
                     .toDouble(),
         ),
     )`}</code></pre>
-        <h2>의도적으로 placeholder 위에서 학습시킨다</h2>
-        <p>이 예제 저장소 뒤에는 실제 사용자 기반이 없으므로, 학습시킬 실제 사기 심사 이력 데이터도 없다. native 구현체는 생성 시점에 한 번, 시드가 고정된 합성 데이터셋과 의도적으로 단순한 ground-truth 규칙으로 스스로 학습한다:</p>
+        <h2>학습 데이터는 일부러 가짜로</h2>
+        <p>예제 저장소라 사용자가 없고, 그러니 학습에 쓸 사기 심사 이력도 없다. 그래서 native 구현체는 생성될 때 한 번 스스로 학습한다. 시드를 고정한 합성 데이터셋에, 일부러 단순하게 만든 정답 규칙을 붙였다.</p>
         <pre><code>{`private fun generateTrainingData(): List<TrainingExample> {
     val random = Random(TRAINING_SEED)
     return (0 until TRAINING_EXAMPLE_COUNT).map {
@@ -172,7 +172,7 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
         TrainingExample(/* ... */ label = label)
     }
 }`}</code></pre>
-        <p>평범한 배치 경사하강법, 가중치 네 개와 bias 하나, ML 라이브러리는 없다:</p>
+        <p>학습은 평범한 배치 경사하강법이다. 가중치 4개에 bias 하나이고, ML 라이브러리는 쓰지 않았다.</p>
         <pre><code>{`private fun trainLogisticRegression(examples: List<TrainingExample>): LogisticModel {
     val weights = DoubleArray(FEATURE_COUNT)
     var bias = 0.0
@@ -192,9 +192,9 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
     }
     return LogisticModel(weights, bias)
 }`}</code></pre>
-        <p>여기서 고정된 랜덤 시드가 중요하다: 생성되는 데이터셋과 거기서 학습되는 가중치는 실행할 때마다 동일하다. 이건 명시적으로 대역(stand-in)일 뿐이며, 중요한 건 모델의 실제 예측 성능이 아니라 인터페이스 그 자체다.</p>
-        <h2>다시 쓰지 않고, 설정으로 교체 가능하게</h2>
-        <p>LLM classifier에 이미 쓰인 것과 같은 native/HTTP 토글이 여기서도 등장한다 — 설정 프로퍼티 하나가 프로세스 내부 계산과 공유 <code>services/fraud-risk-scorer</code> 마이크로서비스 호출 중 하나를 고른다:</p>
+        <p>랜덤 시드를 고정해 둔 게 중요하다. 그래야 생성되는 데이터셋도, 거기서 나오는 가중치도 매번 같다. 이 모델은 대역이라고 분명히 해 두었다. 보여 주려는 건 예측 성능보다 인터페이스다.</p>
+        <h2>코드를 고치지 않고 설정으로 바꾼다</h2>
+        <p>LLM classifier에 쓴 native/HTTP 토글을 여기서도 그대로 쓴다. 설정 프로퍼티 하나로 프로세스 안에서 계산할지, 공용 <code>services/fraud-risk-scorer</code> 마이크로서비스를 부를지 고른다.</p>
         <pre><code>{`@ConfigurationProperties(prefix = "fraud-scorer")
 data class FraudScorerProperties(
     val mode: String = "native",
@@ -202,7 +202,7 @@ data class FraudScorerProperties(
 ) {
     val isHttpMode: Boolean get() = mode == "http"
 }`}</code></pre>
-        <p>HTTP 구현체는 fail open이다 — 네트워크 오류, 2xx가 아닌 응답, 형식이 잘못된 응답이 오면 환불을 막는 대신 점수 <code>0.0</code>을 반환한다:</p>
+        <p>HTTP 구현체는 fail open으로 동작한다. 네트워크 오류가 나거나, 응답이 2xx가 아니거나, 응답 형식이 깨져 있으면 환불을 막지 않고 점수 <code>0.0</code>을 돌려준다.</p>
         <pre><code>{`override fun score(features: RefundRiskFeatures): Double =
     try {
         val response = httpClient.send(buildRequest(features), HttpResponse.BodyHandlers.ofString())
@@ -212,8 +212,8 @@ data class FraudScorerProperties(
         // never block a refund request. Swallow it here at the boundary and fall back.
         FALLBACK_SCORE
     }`}</code></pre>
-        <h2>두 개의 임계값, 하나의 결정</h2>
-        <p><code>RefundEligibilityService</code>는 두 신호를 서로 독립적인 값으로 받아들이며, 각각 자기만의 임계값을 가지고, 어느 Technical Service도 다른 하나의 존재를 알지 못한다:</p>
+        <h2>임계값은 둘, 결정은 한 곳에서</h2>
+        <p><code>RefundEligibilityService</code>는 두 신호를 따로따로 받고, 신호마다 임계값도 따로 둔다. 두 Technical Service는 서로가 있는지도 모른다.</p>
         <pre><code>{`companion object {
     private const val FRAUD_RISK_REJECTION_THRESHOLD = 0.7      // from RefundReasonClassifier (LLM)
     private const val ML_FRAUD_RISK_REJECTION_THRESHOLD = 0.8   // from RefundFraudRiskScorer (history model)
@@ -226,13 +226,13 @@ fun evaluate(payment: Payment, refund: Refund, classification: RefundReasonClass
     }
     return RefundDecision(approved = true)
 }`}</code></pre>
-        <p>이 두 숫자가 만나는 유일한 곳이 Domain Service이며, 그 둘이 무엇을 의미하는지 결정하는 곳도 여전히 여기뿐이다.</p>
-        <h2>테스트 소유자를 공유해서 생긴 버그</h2>
-        <p>공유 테스트 fixture를 쓰는 E2E 스위트에 이력 기반 scorer를 추가하자, 이 저장소의 다른 곳에서 실제로 결정론적인 실패가 발생했다 — 우연히 가끔 실패하는 flaky 테스트가 아니었다. Testcontainers Postgres 인스턴스에 대해 여러 테스트 메서드가 같은 owner ID를 재사용했고(테스트별 리셋이 없었다), 그 결과 나중 테스트들이 앞선 테스트들의 거절된 환불 이력을 그대로 물려받아 native 점수가 0.8 임계값을 넘겨버렸고, 정상적으로 유효한 환불을 고위험으로 잘못 분류했다.</p>
-        <p>이 문제에 부딪힌 두 포트는 서로 다른 두 가지 방식으로 고쳤는데, 하나의 공통 기법이었다고 뭉뚱그리기보다 정확히 이름을 붙일 가치가 있다. java-springboot 포트는 전체 E2E 스위트를 도달 불가능한 주소를 향한 HTTP 모드로 강제해서, 모든 테스트에서 점수가 결정론적으로 <code>0</code>으로 폴백되게 만들었다. nestjs 포트는 대신 스위트의 나머지 부분에는 native scoring을 그대로 살려두고, 영향을 받은 그 하나의 테스트에만 전용 owner ID를 부여했다 — 더 좁은 범위의 수정이지만, 근본 원인은 동일하다.</p>
-        <div className="article-note"><strong>Flaky가 아니라 결정론적</strong><p>이 차이는 짚고 넘어갈 가치가 있다: flaky 테스트는 테스트 대상 코드와 무관한 이유로 예측 불가능하게 실패한다. 이 실패는 매번, 같은 순서로, 같은 이유로 일어났다 — 앞선 테스트들에서 누적된 상태가 뒤따르는 테스트의 입력을 바꿔버린 것이다. 이건 "flaky 테스트"라는 옷을 입은 테스트 격리(test-isolation) 버그이며, retry-on-failure로 땜질하기 전에 격리 문제부터 다시 한번 살펴볼 가치가 있다.</p></div>
-        <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a> — Technical Service 패턴(이 예시는 이후 교체됐다, 위 정정 참고) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/0473a4140ecb3fc3446fbbc847ab9a136e984f43/implementations/kotlin-springboot/examples/src/main/kotlin/com/example/accountservice/payment/infrastructure/RefundFraudRiskScorerNativeImpl.kt" target="_blank" rel="noreferrer">RefundFraudRiskScorerNativeImpl.kt</a> — 제거 직전 마지막 커밋에 고정된, 존재했던 학습/스코어링 코드
+        <p>두 숫자가 만나는 곳은 Domain Service 하나뿐이다. 그 숫자가 무슨 뜻인지 정하는 곳도 여기뿐이다.</p>
+        <h2>테스트끼리 owner를 나눠 써서 생긴 버그</h2>
+        <p>fixture를 공유하는 E2E 스위트에 이력 기반 scorer를 넣자, 저장소의 엉뚱한 곳에서 테스트가 깨졌다. 가끔 깨지는 flaky 테스트가 아니었고, 매번 똑같이 깨졌다. 여러 테스트 메서드가 Testcontainers Postgres 하나에 같은 owner ID를 썼는데, 테스트마다 데이터를 비우지 않았다. 그래서 뒤에 도는 테스트가 앞 테스트에서 거절된 환불 이력을 물려받았다. native 점수가 0.8 임계값을 넘었고, 멀쩡한 환불이 고위험으로 분류됐다.</p>
+        <p>이 문제를 만난 언어별 구현은 2개였고, 고친 방법은 서로 달랐다. 같은 기법으로 고쳤다고 뭉뚱그리면 틀리니 따로 적는다. java-springboot는 E2E 스위트 전체를 HTTP 모드로 돌리고 주소를 닿지 않는 곳으로 박았다. 그러면 모든 테스트에서 점수가 늘 <code>0</code>으로 폴백된다. nestjs는 스위트의 나머지에서는 native 점수 계산을 그대로 두고, 문제가 난 테스트 하나에만 전용 owner ID를 줬다. 고친 범위는 더 좁지만 원인은 같다.</p>
+        <div className="article-note"><strong>flaky처럼 보여도 매번 깨진다</strong><p>둘은 구분해야 한다. flaky 테스트는 테스트하는 코드와 상관없는 이유로, 언제 깨질지 모르게 깨진다. 이번 실패는 매번 같은 순서로, 같은 이유로 났다. 앞 테스트들이 쌓아 둔 상태가 뒤 테스트의 입력을 바꾼 것이다. 겉모습만 flaky인 테스트 격리 버그다. 실패하면 다시 돌리는 설정으로 덮기 전에, 격리부터 의심해 보는 게 낫다.</p></div>
+        <div className="article-note"><strong>저장소에서 더 볼 것</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a>(Technical Service 패턴. 이 예시는 나중에 바뀌었다. 위 정정 참고) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/0473a4140ecb3fc3446fbbc847ab9a136e984f43/implementations/kotlin-springboot/examples/src/main/kotlin/com/example/accountservice/payment/infrastructure/RefundFraudRiskScorerNativeImpl.kt" target="_blank" rel="noreferrer">RefundFraudRiskScorerNativeImpl.kt</a>(지우기 직전 커밋에 고정한 학습·점수 계산 코드)
         </p></div>
       </>
     ),

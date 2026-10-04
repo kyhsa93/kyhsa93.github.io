@@ -93,7 +93,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: "RefundReasonClassifier's fraud-risk score was computed entirely from text the refund requester controlled. Removing it, the sibling ML scorer that went with it, and the one rule the removal left behind.",
-      ko: 'RefundReasonClassifier의 사기 위험 점수는 환불 요청자가 직접 통제하는 텍스트만으로 계산되었다. 그것과 함께 있던 자매 ML 스코어러를 제거하고, 이번 제거가 남긴 단 하나의 규칙까지.',
+      ko: 'RefundReasonClassifier의 사기 위험 점수는 환불을 요청한 사람이 마음대로 적을 수 있는 글만 보고 계산했다. 이 신호와 짝을 이루던 ML 스코어러까지 함께 걷어 낸 과정과, 걷어 내고 남은 규칙 하나를 적었다.',
     },
     date: '2026.07.26',
     tags: ['Security', 'LLM'],
@@ -187,11 +187,11 @@ export const posts: PostMeta[] = [
     slug: 'request-scoped-user-context',
     title: {
       en: 'Request-Scoped Context: Why req.user Is an Anti-Pattern',
-      ko: '요청 스코프 컨텍스트: req.user가 안티패턴인 이유',
+      ko: '요청 스코프 컨텍스트, req.user가 안티패턴인 이유',
     },
     summary: {
       en: 'An AsyncLocalStorage-based UserContextStore, and the Guard/Interceptor split it took to get there.',
-      ko: 'AsyncLocalStorage 기반 UserContextStore와, 거기에 도달하기 위해 필요했던 Guard/Interceptor 분리.',
+      ko: 'AsyncLocalStorage로 만든 UserContextStore, 그리고 거기까지 가려고 Guard와 Interceptor를 나눈 이야기.',
     },
     date: '2026.07.22',
     tags: ['Cross-cutting Concerns', 'Backend'],
@@ -247,7 +247,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'Why an error-message enum key has to equal its value, and the four-field error response shape.',
-      ko: '에러 메시지 enum의 key가 value와 같아야 하는 이유, 그리고 4개 필드로 구성된 에러 응답 형태.',
+      ko: '에러 메시지 enum의 key와 value를 같게 둬야 하는 이유와, 필드 4개로 된 에러 응답 모양을 정리했다.',
     },
     date: '2026.07.11',
     tags: ['API Design', 'Conventions'],
@@ -299,11 +299,11 @@ export const posts: PostMeta[] = [
     slug: 'same-architecture-five-languages',
     title: {
       en: 'Same Architecture, Five Languages',
-      ko: '같은 아키텍처, 다섯 개의 언어',
+      ko: '같은 아키텍처를 5개 언어로',
     },
     summary: {
       en: 'Comparing the same Repository/Query split as implemented independently in TypeScript, Go, Python, Java, and Kotlin.',
-      ko: 'TypeScript, Go, Python, Java, Kotlin에서 각각 독립적으로 구현한 동일한 Repository/Query 분리 비교.',
+      ko: '같은 Repository/Query 분리를 TypeScript, Go, Python, Java, Kotlin에서 따로 구현해 보고 나란히 비교했다.',
     },
     date: '2026.07.21',
     tags: ['Comparative', 'Architecture'],
@@ -359,7 +359,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'A security audit found /auth/sign-in accepted a userId and nothing else — how the same bug showed up in five languages, and the JDK retry bug a new 401 test uncovered along the way.',
-      ko: '보안 감사에서 /auth/sign-in이 userId만 받고 아무것도 검증하지 않는다는 사실이 드러났다 — 다섯 언어에서 같은 버그가 어떻게 다르게 나타났는지, 그리고 새로 만든 401 테스트가 드러낸 JDK 재시도 버그까지.',
+      ko: '보안 감사를 해 보니 /auth/sign-in은 userId 하나만 받고 아무것도 검증하지 않았다. 같은 버그가 5개 언어에서 각각 어떤 모양이었는지, 그리고 새로 쓴 401 테스트가 찾아낸 JDK 재시도 버그까지 적었다.',
     },
     date: '2026.07.16',
     tags: ['Security', 'Backend'],
@@ -369,11 +369,11 @@ export const posts: PostMeta[] = [
     slug: 'llm-technical-service',
     title: {
       en: 'Wiring an LLM Into a Domain Service',
-      ko: 'Domain Service에 LLM 연결하기',
+      ko: 'Domain Service에 LLM을 붙이되 판단은 넘기지 않는다',
     },
     summary: {
       en: 'RefundReasonClassifier reads a refund reason and hands back a signal — the Domain Service that actually decides never calls it, and swapping the LLM backend from Claude to self-hosted Ollama touched almost no test.',
-      ko: 'RefundReasonClassifier는 환불 사유를 읽고 신호를 돌려줄 뿐이다 — 실제 판단을 내리는 Domain Service는 그걸 호출조차 하지 않으며, Claude에서 자체 호스팅 Ollama로 LLM 백엔드를 바꿔도 테스트는 거의 건드릴 필요가 없었다.',
+      ko: 'RefundReasonClassifier는 환불 사유를 읽고 신호를 돌려줄 뿐이다. 판단을 내리는 Domain Service는 이 분류기를 부르지도 않는다. 그래서 LLM 백엔드를 Claude에서 자체 호스팅 Ollama로 바꿨을 때도 손볼 테스트가 거의 없었다.',
     },
     date: '2026.07.23',
     tags: ['LLM', 'Architecture'],
@@ -383,11 +383,11 @@ export const posts: PostMeta[] = [
     slug: 'refund-fraud-risk-scorer',
     title: {
       en: 'A Second Fraud Signal: Scoring History, Not Reading It',
-      ko: '두 번째 사기 신호: 이력을 읽는 게 아니라 점수 매기기',
+      ko: '두 번째 사기 신호는 이력을 숫자로 매긴다',
     },
     summary: {
       en: 'RefundFraudRiskScorer is a hand-rolled logistic regression trained on refund history, swappable between a native and an HTTP implementation, feeding the same Domain Service a second independent threshold.',
-      ko: 'RefundFraudRiskScorer는 환불 이력으로 직접 학습시킨 로지스틱 회귀 모델로, native/HTTP 구현을 자유롭게 전환할 수 있으며 같은 Domain Service에 독립적인 두 번째 임계값을 제공한다.',
+      ko: 'RefundFraudRiskScorer는 환불 이력으로 직접 학습시킨 로지스틱 회귀 모델이다. native 구현과 HTTP 구현을 바꿔 끼울 수 있고, 같은 Domain Service에 따로 움직이는 두 번째 임계값을 준다.',
     },
     date: '2026.07.23',
     tags: ['Machine Learning', 'Architecture'],
@@ -411,11 +411,11 @@ export const posts: PostMeta[] = [
     slug: 'prompt-injection-in-tool-output',
     title: {
       en: 'When the Tool Output Itself Tries to Manipulate the Agent',
-      ko: '툴 출력 자체가 에이전트를 조종하려 할 때',
+      ko: '도구 출력이 에이전트를 조종하려 할 때',
     },
     summary: {
-      en: "A shell command's output has, more than once, contained something shaped exactly like a real system message, instructing the agent to hide a change. The rule that matters: disregard it, and say so.",
-      ko: '셸 명령 출력 안에 실제 시스템 메시지처럼 위장한 내용이 변경사항을 숨기라고 지시한 적이 여러 번 있었다. 지켜야 할 규칙은 하나다: 따르지 말고, 그 사실을 알린다.',
+      en: "A shell command's output has, more than once, contained something shaped like a system message, instructing the agent to hide a change. The rule that matters: disregard it, and say so.",
+      ko: '셸 명령 출력에 시스템 메시지처럼 꾸민 내용이 섞여 들어와, 방금 한 변경을 숨기라고 지시한 적이 한 번이 아니다. 지킬 규칙은 하나다. 따르지 말고, 그런 게 있었다고 알린다.',
     },
     date: '2026.07.21',
     tags: ['AI Agents', 'Security'],

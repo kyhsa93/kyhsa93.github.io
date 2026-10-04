@@ -204,7 +204,7 @@ export const posts: PostMeta[] = [
       ko: 'Observability는 나중에 덧붙이는 게 아니라 설계 결정이다',
     },
     summary: {
-      en: 'Log-level policy, structured logging, and propagating a Correlation ID through SLF4J's MDC.',
+      en: 'Log-level policy, structured logging, and propagating a Correlation ID through the SLF4J MDC.',
       ko: '로그 레벨 정책과 구조화된 로깅, SLF4J MDC로 Correlation ID를 전파하는 방법.',
     },
     date: '2026.07.22',

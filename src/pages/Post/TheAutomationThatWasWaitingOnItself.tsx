@@ -14,7 +14,7 @@ const content = {
         The Automation<br /><em>That Was Waiting on Itself</em>
       </>
     ),
-    lede: "A Dependabot auto-merge workflow had been running for weeks, and every PR it ever merged had squeaked through, not because the workflow worked, but because a race condition happened to resolve in its favor every single time. The bug was structural: one of its own steps was waiting for a check run that could only ever finish after that same step did.",
+    lede: "A merge workflow that waits for every check to go green, while being one of those checks itself, can only ever succeed by accident. A Dependabot auto-merge workflow had been running for weeks, and every PR it ever merged had squeaked through, not because the workflow worked, but because a race condition happened to resolve in its favor every single time. The bug was structural: one of its own steps was waiting for a check run that could only ever finish after that same step did.",
     body: (
       <>
         <p>A backlog of dependency-update PRs had built up, and the auto-merge workflow meant to clear them looked, on paper, like it had been doing its job. Some PRs in its history had merged on their own. Digging into why the backlog existed at all turned up something worse than a workflow that occasionally failed. It was a workflow that had never once succeeded for the reason it was supposed to.</p>
@@ -34,7 +34,7 @@ const content = {
         <p>The test of whether any of this held up wasn't a green run watched live. It was noticing, later, in the middle of something unrelated, that one more routine dependency bump had opened, passed its checks, and merged itself, with nobody watching it happen at all.</p>
         <div className="article-note"><strong>The general shape of the bug</strong><p>Any workflow that gates a merge on "all checks are green" and is itself one of those checks has this failure waiting inside it. The deadlock only resolves by accident, via some outside timeout or unrelated event, never because the logic completes. Worth auditing for in any CI setup that self-approves or self-merges, not just Dependabot automation specifically.</p></div>
         <div className="article-note"><strong>Further reading</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/.github/workflows/dependabot-auto-merge.yml" target="_blank" rel="noreferrer">A worked example</a> of the corrected workflow — self-check excluded, no approve step
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/.github/workflows/dependabot-auto-merge.yml" target="_blank" rel="noreferrer">A worked example</a> of the corrected workflow (self-check excluded, no approve step), from backend-service-playbook, my example project that implements the same backend design in five languages side by side
         </p></div>
       </>
     ),
@@ -46,7 +46,7 @@ const content = {
         자기 자신을<br /><em>기다리고 있던 자동화</em>
       </>
     ),
-    lede: 'Dependabot auto-merge 워크플로가 몇 주째 돌고 있었다. 그동안 머지된 PR은 하나같이 겨우 빠져나간 것들이었다. 워크플로가 제대로 동작해서 머지된 게 아니고, 경쟁 조건이 매번 운 좋게 유리한 쪽으로 풀렸을 뿐이다. 버그는 구조에 있었다. 워크플로의 스텝 하나가, 그 스텝이 끝나야만 끝날 수 있는 체크를 기다리고 있었다.',
+    lede: '"체크가 전부 초록이 되면 머지"를 기다리는 워크플로가 그 체크 중 하나라면, 성공은 우연으로만 일어난다. Dependabot auto-merge 워크플로가 몇 주째 돌고 있었다. 그동안 머지된 PR은 하나같이 겨우 빠져나간 것들이었다. 워크플로가 제대로 동작해서 머지된 게 아니고, 경쟁 조건이 매번 운 좋게 유리한 쪽으로 풀렸을 뿐이다. 버그는 구조에 있었다. 워크플로의 스텝 하나가, 그 스텝이 끝나야만 끝날 수 있는 체크를 기다리고 있었다.',
     body: (
       <>
         <p>의존성 업데이트 PR이 잔뜩 쌓여 있었다. 이걸 치워야 할 auto-merge 워크플로는 겉으로는 제 할 일을 하는 듯 보였다. 이력을 보면 혼자 머지된 PR도 몇 개 있었다. 그런데 애초에 PR이 왜 쌓였는지 파고들어 보니, 가끔 실패하는 워크플로보다 더 나쁜 게 나왔다. 원래 의도한 방식으로는 한 번도 성공한 적이 없는 워크플로였다.</p>
@@ -67,7 +67,7 @@ const content = {
         <p>제대로 고쳐졌는지 확인한 건 실시간으로 지켜본 초록불이 아니었다. 한참 뒤 전혀 다른 작업을 하다가, 평범한 의존성 업데이트 하나가 열리고 체크를 통과하고 아무도 보지 않는 사이에 혼자 머지된 걸 발견했을 때였다.</p>
         <div className="article-note"><strong>이 버그의 일반적인 모양</strong><p>"체크가 전부 초록이면 머지"를 조건으로 거는 워크플로가 그 체크 목록에 자기 자신도 들어 있다면, 어디서든 이 실패가 숨어 있다. 이런 데드락은 로직이 끝나서 풀리는 일이 없다. 외부 타임아웃이나 상관없는 이벤트 덕분에 우연히 풀릴 뿐이다. Dependabot 자동화만이 아니고, 스스로 승인하거나 머지하는 CI 설정이라면 한 번쯤 점검해 볼 만하다.</p></div>
         <div className="article-note"><strong>더 볼 자료</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/.github/workflows/dependabot-auto-merge.yml" target="_blank" rel="noreferrer">고친 워크플로 예시</a>(자기 자신의 체크는 빼고, 승인 스텝은 없앴다)
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/.github/workflows/dependabot-auto-merge.yml" target="_blank" rel="noreferrer">고친 워크플로 예시</a>(같은 백엔드 설계를 5개 언어로 나란히 구현해 둔 내 예제 프로젝트 backend-service-playbook의 워크플로. 자기 자신의 체크는 빼고, 승인 스텝은 없앴다)
         </p></div>
       </>
     ),

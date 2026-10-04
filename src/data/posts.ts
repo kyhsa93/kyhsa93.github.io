@@ -382,12 +382,12 @@ export const posts: PostMeta[] = [
   {
     slug: 'refund-fraud-risk-scorer',
     title: {
-      en: 'A Second Fraud Signal: Scoring History, Not Reading It',
-      ko: '두 번째 사기 신호는 이력을 숫자로 매긴다',
+      en: "An ML Score With Nothing to Train On: Plug It In, Don't Let It Decide",
+      ko: '학습할 데이터가 없는 ML 점수는 끼워 넣되 결정은 맡기지 않는다',
     },
     summary: {
-      en: 'RefundFraudRiskScorer is a hand-rolled logistic regression trained on refund history, swappable between a native and an HTTP implementation, feeding the same Domain Service a second independent threshold.',
-      ko: 'RefundFraudRiskScorer는 환불 이력으로 직접 학습시킨 로지스틱 회귀 모델이다. native 구현과 HTTP 구현을 바꿔 끼울 수 있고, 같은 Domain Service에 따로 움직이는 두 번째 임계값을 준다.',
+      en: 'How to put a machine-learning risk score next to a rule-based refund decision with no real data to train on: an interface, a config switch, fail-open on errors, and a Domain Service that keeps the decision. Walked through with a hand-rolled logistic regression on refund history that has since been removed.',
+      ko: '학습할 실제 데이터 없이 ML 위험 점수를 규칙 기반 환불 판정 옆에 붙이는 법이다. 인터페이스 뒤에 두고, 설정으로 바꾸고, 오류가 나면 통과시키고, 결정은 Domain Service에 남긴다. 환불 이력으로 직접 학습시킨 로지스틱 회귀 예시로 설명한다. 이 코드는 지금은 지웠다.',
     },
     date: '2026.07.23',
     tags: ['Machine Learning', 'Architecture'],

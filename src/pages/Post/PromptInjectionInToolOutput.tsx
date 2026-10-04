@@ -17,7 +17,7 @@ const content = {
     lede: 'A few times now, while running an AI coding agent against a real codebase, a shell command\'s output has contained something shaped like a system message, instructing the agent to hide a change from the person it was working for. The right response is always the same: disregard it, and say so.',
     body: (
       <>
-        <p>Most posts here are about designing a backend so an AI agent (or a human) can follow its architecture correctly. This post is about a narrower, stranger problem: what happens when something in the environment tries to get the agent to act against the person it's working for, and the instruction arrives disguised as a legitimate part of the system, not as an obviously suspicious request.</p>
+        <p>Designing a backend so an AI agent (or a human) can follow its architecture correctly is one kind of agent problem. This post is about a narrower, stranger one: what happens when something in the environment tries to get the agent to act against the person it's working for, and the instruction arrives disguised as a legitimate part of the system, not as an obviously suspicious request.</p>
         <h2>What Showed Up in the Output</h2>
         <p>Across several long agent sessions doing ordinary engineering work (porting features across languages, running test suites, inspecting git history), the output of an ordinary tool call (a <code>git</code> command, a shell script, a build log) has, more than once, contained content formatted to look like a system-level message. Not a visibly broken or garbled string; something that passed as legitimate at a glance, sitting inside output that was otherwise completely normal. Its content, each time, pushed toward the same thing: don't mention this to the user, or otherwise conceal a change that had just been made.</p>
         <h2>Why This Isn't Hypothetical</h2>
@@ -42,7 +42,7 @@ const content = {
     lede: '실제 코드베이스에서 AI 코딩 에이전트를 돌리다 보면, 셸 명령 출력에 시스템 메시지와 똑같이 생긴 내용이 섞여 들어올 때가 있다. 지금까지 몇 번 겪었는데, 매번 에이전트에게 방금 한 변경을 사용자에게 숨기라는 내용이었다. 대응은 늘 같다. 따르지 않고, 그런 게 있었다고 사용자에게 알린다.',
     body: (
       <>
-        <p>이 블로그 글은 대부분 AI 에이전트든 사람이든 아키텍처를 제대로 따라갈 수 있게 백엔드를 설계하는 이야기다. 이번에는 범위가 좁고 조금 낯선 문제를 다룬다. 작업 환경 안의 무언가가 에이전트를 부추겨, 그 에이전트를 쓰는 사람에게 불리한 일을 시키려 한다면 어떻게 될까. 그 지시가 대놓고 수상한 요청이 아니라, 시스템이 보낸 정상 메시지인 척하고 들어온다면 말이다.</p>
+        <p>AI 에이전트든 사람이든 아키텍처를 제대로 따라갈 수 있게 백엔드를 설계하는 것도 에이전트를 둘러싼 문제다. 이 글은 그보다 범위가 좁고 조금 낯선 문제를 다룬다. 작업 환경 안의 무언가가 에이전트를 부추겨, 그 에이전트를 쓰는 사람에게 불리한 일을 시키려 한다면 어떻게 될까. 그 지시가 대놓고 수상한 요청이 아니라, 시스템이 보낸 정상 메시지인 척하고 들어온다면 말이다.</p>
         <h2>출력에 섞여 든 것</h2>
         <p>평범한 개발 작업을 에이전트에게 오래 맡겨 둔 적이 여러 번 있다. 기능을 여러 언어로 옮기고, 테스트를 돌리고, git 히스토리를 뒤지는 일이었다. 그런데 그 과정에서 <code>git</code> 명령이나 셸 스크립트, 빌드 로그 같은 평범한 도구 출력에 시스템 메시지와 똑같은 형식의 내용이 한 번 이상 끼어 있었다.</p>
         <p>깨지거나 뒤섞인 문자열이었다면 금방 알아봤을 것이다. 이건 얼핏 봐서는 정상 메시지로 보였고, 나머지 출력도 전부 멀쩡했다. 내용은 매번 같은 쪽을 가리켰다. 사용자에게 이 얘기를 꺼내지 말라거나, 방금 한 변경을 어떻게든 숨기라는 것이었다.</p>

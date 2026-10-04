@@ -28,7 +28,7 @@ const content = {
         <p>A drift check that cries wolf on every fresh apply doesn't get ignored gently. It gets disabled, or worse, everyone learns to skim past its output because it's never clean. The entire value of a drift signal depends on silence meaning something: no output means nothing has diverged. A checker that can't tell "the platform did this automatically, as designed" from "someone changed this by hand, out-of-band, in a way Git doesn't know about" can't produce that silence, no matter how correct its comparison logic is otherwise.</p>
         <div className="article-note"><strong>The general shape of the problem</strong><p>Any tool that compares a declared source of truth against a live, running system (infra drift detectors, config-as-code plan/apply diffing, database schema comparisons against a migrations history) has to account for the runtime's own defaulting behavior, or every correct, unmodified deployment will register as diverged. That allowlist isn't a one-time task either. Which fields get auto-populated is a function of the platform's admission controllers and their versions, which means the list is something to re-verify against real behavior periodically, not something to write once and trust forever.</p></div>
         <div className="article-note"><strong>Further reading</strong><p>
-          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a> (where the drift check lives, validated against a real disposable cluster rather than hand-written before/after fixtures)
+          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a> (my example project that catalogs common Kubernetes deployment mistakes, each with a checker that finds it in a manifest; the drift check lives here, validated against a real disposable cluster rather than hand-written before/after fixtures)
         </p></div>
       </>
     ),
@@ -54,8 +54,8 @@ const content = {
         <h2>왜 제대로 해야 하나</h2>
         <p>깔끔하게 적용할 때마다 양치기 소년처럼 drift를 외치는 검사는 슬그머니 무시되는 정도로 끝나지 않는다. 결국 꺼진다. 더 나쁘면 한 번도 깨끗했던 적이 없으니 다들 출력을 대충 넘기는 버릇이 든다. drift 신호의 가치는 조용함에 뜻이 있다는 데서 나온다. 출력이 없으면 정말로 아무것도 어긋나지 않았다는 뜻이어야 한다. "플랫폼이 설계대로 알아서 한 것"과 "누군가 Git 모르게 손으로 바꾼 것"을 구별하지 못하면, 비교 로직이 다른 면에서 아무리 정확해도 그런 조용함을 만들 수 없다.</p>
         <div className="article-note"><strong>같은 문제는 어디에나 있다</strong><p>선언해 둔 기준을 실제로 돌고 있는 시스템과 비교하는 도구라면 다 마찬가지다. 인프라 drift 감지기, config-as-code의 plan/apply diff, 마이그레이션 이력과 데이터베이스 스키마를 비교하는 도구가 모두 그렇다. 런타임이 알아서 채우는 기본값을 고려하지 않으면, 손대지 않은 정상 배포가 매번 어긋났다고 나온다. 허용 목록도 한 번 만들고 끝낼 일이 아니다. 어떤 필드가 자동으로 채워지는지는 플랫폼의 admission 컨트롤러와 그 버전에 따라 달라진다. 한 번 써 두고 계속 믿기보다는, 실제 동작에 비춰 주기적으로 다시 확인하는 게 낫다.</p></div>
-        <div className="article-note"><strong>더 읽을거리</strong><p>
-          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a>(손으로 쓴 전후 픽스처 대신 쓰고 버리는 실제 클러스터로 검증한 drift 검사 코드)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a>(Kubernetes 배포 실수를 유형별로 모으고, 매니페스트에서 그 실수를 찾아내는 검사기를 붙여 둔 내 예제 프로젝트. 손으로 쓴 전후 픽스처 대신 쓰고 버리는 실제 클러스터로 검증한 drift 검사 코드가 있다)
         </p></div>
       </>
     ),

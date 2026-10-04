@@ -30,7 +30,7 @@ const content = {
         <h2>The General Rule</h2>
         <p>Any check that verifies membership in a hierarchy has to include the structure's root in its input, not just the leaf under review. That goes beyond GitOps app trees to ownership graphs, dependency graphs, org-chart-shaped permission audits, anything where "is this legitimately part of a structure" is the question. A query scoped to "only what I own" or "only the thing I'm checking" can look complete and still be structurally unable to answer the question it was asked, because the proof it needs was never in scope to begin with.</p>
         <div className="article-note"><strong>Further reading</strong><p>
-          <a href="https://github.com/kyhsa93/k8s-playbook/blob/main/README.md" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a> — both live-controller validations, Argo CD and Flux, and the fixtures that reproduce each failure on purpose
+          <a href="https://github.com/kyhsa93/k8s-playbook/blob/main/README.md" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a> (my example project that catalogs common Kubernetes deployment mistakes, each with a checker that finds it in a manifest; both live-controller validations, Argo CD and Flux, and the fixtures that reproduce each failure on purpose)
         </p></div>
       </>
     ),
@@ -58,8 +58,8 @@ const content = {
         <p>도구도 다르고 트리를 표현하는 구조도 다른데, 루트를 빼면 안 된다는 단서는 양쪽에서 똑같이 성립했다. 원리가 비슷해서 그런 게 아니다. "이 객체가 트리에 속한다는 걸 증명하라"는 질문에 답하려면, 질문받는 객체 말고 적어도 하나의 객체가 바깥에서 더 필요하기 때문이다.</p>
         <h2>일반 규칙</h2>
         <p>계층 안의 소속을 확인하는 검사라면 검토할 리프만이 아니라 구조의 루트까지 입력에 넣어야 한다. GitOps 앱 트리만의 얘기가 아니다. 소유권 그래프, 의존성 그래프, 조직도 모양의 권한 감사처럼 "이게 정말 구조의 일부인가"를 묻는 곳이면 어디든 마찬가지다. "내가 소유한 것만"이나 "지금 검사하는 것만"으로 좁힌 쿼리는 빠짐없어 보여도, 필요한 증거가 처음부터 범위 밖에 있어서 구조상 질문에 답하지 못할 수 있다.</p>
-        <div className="article-note"><strong>더 읽을거리</strong><p>
-          <a href="https://github.com/kyhsa93/k8s-playbook/blob/main/README.md" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a>(Argo CD와 Flux 라이브 컨트롤러 검증 기록, 그리고 각 실패를 일부러 재현하는 픽스처)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/k8s-playbook/blob/main/README.md" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a>(Kubernetes 배포 실수를 유형별로 모으고, 매니페스트에서 그 실수를 찾아내는 검사기를 붙여 둔 내 예제 프로젝트. Argo CD와 Flux 라이브 컨트롤러 검증 기록과, 각 실패를 일부러 재현하는 픽스처가 있다)
         </p></div>
       </>
     ),

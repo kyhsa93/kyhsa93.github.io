@@ -94,8 +94,8 @@ if not order:
         <p>Keeping a separate <code>find_one</code> would duplicate the dynamic filter-condition logic between two methods; unifying it into one path keeps there being one place to add a new optional filter later.</p>
         <h2>Documenting the Contract This Implies</h2>
         <p>Every non-2xx status a handler can return should be declared in the API documentation, cross-checked against that handler's own error-mapping table, along with the success response. This is the most common way API docs rot: the docs UI renders, the endpoint appears "documented," but nothing tells a client what a 404 or 409 from that specific endpoint looks like, because only the happy path was ever written down.</p>
-        <div className="article-note"><strong>Further reading in the repo</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/error-handling.md" target="_blank" rel="noreferrer">docs/architecture/error-handling.md</a> — the full error-message/error-code enum pattern · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/api-response.md" target="_blank" rel="noreferrer">docs/architecture/api-response.md</a> — pagination, response shape, and the OpenAPI completeness bar
+        <div className="article-note"><strong>Further reading</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/error-handling.md" target="_blank" rel="noreferrer">docs/architecture/error-handling.md</a> (the full error-message/error-code enum pattern, in my example project that implements the same backend design in five languages side by side) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/api-response.md" target="_blank" rel="noreferrer">docs/architecture/api-response.md</a> (pagination, response shape, and the OpenAPI completeness bar)
         </p></div>
       </>
     ),
@@ -188,8 +188,8 @@ if not order:
         <p><code>find_one</code>을 따로 두면 동적 필터 조건을 만드는 로직이 두 메서드에 똑같이 들어간다. 하나로 합쳐 두면 나중에 선택 필터를 추가할 곳도 한 군데뿐이다.</p>
         <h2>에러 응답도 문서에 적는다</h2>
         <p>API 문서에는 성공 응답만이 아니라 핸들러가 돌려줄 수 있는 non-2xx 상태도 모두 적어야 하고, 그 목록을 핸들러의 에러 매핑 테이블과 맞춰 봐야 한다. API 문서가 낡는 가장 흔한 경로가 여기다. 문서 UI는 잘 뜨고 엔드포인트도 문서화된 것처럼 보인다. 그런데 그 엔드포인트의 404나 409가 어떻게 생겼는지는 어디에도 없다. 처음부터 happy path만 적었기 때문이다.</p>
-        <div className="article-note"><strong>저장소에서 더 볼 것</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/error-handling.md" target="_blank" rel="noreferrer">docs/architecture/error-handling.md</a>(에러 메시지·에러 코드 enum 패턴 전체) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/api-response.md" target="_blank" rel="noreferrer">docs/architecture/api-response.md</a>(페이지네이션, 응답 모양, OpenAPI 문서를 어디까지 채울지)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/error-handling.md" target="_blank" rel="noreferrer">docs/architecture/error-handling.md</a>(같은 백엔드 설계를 5개 언어로 나란히 구현해 둔 내 예제 프로젝트의 에러 메시지·에러 코드 enum 패턴 전체) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/api-response.md" target="_blank" rel="noreferrer">docs/architecture/api-response.md</a>(페이지네이션, 응답 모양, OpenAPI 문서를 어디까지 채울지)
         </p></div>
       </>
     ),

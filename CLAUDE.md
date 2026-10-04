@@ -6,6 +6,8 @@ Guidance for AI agents (and future me) editing this repo.
 
 This site runs Google AdSense. It was once flagged **"approved, but attention needed due to low-value content."** The investigation that followed found two root causes — neither was thin content in the word-count sense. Read this before adding or editing content.
 
+**AdSense reviews the whole domain, not this blog alone.** `kyhsa93.github.io` is a GitHub Pages user site, so every project published under it (`/jipgye/`, `/fove/`, `/abyss/`, …) belongs to the same review — a subdirectory cannot be registered as a separate site. A templated or thin page in any sub-site counts against the blog too. The flag came back on 2026-09-01 without any blog post changing: of roughly 280 indexable pages only 46 were written posts, and `/fove/` alone contributed 116 generated pages. Before any re-application, count indexable pages and measure duplication (8-gram shingles) for every sub-site, not only this repo.
+
 ### What actually caused the flag
 
 1. **The site read as a narrow, self-referential archive.** Nearly all posts linked back to one personal side project (`backend-service-playbook`), and the homepage's only featured-work section was a single hero card for that same repo. A site that's "about" one person's one side project, in a loop, reads as low-value even when individual posts are well-written.

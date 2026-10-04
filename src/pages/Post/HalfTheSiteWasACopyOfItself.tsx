@@ -60,7 +60,7 @@ const content = {
         <p>Eighty pages, one per birth year, each around 750 characters. Each had a distinct title, a distinct URL, and a distinct heading. Four body sections carried the prose.</p>
         <p>All four were keyed on the same single field, a five-value classification derived from the year, and read their text straight out of a five-entry dictionary. The pages for two consecutive years were <em>identical</em> below the heading, character for character, because both years mapped to the same class.</p>
         <p>Eighty pages. Five distinct bodies. Nothing in the code looked wrong; each function did what its name said. The defect only exists at the level of the whole set, and no test that looks at one page can see it.</p>
-        <p>The general form: <strong>a generated page is as distinct as its narrowest input, not its widest one.</strong> If the URL varies over 80 values and the prose varies over 5, you have 5 pages wearing 80 URLs. Count the distinct outputs, not the distinct inputs.</p>
+        <p>Put generally, <strong>a generated page is as distinct as its narrowest input, not its widest one.</strong> If the URL varies over 80 values and the prose varies over 5, you have 5 pages wearing 80 URLs. Count the distinct outputs, not the distinct inputs.</p>
 
         <h2>Shape Two: The Hub That Renders Its Own Child</h2>
         <p>A comparison page with four product tabs. The tab contents are prerendered into four separate landing pages, one per product, so each is indexable on its own terms. Sensible design.</p>
@@ -78,7 +78,7 @@ const content = {
         <div className="article-note"><strong>Set the thresholds before you look at the results</strong><p>The temptation is to tune a threshold until a particular page qualifies. That is fitting the rule to the answer, and it produces observations that are technically true and practically meaningless. Pick thresholds that already mean something outside your dataset: a regulatory line, a standard size class, a bootstrap interval computed from resampling your own population — and then accept whatever they select. If a page crosses nothing, saying "nothing here stands out" is a real finding and reads as one.</p></div>
 
         <h2>The Number to Watch</h2>
-        <p>Site-wide, that first run came back at 51.7% — slightly under half of all shingles appeared on more than one page. The per-page ranking mattered more than the total: three pages came in under 3% unique, and those three turned out to be shapes one and two, which nobody would have found by reading.</p>
+        <p>Site-wide, that first run came back at 51.7% unique, which means slightly under half of all shingles appeared on more than one page. The per-page ranking mattered more than the total: three pages came in under 3% unique, and those three turned out to be shapes one and two, which nobody would have found by reading.</p>
         <p>Run it on your own site before you assume the answer. It takes about a minute, it needs nothing but the built HTML, and the pages at the top of that sorted list are almost never the ones you would have guessed.</p>
       </>
     ),
@@ -93,7 +93,7 @@ const content = {
     lede: '모든 페이지가 분량 검사를 통과했다. 제목도 URL도 다 달랐고, 다른 데 없는 숫자도 하나씩 갖고 있었다. 그런데 사이트 전체 텍스트의 절반에 조금 못 미치는 양이 두 장 이상의 페이지에 똑같이 들어 있었다. 이걸 찾아낸 15줄짜리 측정 방법과, 아무도 그러자고 정한 적이 없는데 페이지가 옆 페이지를 베끼게 되는 세 가지 경우를 정리했다. 세 경우는 구조가 서로 다르다.',
     body: (
       <>
-        <p>내 사이트 안의 중복은 읽어서는 잘 안 보인다. 두 페이지를 열어 보면 제목도 숫자도 탭 이름도 다르다. 그래서 다르다고 여기고 넘어간다. 눈은 바뀌는 부분끼리 비교할 뿐, 안 바뀌는 부분이 얼마나 되는지는 더해 보지 않는다.</p>
+        <p>자기 사이트 안의 중복은 읽어서는 잘 안 보인다. 두 페이지를 열어 보면 제목도 숫자도 탭 이름도 다르다. 그래서 다르다고 여기고 넘어간다. 눈은 바뀌는 부분끼리 비교할 뿐, 안 바뀌는 부분이 얼마나 되는지는 더해 보지 않는다.</p>
         <p>그러니 재 봐야 한다. "이 두 페이지가 비슷한가"를 묻는 것보다 <strong>이 페이지 텍스트 중 이 페이지에만 있는 게 몇 %인가</strong>를 묻는 게 낫다. 계산도 싸고, 사이트 전체를 한 번에 줄 세울 수 있다.</p>
 
         <h2>측정 방법</h2>
@@ -124,8 +124,8 @@ const content = {
         <div className="article-note"><strong>문턱은 결과를 보기 전에 정할 것</strong><p>특정 페이지가 걸리도록 문턱을 만지고 싶어진다. 그러면 답에 맞춰 규칙을 만드는 셈이고, 말로는 맞지만 아무 의미 없는 관찰이 나온다. 데이터 바깥에서 이미 의미가 정해진 값을 고르는 게 좋다. 규제선, 표준 규격 구간, 자기 모집단을 재표본추출해 구한 부트스트랩 구간 같은 것들이다. 그리고 그 값이 골라내는 결과를 그대로 받아들인다. 아무것도 넘지 못한 페이지라면 "여기엔 눈에 띄는 게 없다"고 적는 것도 엄연한 발견이고, 읽는 사람에게도 그렇게 읽힌다.</p></div>
 
         <h2>지켜볼 숫자</h2>
-        <p>처음 돌렸을 때 사이트 전체 값은 51.7%였다. 두 장 이상의 페이지에 나타난 shingle이 전체의 절반에 조금 못 미쳤다. 총계보다 페이지별 순위가 더 쓸모 있었다. 고유 비율이 3%가 안 되는 페이지가 3장 나왔는데, 그 셋이 첫 번째와 두 번째 모양이었다. 읽어서는 아무도 찾지 못했을 페이지들이다.</p>
-        <p>답을 짐작하기 전에 자기 사이트에 한번 돌려 보면 좋겠다. 1분쯤이면 되고, 빌드된 HTML만 있으면 된다. 그리고 정렬된 목록 맨 위에 오는 페이지는 짐작했던 페이지가 아닌 경우가 거의 대부분이다.</p>
+        <p>처음 돌렸을 때 사이트 전체의 고유 비율은 51.7%였다. 거꾸로 말하면 두 장 이상의 페이지에 나타난 shingle이 전체의 절반에 조금 못 미쳤다. 총계보다 페이지별 순위가 더 쓸모 있었다. 고유 비율이 3%가 안 되는 페이지가 3장 나왔는데, 그 셋이 첫 번째와 두 번째 모양이었다. 읽어서는 아무도 찾지 못했을 페이지들이다.</p>
+        <p>답을 짐작하기 전에 자기 사이트에 한번 돌려 보면 좋겠다. 1분쯤이면 되고, 빌드된 HTML만 있으면 된다. 그리고 정렬된 목록 맨 위에 오는 페이지는 짐작했던 페이지인 경우가 거의 없다.</p>
       </>
     ),
   },

@@ -284,12 +284,12 @@ export const posts: PostMeta[] = [
   {
     slug: 'from-docs-to-runnable-code',
     title: {
-      en: 'From Docs to Runnable Code in One Command',
-      ko: '문서에서 명령 한 번으로 돌아가는 코드까지',
+      en: 'A Code Generator Is a Second Copy of Every Rule',
+      ko: '코드 생성기는 모든 규칙의 두 번째 구현이었다',
     },
     summary: {
-      en: 'Turning a written reference template into a scaffolding generator, and the bugs found by actually running it.',
-      ko: '글로 된 참조 템플릿을 스캐폴딩 생성기로 바꿨다. 그리고 직접 돌려 보면서 버그를 찾았다.',
+      en: "A scaffolding generator is a second implementation of every convention it emits. When a rule changes and only the hand-written example is updated, the generator keeps emitting the old pattern. Generating a brand-new domain from just a name and running every automated check against it is what catches the drift, and the generator's own bugs.",
+      ko: '스캐폴딩 생성기는 자기가 찍어 내는 모든 컨벤션의 두 번째 구현이다. 규칙이 바뀌었는데 손으로 쓴 예시만 고치면 생성기는 옛 패턴을 계속 만든다. 이름 하나로 새 도메인을 만들어 자동 검사를 전부 돌려 봐야 그 어긋남과 생성기 자체의 버그가 드러난다.',
     },
     date: '2026.07.17',
     tags: ['Tooling', 'Developer Experience'],
@@ -438,12 +438,12 @@ export const posts: PostMeta[] = [
   {
     slug: 'the-harness-had-never-met-a-second-domain',
     title: {
-      en: 'The Harness Had Never Met a Second Domain',
-      ko: '하네스는 두 번째 도메인을 만나본 적이 없었다',
+      en: 'A Rule That Has Only Seen Two Inputs',
+      ko: '두 입력만 본 검사 규칙은 범용인지 알 수 없었다',
     },
     summary: {
-      en: 'Two harness rules had checked out clean for months, because every domain that ever fed them was Account or Card. Building a genuinely unrelated third domain surfaced two false positives, and confirmed the rule meant to catch a real mistake still did.',
-      ko: '하네스 규칙 2개가 몇 달째 깨끗했던 건, 그동안 들어온 도메인이 Account와 Card뿐이었기 때문이다. 전혀 상관없는 세 번째 도메인을 만들어 보니 오탐 2건이 드러났다. 진짜 실수를 잡아야 하는 규칙은 여전히 그걸 잡는다는 것도 확인했다.',
+      en: 'A lint rule that only ever passed on the inputs it was written against has not been shown to be generic. Two architecture rules had checked out clean for months on the same two domains. A deliberately unrelated third domain surfaced two false positives, and confirmed the rule meant to catch a real mistake still did.',
+      ko: '검사 규칙이 받아 본 입력에서만 깨끗했다면 범용이라고 말할 수 없다. 아키텍처 규칙 2개가 몇 달째 깨끗했는데, 그동안 받아 본 도메인은 늘 같은 두 개였다. 전혀 상관없는 세 번째 도메인을 만들어 보니 오탐 2건이 드러났다. 진짜 실수를 잡아야 하는 규칙은 여전히 그걸 잡는다는 것도 확인했다.',
     },
     date: '2026.07.17',
     tags: ['Tooling', 'Testing'],

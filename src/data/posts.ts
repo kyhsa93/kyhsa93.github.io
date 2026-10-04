@@ -41,7 +41,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'Every page passed a word-count check and had a distinct title, URL, and numbers. Slightly under half of all text on the site still existed on more than one page. The fifteen-line measurement that found it, and three structurally different ways a page duplicates its neighbour without anyone deciding it should.',
-      ko: '모든 페이지가 분량 검사를 통과했고 제목도 URL도 숫자도 달랐다. 그런데도 사이트 전체 텍스트의 절반 가까이가 한 장 이상에 존재했다. 그걸 찾아낸 열다섯 줄짜리 측정과, 아무도 그러기로 정한 적 없는데 페이지가 옆 페이지를 베끼게 되는 세 가지 방식.',
+      ko: '모든 페이지가 분량 검사를 통과했고 제목도 URL도 숫자도 달랐다. 그런데도 사이트 전체 텍스트의 절반에 조금 못 미치는 양이 두 장 이상의 페이지에 똑같이 들어 있었다. 이걸 찾아낸 15줄짜리 측정 방법과, 아무도 정한 적 없는데 페이지가 옆 페이지를 베끼게 되는 세 가지 경우를 정리했다.',
     },
     date: '2026.09.01',
     tags: ['Content', 'Auditing'],
@@ -49,11 +49,11 @@ export const posts: PostMeta[] = [
     discrepancy: {
       looked: {
         en: 'Eighty pages, each with its own title, URL and heading.',
-        ko: '여든 장. 제목도 URL도 머리글도 다 달랐다.',
+        ko: '페이지 80장은 제목도 URL도 머리글도 저마다 달랐다.',
       },
       was: {
         en: 'Five distinct bodies, because every section keyed on the same five-value field.',
-        ko: '본문 다섯 종. 모든 절이 같은 다섯 갈래 필드 하나를 키로 쓰고 있었다.',
+        ko: '본문은 5가지뿐이었다. 모든 절이 값이 5가지뿐인 같은 필드를 키로 쓰고 있었다.',
       },
     },
   },
@@ -79,7 +79,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'A monthly statement and a GDPR-style data export both died to the same question: couldn\'t the client just build this itself? The spending-analysis ETL that survived it, and the rule it revealed.',
-      ko: '월별 명세서도, GDPR식 데이터 내보내기도 같은 질문 앞에서 무너졌다: 클라이언트가 직접 만들면 되지 않나? 그 질문을 통과한 지출 분석 ETL과, 거기서 드러난 규칙.',
+      ko: '월별 명세서도 GDPR식 데이터 내보내기도 "클라이언트가 직접 만들면 되지 않나?"라는 같은 질문에 무너졌다. 그 질문을 통과한 지출 분석 ETL과, 거기서 드러난 규칙을 적었다.',
     },
     date: '2026.07.27',
     tags: ['ETL', 'Architecture'],
@@ -201,11 +201,11 @@ export const posts: PostMeta[] = [
     slug: 'observability-by-design',
     title: {
       en: 'Observability Is a Design Decision, Not an Afterthought',
-      ko: 'Observability는 설계 결정이지, 나중에 덧붙이는 게 아니다',
+      ko: 'Observability는 나중에 덧붙이는 게 아니라 설계 결정이다',
     },
     summary: {
       en: 'Log-level policy, structured logging, and propagating a Correlation ID through AsyncLocalStorage.',
-      ko: '로그 레벨 정책, 구조화된 로깅, 그리고 AsyncLocalStorage를 통한 Correlation ID 전파.',
+      ko: '로그 레벨 정책과 구조화된 로깅, AsyncLocalStorage로 Correlation ID를 전파하는 방법.',
     },
     date: '2026.07.22',
     tags: ['Observability', 'Operations'],
@@ -219,7 +219,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'Getting the order right between readiness, in-flight requests, and resource cleanup during SIGTERM.',
-      ko: 'SIGTERM 발생 시 readiness, 처리 중인 요청, 리소스 정리 사이의 순서를 올바르게 맞추는 방법.',
+      ko: 'SIGTERM을 받았을 때 readiness 전환, 처리 중인 요청, 리소스 정리를 어떤 순서로 해야 하는지 정리했다.',
     },
     date: '2026.07.11',
     tags: ['Reliability', 'Operations'],
@@ -345,7 +345,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'How teams can build a reproducible environment from local development through deployment.',
-      ko: '로컬 개발부터 배포까지, 팀이 재현 가능한 환경을 구축하는 방법.',
+      ko: '로컬 개발부터 배포까지, 팀이 언제든 똑같이 재현할 수 있는 환경을 만드는 방법.',
     },
     date: '2026.07.19',
     tags: ['Docker', 'Developer experience'],
@@ -541,7 +541,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: "Every PR a Dependabot auto-merge workflow had ever merged did so by winning a race against its own six-hour deadlock — one of its steps was waiting for a check run that could only finish after that step did. Fixing it surfaced a second bug waiting right behind the first, and a class of half-merge left behind by plain GitHub 502s.",
-      ko: 'Dependabot auto-merge 워크플로가 그동안 머지한 PR은 전부 자기 자신의 6시간짜리 데드락을 상대로 한 경쟁에서 이겨서 그렇게 된 것이었다 — 스텝 하나가, 바로 그 스텝이 끝나야만 끝날 수 있는 체크 실행을 기다리고 있었다. 고쳤더니 바로 뒤에서 기다리던 두 번째 버그와, 평범한 GitHub 502가 남기고 간 반쪽짜리 머지들이 드러났다.',
+      ko: 'Dependabot auto-merge 워크플로가 그동안 머지한 PR은 모두 자기 자신이 만든 6시간짜리 데드락과의 경쟁에서 이겨서 머지된 것이었다. 스텝 하나가, 그 스텝이 끝나야만 끝날 수 있는 체크를 기다리고 있었다. 고치고 나니 바로 뒤에 숨어 있던 두 번째 버그와, 평범한 GitHub 502가 남긴 반쯤 머지된 PR들이 나왔다.',
     },
     date: '2026.08.04',
     tags: ['Tooling', 'Automation'],
@@ -555,7 +555,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'A Spring Boot 4 migration that checked git history instead of a stale doc, found a workaround for a library a search index insisted did not exist, and ended a day later with the deployable image unable to build — because nothing in CI was watching the file whose meaning had just changed.',
-      ko: '낡은 문서 대신 git 히스토리를 확인하고, 검색 인덱스가 없다고 우기던 라이브러리의 우회책을 찾아냈던 Spring Boot 4 마이그레이션은, 하루 뒤 배포 이미지가 아예 빌드가 안 되는 상태로 끝났다 — 의미가 방금 바뀐 파일을 CI 안 그 무엇도 지켜보고 있지 않았기 때문이다.',
+      ko: 'Spring Boot 4 마이그레이션에서 낡은 문서 대신 git 히스토리를 확인했고, 검색 인덱스가 없다고 우기던 라이브러리는 우회책을 만들어 넘어갔다. 그런데 하루 뒤, 배포 이미지가 아예 빌드되지 않는 상태로 끝났다. 방금 의미가 바뀐 파일을 CI의 어떤 검사도 지켜보지 않았기 때문이다.',
     },
     date: '2026.08.04',
     tags: ['Architecture', 'Tooling'],

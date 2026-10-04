@@ -30,3 +30,12 @@ This site runs Google AdSense. It was once flagged **"approved, but attention ne
 - `npm run build` — full build; confirms prerendering succeeds for every route and catches missing-route mistakes above
 - `npx oxlint --config oxlint.json .` (or scoped to changed files) — lint
 - `rm -rf .react-router build dist` — clean build artifacts before committing; they're gitignored but a stray local build shouldn't linger
+
+## Group agents
+
+This repo is the home of the group-level agents that look after the blog and every site under `kyhsa93.github.io/` together: `group-ceo`, `group-cmo`, `group-cto`, `group-coo`, `group-clo`, `group-chro` in `.claude/agents/`. `~/.claude/agents` is a symlink to that directory, so they can be called from a session in any repo. They are written in Korean, like the repo teams they sit above.
+
+- They rule only on matters that cross repos. A repo with its own team (jipgye, abyss, karda, business-plan) decides its own matters; for the blog and the sites without a team, the group agents act as that team.
+- The `group-` prefix is required: a project agent with the same name hides a user-level one inside that project's sessions.
+- `group-chro` owns every agent definition file and the roster in `.claude/org.md`. Retired definitions move to `.claude/agents-retired/`; they are not deleted.
+- `.claude/` is not part of the Pages artifact (only `build/client` is uploaded), so nothing here is published.

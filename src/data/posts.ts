@@ -397,11 +397,11 @@ export const posts: PostMeta[] = [
     slug: 'bugs-only-e2e-tests-catch',
     title: {
       en: "The Bugs Unit Tests Can't See",
-      ko: '유닛 테스트가 볼 수 없는 버그들',
+      ko: '유닛 테스트가 보지 못하는 버그들',
     },
     summary: {
       en: 'A missing @Transactional, a JDK HTTP client retry quirk, a VARCHAR(36) overflow, an SQS FIFO dedup collision — four real bugs that needed real infrastructure to even exist.',
-      ko: '빠진 @Transactional, JDK HTTP 클라이언트의 재시도 결함, VARCHAR(36) 오버플로우, SQS FIFO 중복 제거 충돌 — 실제 인프라가 있어야만 존재할 수 있었던 버그 네 가지.',
+      ko: '빠진 @Transactional, JDK HTTP 클라이언트의 재시도 결함, VARCHAR(36) 오버플로, SQS FIFO 중복 제거 충돌. 실제 인프라가 있어야만 생길 수 있었던 버그 4개다.',
     },
     date: '2026.07.24',
     tags: ['Testing', 'Reliability'],
@@ -481,11 +481,11 @@ export const posts: PostMeta[] = [
     slug: 'two-accounts-one-transaction-five-different-answers',
     title: {
       en: 'Two Accounts, One Transaction, Five Different Answers',
-      ko: '두 계좌, 하나의 트랜잭션, 다섯 개의 서로 다른 답',
+      ko: '계좌 둘, 트랜잭션 하나, 답은 다섯 가지',
     },
     summary: {
       en: "A transfer feature needs one thing every implementation already claimed to support: writing two Aggregates atomically. Building it for real found a working mechanism in one language, a regression waiting one edit inside the obvious fix in another, and a doc that had been quietly wrong about its own code in a third.",
-      ko: '송금 기능에 필요한 건 딱 하나, 모든 구현체가 이미 지원한다고 주장했던 것 — 두 Aggregate의 원자적 쓰기. 실제로 만들어보니 한 언어는 메커니즘이 진짜 동작했고, 한 언어는 당연해 보이는 수정 한 걸음 안쪽에 회귀가 도사리고 있었고, 한 언어는 문서가 자기 코드에 대해 조용히 틀려 있었다.',
+      ko: '송금 기능에 필요한 건 Aggregate 2개를 원자적으로 쓰는 것 하나다. 모든 구현이 이미 된다고 했던 기능이다. 막상 만들어 보니 한 언어는 제대로 동작했고, 한 언어는 뻔한 수정 바로 안쪽에 회귀가 숨어 있었고, 한 언어는 문서가 자기 코드를 틀리게 설명하고 있었다.',
     },
     date: '2026.07.21',
     tags: ['Backend', 'Reliability'],
@@ -499,7 +499,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'Five languages scoring 100% on an easy synthetic task taught nothing about where they would fail. A four-level difficulty ladder built specifically to exercise unexercised code paths found the ceiling — and its last rung exposed a fan-out bug that had been invisible since nothing had ever subscribed two things to the same event before.',
-      ko: '쉬운 합성 과제에서 5개 언어가 전부 100점을 받는다고 해서 어디서 실패할지가 드러나는 건 아니다. 아직 건드려본 적 없는 코드 경로를 정확히 겨냥해 만든 4단계 난이도 사다리가 그 천장을 찾아냈고, 마지막 단에서 같은 이벤트에 둘이 구독해본 적이 한 번도 없어서 보이지 않던 팬아웃 버그가 드러났다.',
+      ko: '쉬운 합성 과제에서 5개 언어가 모두 100점을 받아도, 어디서 무너질지는 알 수 없었다. 한 번도 돌지 않은 코드 경로를 겨냥해 4단계 난이도 사다리를 만들자 천장이 보였다. 마지막 단에서는 팬아웃 버그가 나왔다. 같은 이벤트를 둘이 구독한 적이 없어서 그동안 안 보이던 버그였다.',
     },
     date: '2026.07.21',
     tags: ['AI Agents', 'Benchmark'],
@@ -513,7 +513,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: "Completing incomplete Swagger docs across five languages, verified by actually booting each app instead of trusting the annotations compiled. What it found had nothing to do with documentation — including a Spring Boot 4 dependency split that left production migrations silently never running.",
-      ko: '미완성 Swagger 문서를 5개 언어에 걸쳐 완성하고, 애노테이션이 컴파일된다고 믿는 대신 실제로 앱을 켜서 검증했다. 찾아낸 건 문서화와는 아무 관계가 없었다 — 프로덕션 마이그레이션이 조용히 한 번도 안 돌게 만든 Spring Boot 4의 의존성 분리 사건도 포함해서.',
+      ko: '5개 언어의 덜 된 Swagger 문서를 채우고, 애노테이션이 컴파일되니 됐다고 믿지 않고 앱을 직접 띄워 확인했다. 그렇게 찾은 버그는 문서와 상관없는 것들이었다. Spring Boot 4의 의존성 분리 때문에 프로덕션 마이그레이션이 아무 표시 없이 한 번도 돌지 않던 문제도 그중 하나다.',
     },
     date: '2026.07.22',
     tags: ['API Design', 'Testing'],
@@ -523,11 +523,11 @@ export const posts: PostMeta[] = [
     slug: 'the-bug-came-back-wearing-five-different-masks',
     title: {
       en: 'The Bug Came Back, Wearing Five Different Masks',
-      ko: '버그가 돌아왔다, 다섯 개의 다른 가면을 쓰고',
+      ko: '다섯 가지 가면을 쓰고 돌아온 버그',
     },
     summary: {
       en: 'A week after a benchmark task exposed two languages that could not support a second event subscriber, four real features made every language need one. This time all five broke — from a loud boot-time crash to a silent single-handler drop nothing ever logged.',
-      ko: '이벤트에 두 번째 구독자를 지원하지 못하는 언어 둘을 벤치마크 과제가 찾아낸 지 일주일 뒤, 실제 기능 4개가 모든 언어에 그걸 요구하게 만들었다. 이번엔 5개 언어 전부가 깨졌다 — 시끄러운 부팅 시점 크래시부터 아무 로그도 남기지 않는 조용한 핸들러 드롭까지.',
+      ko: '벤치마크 과제에서 이벤트 구독자를 둘 붙이지 못하는 언어 2개를 찾은 지 일주일 뒤, 실제 기능 4개가 모든 언어에 같은 걸 요구했다. 이번엔 5개 언어가 모두 깨졌다. 부팅 때 요란하게 죽는 경우부터, 로그 한 줄 없이 핸들러 하나가 빠지는 경우까지 있었다.',
     },
     date: '2026.07.28',
     tags: ['Event-driven', 'Reliability'],
@@ -579,11 +579,11 @@ export const posts: PostMeta[] = [
     slug: 'an-end-to-end-test-that-wasnt',
     title: {
       en: "An End-to-End Test That Wasn't",
-      ko: 'End-to-End이 아니었던 End-to-End 테스트',
+      ko: 'End-to-End가 아니었던 End-to-End 테스트',
     },
     summary: {
       en: "NestJS's e2e suite assembled its own approximation of the app instead of booting the real one, and every language's LLM features had only ever run through their own fallback path. Fixing both surfaced a stranger bug: nock and testcontainers fighting over the same patched module.",
-      ko: 'nestjs의 e2e 스위트는 실제 앱을 부팅하는 대신 자기만의 근사치를 조립하고 있었고, 모든 언어의 LLM 기능은 자기 자신의 폴백 경로로만 실행돼왔다. 둘 다 고치는 과정에서 더 이상한 버그가 드러났다: 같은 패치된 모듈을 두고 싸우는 nock과 testcontainers.',
+      ko: 'NestJS의 e2e 스위트는 실제 앱을 띄우지 않고 흉내 낸 앱을 따로 조립하고 있었다. 모든 언어의 LLM 기능도 폴백 경로로만 돌아 봤다. 둘을 고치다가 더 이상한 버그를 만났다. nock과 testcontainers가 같은 패치된 모듈을 두고 다투고 있었다.',
     },
     date: '2026.08.04',
     tags: ['Testing', 'Reliability'],
@@ -593,11 +593,11 @@ export const posts: PostMeta[] = [
     slug: 'the-same-instant-two-different-timestamps',
     title: {
       en: 'The Same Instant, Two Different Timestamps',
-      ko: '같은 순간, 서로 다른 두 타임스탬프',
+      ko: '같은 순간인데 타임스탬프는 둘',
     },
     summary: {
       en: 'The same moment, serialized by the same driver, produces a different string depending on the process\'s timezone. Four languages had this bug at the call site and one had it at the process boundary — and the fix belonged in a genuinely different place in each, verified by literally running the tests nine time zones apart.',
-      ko: '같은 순간이 같은 드라이버로 직렬화돼도 프로세스의 시간대에 따라 다른 문자열이 나온다. 4개 언어는 호출 지점에, 1개 언어는 프로세스 경계에 이 버그가 있었다 — 그리고 수정은 언어마다 진짜 다른 자리에 있어야 했다, 시간대를 9시간 떨어뜨려 실제로 테스트를 돌려서 검증했다.',
+      ko: '같은 시각을 같은 드라이버로 직렬화해도 프로세스 시간대에 따라 문자열이 달라진다. 4개 언어는 호출 지점에, 1개 언어는 프로세스 경계에 이 버그가 있었다. 고칠 자리도 언어마다 달랐고, 9시간 차이 나는 시간대에서 테스트를 직접 돌려 검증했다.',
     },
     date: '2026.08.05',
     tags: ['Backend', 'Reliability'],
@@ -679,13 +679,13 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: "A drift checker pointed at a cluster that had just been applied cleanly reported drift everywhere. The cluster wasn't lying — the API server's own admission defaulting had filled in fields Git never mentioned, and a naive full-object comparison had no way to tell the difference.",
-      ko: '방금 깔끔하게 적용된 클러스터를 겨눈 drift 검사기가 온통 drift를 보고했다. 클러스터가 거짓말을 한 게 아니었다 — API 서버 자신의 admission 기본값 채우기가 Git이 언급조차 하지 않은 필드를 채워넣었고, 순진한 전체 객체 비교는 그 차이를 구분할 방법이 없었다.',
+      ko: '방금 깔끔하게 적용한 클러스터에 drift 검사기를 돌렸더니 온통 drift라고 나왔다. 클러스터가 거짓말을 한 건 아니다. API 서버의 admission 기본값 처리가 Git에 적지도 않은 필드를 채웠고, 객체 전체를 그대로 비교하는 검사기는 그걸 구별하지 못했다.',
     },
     date: '2026.08.08',
     tags: ['Kubernetes', 'Reliability'],
     readMinutes: 9,
     discrepancy: {
-      looked: { en: 'The cluster had drifted.', ko: '클러스터가 drift했다.' },
+      looked: { en: 'The cluster had drifted.', ko: '클러스터에 drift가 생겼다.' },
       was: { en: 'The API server had filled the blanks.', ko: 'API 서버가 빈칸을 채운 것이었다.' },
     },
     project: { name: 'k8s-playbook', url: 'https://github.com/kyhsa93/k8s-playbook' },

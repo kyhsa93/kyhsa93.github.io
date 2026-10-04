@@ -14,10 +14,10 @@ const content = {
         Narrow What,<br /><em>Never Who</em>
       </>
     ),
-    lede: "AskTransactionHistoryQuery answers a free-text question about an account's own transaction history. The filter an LLM produces can only narrow what comes back. Who it belongs to is wired in before the model's output ever enters the call.",
+    lede: "When an LLM turns a free-text question into a database filter, the filter should be able to narrow what comes back and nothing else. A question about an account's own transaction history is answered that way here: who the data belongs to is wired in before the model's output ever enters the call.",
     body: (
       <>
-        <p><a href="/posts/the-fraud-signal-that-trusted-the-fraudster">The previous post</a> removed an LLM feature that let a model's read of user-controlled text influence a security-relevant judgment, and left behind one rule: an LLM may narrow what an authorized user sees, but must never decide who is authorized. This is what building on that rule, instead of just avoiding its violation, looks like.</p>
+        <p>If an LLM translates a user's question into a query, how do you make sure a crafted question can't reach someone else's data? The rule I work from: an LLM may narrow what an authorized user sees, but must never decide who is authorized. It came out of removing an LLM feature that let a model's read of user-controlled text influence a security-relevant judgment. This is what building on that rule, instead of just avoiding its violation, looks like: a filter type with no field for the owner at all, in my example project that implements the same backend design in five languages side by side.</p>
         <h2>Three Steps, Only Two of Which Touch an LLM</h2>
         <p>The feature is on Account BC: a free-text question over an account's own transaction history, such as <code>"How much did I deposit this month?"</code>, answered through a structured-data RAG pipeline. "Structured-data" because Retrieve here is an SQL query, not a vector-embedding search over a document store, which is the more usual shape people mean by RAG.</p>
         <ol>
@@ -79,14 +79,14 @@ return { answer, matchedCount: count }`}</code></pre>
           <tbody>
             <tr><td>nestjs</td><td>reference; live-verified against real Ollama</td></tr>
             <tr><td>Go</td><td>first push failed CI (stale OpenAPI docs); self-diagnosed, fixed in a follow-up commit</td></tr>
-            <tr><td>Java Spring Boot</td><td>exposed the Ollama HTTP client as a bean, unlike the earlier classifier, which made both new services independently mockable</td></tr>
+            <tr><td>Java Spring Boot</td><td>exposed the Ollama HTTP client as a bean, unlike the earlier LLM refund-reason classifier, which made both new services independently mockable</td></tr>
             <tr><td>Kotlin Spring Boot</td><td>hit a Kotlin compile error (two files redeclaring identically-named private top-level classes); found and fixed by nesting them</td></tr>
             <tr><td>FastAPI</td><td>no per-language architecture doc for this pattern existed yet, so the write-up landed in layer-architecture.md instead</td></tr>
           </tbody>
         </table>
         <p>The mechanism differs everywhere: a query bus here, a plain service there, Kotlin's package-private rules forcing a redesign of two small classes. The guardrail (<code>ownerId</code> from the authenticated caller, never from the model) didn't move once. That's usually the tell for whether a design is a principle or just an implementation detail dressed up as one: it survives being rewritten in a language that works nothing like the original.</p>
         <div className="article-note"><strong>Further reading</strong><p>
-          <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">The Fraud Signal That Trusted the Fraudster</a> — the removal this feature's guardrail is a direct answer to · <a href="/posts/same-architecture-five-languages">Same Architecture, Five Languages</a> — the same cross-language comparison, applied to an earlier feature · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a> — the full write-up, with real code from the reference implementation
+          <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">The Fraud Signal That Trusted the Fraudster</a> (the removal this feature's guardrail is a direct answer to) · <a href="/posts/same-architecture-five-languages">Same Architecture, Five Languages</a> (the same cross-language comparison, applied to another feature) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a> (the full write-up, with real code from the reference implementation)
         </p></div>
       </>
     ),
@@ -98,10 +98,10 @@ return { answer, matchedCount: count }`}</code></pre>
         무엇은 좁히고,<br /><em>누구는 정하지 않는다</em>
       </>
     ),
-    lede: 'AskTransactionHistoryQuery는 계좌 주인이 자기 거래 내역을 두고 자유롭게 던진 질문에 답한다. LLM이 만든 필터로는 어떤 거래가 돌아올지만 좁힐 수 있다. 누구의 거래인지는 모델 출력이 호출에 들어가기 전에 이미 정해져 있다.',
+    lede: 'LLM이 자유로운 질문을 DB 필터로 바꿀 때, 그 필터로는 무엇이 돌아올지만 좁힐 수 있어야 한다. 계좌 주인이 자기 거래 내역을 두고 던진 질문에 이 방식으로 답했다. 누구의 거래인지는 모델 출력이 호출에 들어가기 전에 이미 정해져 있다.',
     body: (
       <>
-        <p><a href="/posts/the-fraud-signal-that-trusted-the-fraudster">이전 글</a>에서는 LLM 기능 하나를 걷어 냈다. 사용자가 마음대로 쓸 수 있는 텍스트를 모델이 읽고, 그 해석이 보안 판단에 영향을 주는 기능이었다. 그때 남은 규칙이 하나 있다. LLM은 권한 있는 사용자가 무엇을 볼지 좁힐 수는 있어도, 누가 권한을 가졌는지 정해서는 안 된다. 이번에는 그 규칙을 피해 가는 데서 그치지 않고, 규칙을 바닥에 깔고 기능을 하나 만들어 봤다.</p>
+        <p>LLM이 사용자 질문을 쿼리로 옮겨 준다면, 교묘하게 짠 질문이 남의 데이터에 닿지 않게 하려면 어떻게 해야 할까. 내가 기준으로 삼는 규칙은 이렇다. LLM은 권한 있는 사용자가 무엇을 볼지 좁힐 수는 있어도, 누가 권한을 가졌는지 정해서는 안 된다. 사용자가 마음대로 쓸 수 있는 텍스트를 모델이 읽고 그 해석이 보안 판단에 영향을 주던 LLM 기능을 걷어 내면서 남은 규칙이다. 이번에는 그 규칙을 피해 가는 데서 그치지 않고, 규칙을 바닥에 깔고 기능을 하나 만들어 봤다. 같은 백엔드 설계를 5개 언어로 나란히 구현해 둔 내 예제 프로젝트에서, 소유자 필드가 아예 없는 필터 타입으로 만들었다.</p>
         <h2>세 단계 중 LLM은 두 곳에만 들어간다</h2>
         <p>기능은 Account BC에 있다. <code>"이번 달에 얼마 입금했어?"</code>처럼 자기 거래 내역을 두고 자유롭게 묻는 질문에 구조화 데이터 RAG 파이프라인으로 답한다. 굳이 "구조화 데이터"를 붙인 건 여기서 Retrieve가 SQL 조회이기 때문이다. 흔히 RAG라고 하면 문서 저장소를 벡터 임베딩으로 검색하는 모양을 떠올리는데, 그것과는 다르다.</p>
         <ol>
@@ -164,14 +164,14 @@ return { answer, matchedCount: count }`}</code></pre>
           <tbody>
             <tr><td>nestjs</td><td>기준 구현, 실제 Ollama로 직접 확인</td></tr>
             <tr><td>Go</td><td>첫 푸시에서 CI 실패(OpenAPI 문서 갱신 누락). 원인을 스스로 찾아 다음 커밋에서 고침</td></tr>
-            <tr><td>Java Spring Boot</td><td>앞서 만든 classifier와 달리 Ollama HTTP 클라이언트를 빈으로 꺼내, 새 서비스 둘을 따로 모킹할 수 있게 함</td></tr>
+            <tr><td>Java Spring Boot</td><td>앞서 만든 LLM 환불 사유 분류기와 달리 Ollama HTTP 클라이언트를 빈으로 꺼내, 새 서비스 둘을 따로 모킹할 수 있게 함</td></tr>
             <tr><td>Kotlin Spring Boot</td><td>Kotlin 컴파일 오류가 남(두 파일이 같은 이름의 private 최상위 클래스를 각자 선언). 클래스를 안쪽으로 중첩해 해결</td></tr>
             <tr><td>FastAPI</td><td>이 패턴을 다룰 언어별 아키텍처 문서가 아직 없어서 layer-architecture.md에 정리</td></tr>
           </tbody>
         </table>
         <p>구현 방식은 언어마다 달랐다. 어디서는 쿼리 버스를 썼고 어디서는 평범한 서비스를 썼다. Kotlin에서는 패키지 프라이빗 규칙 때문에 작은 클래스 두 개를 다시 설계해야 했다. 그래도 <code>ownerId</code>는 인증된 호출자에게서만 받고 모델에게서는 받지 않는다는 가드레일은 한 번도 움직이지 않았다. 어떤 설계가 원칙인지, 원칙처럼 포장한 구현 디테일인지는 보통 여기서 갈린다. 원본과 전혀 다르게 돌아가는 언어로 다시 써도 살아남으면 원칙이다.</p>
-        <div className="article-note"><strong>더 읽을거리</strong><p>
-          <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">사기꾼을 그대로 믿은 사기 탐지 신호</a>(이 기능의 가드레일이 나오게 된 기능 제거 이야기) · <a href="/posts/same-architecture-five-languages">같은 아키텍처를 5개 언어로</a>(앞선 기능을 같은 방식으로 언어별 비교한 글) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a>(기준 구현의 코드를 그대로 담은 전체 문서)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">사기꾼을 그대로 믿은 사기 탐지 신호</a>(이 기능의 가드레일이 나오게 된 기능 제거 이야기) · <a href="/posts/same-architecture-five-languages">같은 아키텍처를 5개 언어로</a>(다른 기능을 같은 방식으로 언어별 비교한 글) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a>(기준 구현의 코드를 그대로 담은 전체 문서)
         </p></div>
       </>
     ),

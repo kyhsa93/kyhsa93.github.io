@@ -92,8 +92,8 @@ export const posts: PostMeta[] = [
       ko: '사기꾼을 그대로 믿은 사기 탐지 신호',
     },
     summary: {
-      en: "RefundReasonClassifier's fraud-risk score was computed entirely from text the refund requester controlled. Removing it, the sibling ML scorer that went with it, and the one rule the removal left behind.",
-      ko: 'RefundReasonClassifier의 사기 위험 점수는 환불을 요청한 사람이 마음대로 적을 수 있는 글만 보고 계산했다. 이 신호와 짝을 이루던 ML 스코어러까지 함께 걷어 낸 과정과, 걷어 내고 남은 규칙 하나를 적었다.',
+      en: "A fraud signal computed from text the suspect writes can't catch that suspect. Why an LLM refund-reason classifier built on exactly that had to go, the history-based ML scorer removed alongside it, and the one rule the removal left behind.",
+      ko: '의심받는 사람이 직접 적는 글로 계산한 사기 신호로는 그 사람을 잡을 수 없다. 환불 사유를 읽던 LLM 분류기가 바로 그런 신호였다. 이 분류기와 함께 이력 기반 ML 스코어러까지 걷어 낸 과정과, 걷어 내고 남은 규칙 하나를 적었다.',
     },
     date: '2026.07.26',
     tags: ['Security', 'LLM'],
@@ -106,8 +106,8 @@ export const posts: PostMeta[] = [
       ko: '무엇은 좁히고, 누구는 정하지 않는다',
     },
     summary: {
-      en: 'A structured-data RAG feature over an account\'s own transaction history, the guardrail that lets an LLM touch it safely, and how the same invariant survived five different languages\' own conventions.',
-      ko: '계좌 주인이 자기 거래 내역을 말로 물어보는 구조화 데이터 RAG 기능을 만들었다. LLM이 끼어도 안전하도록 가드레일을 어디에 뒀는지, 그 불변식이 5개 언어의 서로 다른 관례 속에서 어떻게 그대로 남았는지 정리했다.',
+      en: 'How to let an LLM turn a free-text question into a database filter without ever letting it decide whose data comes back: a filter type with no owner field, a structured-data RAG pipeline over an account\'s own transactions, and the same invariant held across five languages\' own conventions.',
+      ko: 'LLM이 자유로운 질문을 DB 필터로 바꾸게 하되, 누구의 데이터가 돌아올지는 절대 정하지 못하게 하는 법이다. 소유자 필드가 아예 없는 필터 타입, 자기 거래 내역을 대상으로 한 구조화 데이터 RAG 파이프라인, 그리고 그 불변식이 5개 언어의 서로 다른 관례 속에서도 그대로 남은 과정을 정리했다.',
     },
     date: '2026.07.26',
     tags: ['LLM', 'Comparative'],
@@ -372,8 +372,8 @@ export const posts: PostMeta[] = [
       ko: 'Domain Service에 LLM을 붙이되 판단은 넘기지 않는다',
     },
     summary: {
-      en: 'RefundReasonClassifier reads a refund reason and hands back a signal — the Domain Service that actually decides never calls it, and swapping the LLM backend from Claude to self-hosted Ollama touched almost no test.',
-      ko: 'RefundReasonClassifier는 환불 사유를 읽고 신호를 돌려줄 뿐이다. 판단을 내리는 Domain Service는 이 분류기를 부르지도 않는다. 그래서 LLM 백엔드를 Claude에서 자체 호스팅 Ollama로 바꿨을 때도 손볼 테스트가 거의 없었다.',
+      en: 'An LLM makes a good signal and a bad final judge. Let it read a refund reason and hand back a value, keep the threshold in a Domain Service that never calls it, and swapping the backend from Claude to self-hosted Ollama touches almost no test.',
+      ko: 'LLM은 신호로는 쓸 만하지만 최종 판단을 맡기기엔 믿을 수 없다. 환불 사유를 읽고 값만 돌려주게 하고, 임계값은 분류기를 부르지도 않는 Domain Service에 두면 된다. 그러면 LLM 백엔드를 Claude에서 자체 호스팅 Ollama로 바꿔도 손볼 테스트가 거의 없다.',
     },
     date: '2026.07.23',
     tags: ['LLM', 'Architecture'],

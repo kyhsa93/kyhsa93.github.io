@@ -54,12 +54,12 @@ public static create(params: {
     totalAmount: params.totalAmount, transactionCount: params.transactionCount,
     averageAmount, changeFromPreviousMonth, trend })
 }`}</code></pre>
-        <p>That's the entire "T" in ETL: two numbers in, a percentage and a label out. Extract is the existing per-account transaction table; Load is one upsert-shaped row, idempotent via a (accountId, month) unique constraint, the same two-layer pattern the repo's card-statement job already used. Nothing here needed inventing. The win was recognizing that a CQRS read-model, expressed as a batch job, was the shape that survived the question the report ideas didn't.</p>
+        <p>That's the entire "T" in ETL: two numbers in, a percentage and a label out. Extract is the existing per-account transaction table; Load is one upsert-shaped row, idempotent via a (accountId, month) unique constraint, the same two-layer pattern a card-statement job in the same codebase already used. Nothing here needed inventing. The win was recognizing that a CQRS read-model, expressed as a batch job, was the shape that survived the question the report ideas didn't.</p>
         <div className="article-note"><strong>Numbers from the test</strong><p>The e2e test backdates two withdrawals (30,000 and 20,000) into "last month," runs the scheduler, and reads back a row with <code>totalAmount: 50000</code>, <code>transactionCount: 2</code>, <code>averageAmount: 25000</code>, and, since there's no prior-prior-month history to compare against, <code>changeFromPreviousMonth: 100</code>, <code>trend: 'INCREASING'</code>. Re-running the same month's job a second time doesn't produce a second row.</p></div>
         <h2>The Rule, Stated Plainly</h2>
         <p>"Can the server do this" is nearly always yes. The question that filters ideas is narrower: does the client have a real reason (not a convenience one) that it can't do this itself? Most report-shaped requests fail that question without anyone noticing, because report-shaped is UI work wearing a backend costume. The one that survives is usually the one that isn't shaped like a report at all.</p>
         <div className="article-note"><strong>Further reading</strong><p>
-          <a href="/posts/scheduling-and-task-outbox">Scheduling and the Task Outbox Pattern</a> — the Cron→Task Queue infrastructure this feature reuses without needing anything new · <a href="/posts/cqrs-in-practice">CQRS in Practice</a> — the Query-side discipline this feature's read model has to answer to
+          <a href="/posts/scheduling-and-task-outbox">Scheduling and the Task Outbox Pattern</a> (the Cron-to-Task-Queue infrastructure this feature reuses without anything new) · <a href="/posts/cqrs-in-practice">CQRS in Practice</a> (the Query-side discipline a read model like this one has to answer to)
         </p></div>
       </>
     ),
@@ -111,12 +111,12 @@ public static create(params: {
     totalAmount: params.totalAmount, transactionCount: params.transactionCount,
     averageAmount, changeFromPreviousMonth, trend })
 }`}</code></pre>
-        <p>ETL의 "T"는 이게 전부다. 숫자 두 개가 들어가고 퍼센트 하나와 라벨 하나가 나온다. Extract는 원래 있던 계좌별 거래 테이블이다. Load는 upsert 모양의 행 하나이고, (accountId, month) 유니크 제약으로 멱등하게 만들었다. 내 저장소의 카드 명세서 작업이 이미 쓰던 이중 방어 패턴 그대로다. 새로 만든 건 없다. 리포트류 아이디어들이 넘지 못한 질문을, 배치 작업으로 만든 CQRS read model은 넘을 수 있다는 걸 알아본 게 수확이었다.</p>
+        <p>ETL의 "T"는 이게 전부다. 숫자 두 개가 들어가고 퍼센트 하나와 라벨 하나가 나온다. Extract는 원래 있던 계좌별 거래 테이블이다. Load는 upsert 모양의 행 하나이고, (accountId, month) 유니크 제약으로 멱등하게 만들었다. 같은 코드베이스의 카드 명세서 작업이 이미 쓰던 이중 방어 패턴 그대로다. 새로 만든 건 없다. 리포트류 아이디어들이 넘지 못한 질문을, 배치 작업으로 만든 CQRS read model은 넘을 수 있다는 걸 알아본 게 수확이었다.</p>
         <div className="article-note"><strong>테스트에서 나온 숫자</strong><p>e2e 테스트는 30,000원과 20,000원짜리 출금 두 건을 날짜를 "지난달"로 되돌려 넣고, 스케줄러를 그대로 돌린 뒤 결과 행을 읽는다. <code>totalAmount: 50000</code>, <code>transactionCount: 2</code>, <code>averageAmount: 25000</code>이 나온다. 비교할 전전달 이력이 없으므로 <code>changeFromPreviousMonth: 100</code>, <code>trend: 'INCREASING'</code>이 된다. 같은 달 작업을 한 번 더 돌려도 행이 하나 더 생기지는 않는다.</p></div>
         <h2>규칙을 한 문장으로</h2>
         <p>"서버가 이걸 할 수 있나"에 대한 답은 거의 언제나 "그렇다"다. 아이디어를 제대로 걸러 내는 질문은 그보다 좁다. 편의 말고, 클라이언트가 이걸 직접 못 할 이유가 있는가. 리포트처럼 생긴 요청은 대부분 이 질문에서 별 소리 없이 떨어진다. 리포트 모양이라는 것 자체가 백엔드 옷을 입은 UI 작업이기 때문이다. 살아남는 건 대개 처음부터 리포트처럼 생기지 않은 쪽이다.</p>
-        <div className="article-note"><strong>더 읽을거리</strong><p>
-          <a href="/posts/scheduling-and-task-outbox">스케줄링과 Task Outbox 패턴</a>(이 기능이 새로 만든 것 없이 그대로 가져다 쓴 Cron→Task Queue 인프라) · <a href="/posts/cqrs-in-practice">실전 CQRS</a>(이 기능의 read model이 지켜야 했던 Query 쪽 규율)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="/posts/scheduling-and-task-outbox">스케줄링과 Task Outbox 패턴</a>(이 기능이 새로 만든 것 없이 그대로 가져다 쓴 Cron→Task Queue 인프라) · <a href="/posts/cqrs-in-practice">실전 CQRS</a>(이런 read model이 지켜야 하는 Query 쪽 규율)
         </p></div>
       </>
     ),

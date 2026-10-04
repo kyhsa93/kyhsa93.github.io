@@ -136,8 +136,8 @@ class Order private constructor() {
           <li>Would merging two Aggregates make more invariants provably true in one transaction?</li>
         </ul>
         <p>None of this is about finding the one correct diagram. It's about keeping the unit that guards a rule as large as the rule requires: no bigger, so it doesn't drag unrelated data into every lock, and no smaller, so the rule it's supposed to protect doesn't leak out into whichever Service happened to call it first.</p>
-        <div className="article-note"><strong>Further reading in the repo</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a> — Aggregate/Entity/Value Object design and boundary criteria in full · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/aggregate-id.md" target="_blank" rel="noreferrer">docs/architecture/aggregate-id.md</a> — the ID-generation rules and Repository handling
+        <div className="article-note"><strong>Further reading</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a> (Aggregate, Entity, and Value Object design and boundary criteria in full, from my example project that implements the same backend design (DDD, CQRS, Outbox) in five languages side by side) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/aggregate-id.md" target="_blank" rel="noreferrer">docs/architecture/aggregate-id.md</a> (the ID-generation rules and how the Repository handles them)
         </p></div>
       </>
     ),
@@ -271,8 +271,8 @@ class Order private constructor() {
           <li>두 Aggregate를 합치면 트랜잭션 하나 안에서 확실히 지킬 수 있는 불변식이 더 늘어나지 않는가?</li>
         </ul>
         <p>정답 다이어그램이 하나 있어서 그걸 찾는 작업은 아니다. 규칙을 지키는 단위를 그 규칙에 딱 맞는 크기로 유지하면 된다. 너무 크면 상관없는 데이터까지 매번 락에 끌려 들어온다. 너무 작으면 지켜야 할 규칙이 밖으로 새서, 어쩌다 먼저 호출한 Service 안에 들어가 앉는다.</p>
-        <div className="article-note"><strong>저장소에서 더 볼 것</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a>(Aggregate, Entity, Value Object 설계와 경계 기준 전체) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/aggregate-id.md" target="_blank" rel="noreferrer">docs/architecture/aggregate-id.md</a>(ID 생성 규칙과 Repository 처리)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a>(같은 백엔드 설계(DDD, CQRS, Outbox)를 5개 언어로 나란히 구현해 둔 내 예제 프로젝트의 Aggregate, Entity, Value Object 설계와 경계 기준 전체) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/aggregate-id.md" target="_blank" rel="noreferrer">docs/architecture/aggregate-id.md</a>(ID 생성 규칙과 Repository에서 다루는 법)
         </p></div>
       </>
     ),

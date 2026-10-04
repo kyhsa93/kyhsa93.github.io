@@ -104,8 +104,8 @@ if err := srv.Shutdown(shutdownCtx); err != nil {
           <li>Does resource cleanup run strictly after the HTTP server has stopped accepting new work?</li>
           <li>Is every cleanup step wrapped so one failure doesn't skip the rest?</li>
         </ul>
-        <div className="article-note"><strong>Further reading in the repo</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/graceful-shutdown.md" target="_blank" rel="noreferrer">docs/architecture/graceful-shutdown.md</a> — the full shutdown sequence and probe-configuration reference · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a> — the Dockerfile CMD convention this depends on
+        <div className="article-note"><strong>Further reading</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/graceful-shutdown.md" target="_blank" rel="noreferrer">docs/architecture/graceful-shutdown.md</a> (the full shutdown sequence and probe configuration, in my example project that implements the same backend design (DDD, CQRS, Outbox) in five languages side by side) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a> (the Dockerfile CMD convention this depends on)
         </p></div>
       </>
     ),
@@ -207,8 +207,8 @@ if err := srv.Shutdown(shutdownCtx); err != nil {
           <li>리소스 정리는 HTTP 서버가 새 요청을 그만 받은 뒤에만 도는가?</li>
           <li>정리 단계 하나가 실패해도 나머지를 건너뛰지 않도록 단계마다 감싸 두었는가?</li>
         </ul>
-        <div className="article-note"><strong>저장소에서 더 볼 것</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/graceful-shutdown.md" target="_blank" rel="noreferrer">docs/architecture/graceful-shutdown.md</a>(종료 순서 전체와 probe 설정) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a>(이 글이 전제하는 Dockerfile CMD 컨벤션)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/graceful-shutdown.md" target="_blank" rel="noreferrer">docs/architecture/graceful-shutdown.md</a>(같은 백엔드 설계(DDD, CQRS, Outbox)를 5개 언어로 나란히 구현해 둔 내 예제 프로젝트의 종료 순서 전체와 probe 설정) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/container.md" target="_blank" rel="noreferrer">docs/architecture/container.md</a>(이 글이 전제하는 Dockerfile CMD 컨벤션)
         </p></div>
       </>
     ),

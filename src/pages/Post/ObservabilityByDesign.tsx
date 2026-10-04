@@ -65,8 +65,8 @@ log.info("Order created");`}</code></pre>
         <p>For tracing, OpenTelemetry auto-instrumentation collects HTTP, DB, and message-queue spans with minimal manual wiring. At an asynchronous boundary (a Task Queue, an Integration Event), including <code>traceparent</code> in the Outbox payload propagates the trace context across the gap, linking an HTTP request straight through to the event processing that happened seconds or minutes later, as a single trace instead of two disconnected ones. Including <code>trace_id</code> in log records lets you jump from a trace directly to its logs, which is usually the difference between "I can see something slowed down" and "I can see exactly which query slowed it down."</p>
         <h2>The Principle That Ties It Together</h2>
         <p>Always log the error in a catch block before rethrowing. Never swallow an exception without a log line just because it's going to propagate anyway. A swallowed exception and a correctly-rethrown one look identical to the caller; only the log tells you afterward that something went wrong at all.</p>
-        <div className="article-note"><strong>Further reading in the repo</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/observability.md" target="_blank" rel="noreferrer">docs/architecture/observability.md</a> — the full log-level policy and metrics/tracing notes · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/cross-cutting-concerns.md" target="_blank" rel="noreferrer">docs/architecture/cross-cutting-concerns.md</a> — where Correlation ID injection happens in the request pipeline
+        <div className="article-note"><strong>Further reading</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/observability.md" target="_blank" rel="noreferrer">docs/architecture/observability.md</a> (the full log-level policy and metrics/tracing notes, in my example project that implements the same backend design (DDD, CQRS, Outbox) in five languages side by side) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/cross-cutting-concerns.md" target="_blank" rel="noreferrer">docs/architecture/cross-cutting-concerns.md</a> (where the Correlation ID is injected in the request pipeline)
         </p></div>
       </>
     ),
@@ -129,8 +129,8 @@ log.info("Order created");`}</code></pre>
         <p>트레이싱은 OpenTelemetry auto-instrumentation을 쓰면 손을 거의 대지 않고 HTTP, DB, 메시지 큐 span을 모을 수 있다. Task Queue나 Integration Event 같은 비동기 경계에서는 Outbox 페이로드에 <code>traceparent</code>를 넣으면 trace context가 그 틈을 건너간다. 그러면 HTTP 요청과 몇 초, 몇 분 뒤에 일어난 이벤트 처리가 따로 노는 두 trace로 갈라지지 않고 하나의 trace로 이어진다. 로그 레코드에 <code>trace_id</code>를 넣어 두면 trace에서 그 로그로 바로 건너갈 수 있다. "뭔가 느려졌다"에서 멈추느냐, "어느 쿼리가 느려졌는지"까지 보이느냐가 대개 여기서 갈린다.</p>
         <h2>모든 걸 묶는 원칙 하나</h2>
         <p>예외를 다시 던지기(rethrow) 전에 catch 블록에서 반드시 로깅한다. 어차피 위로 올라갈 예외라고 해서 로그 없이 삼키면 안 된다. 호출하는 쪽에서 보면, 말없이 삼킨 예외와 제대로 다시 던진 예외는 똑같아 보인다. 나중에 뭔가 잘못됐었다는 걸 알려 주는 건 로그뿐이다.</p>
-        <div className="article-note"><strong>저장소에서 더 볼 것</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/observability.md" target="_blank" rel="noreferrer">docs/architecture/observability.md</a>(로그 레벨 정책 전체와 메트릭·트레이싱 메모) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/cross-cutting-concerns.md" target="_blank" rel="noreferrer">docs/architecture/cross-cutting-concerns.md</a>(요청 파이프라인 어디에서 Correlation ID를 넣는지)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/observability.md" target="_blank" rel="noreferrer">docs/architecture/observability.md</a>(같은 백엔드 설계(DDD, CQRS, Outbox)를 5개 언어로 나란히 구현해 둔 내 예제 프로젝트의 로그 레벨 정책 전체와 메트릭·트레이싱 메모) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/cross-cutting-concerns.md" target="_blank" rel="noreferrer">docs/architecture/cross-cutting-concerns.md</a>(요청 파이프라인 어디에서 Correlation ID를 넣는지)
         </p></div>
       </>
     ),

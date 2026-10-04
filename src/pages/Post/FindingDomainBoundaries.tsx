@@ -122,8 +122,8 @@ public class ReserveStockHandler {
           <li>On failure, is a synchronous rollback required, or can a compensating flow resolve it?</li>
         </ul>
         <p>A good boundary isn't about looking beautiful in a diagram. It localizes change and makes conversations between teams clearer. The starting point is the habit of asking “what changes together, and why” before splitting a model.</p>
-        <div className="article-note"><strong>Further reading in the repo</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/strategic-ddd.md" target="_blank" rel="noreferrer">docs/architecture/strategic-ddd.md</a> (Subdomain, Bounded Context, and Context Map) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a> (Aggregate/Entity/Value Object boundary criteria once a Bounded Context is chosen)
+        <div className="article-note"><strong>Further reading</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/strategic-ddd.md" target="_blank" rel="noreferrer">docs/architecture/strategic-ddd.md</a> (Subdomain, Bounded Context, and Context Map, in my example project that implements the same backend design (DDD, CQRS, Outbox) in five languages side by side) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a> (Aggregate, Entity, and Value Object boundary criteria once a Bounded Context is chosen)
         </p></div>
       </>
     ),
@@ -243,8 +243,8 @@ public class ReserveStockHandler {
           <li>실패했을 때 동기적 롤백이 필요한가, 아니면 보상 흐름으로 해결할 수 있는가?</li>
         </ul>
         <p>좋은 경계는 다이어그램에서 보기 좋으라고 긋는 게 아니다. 변경을 좁은 범위에 묶어 두고, 팀 사이의 대화를 더 분명하게 만든다. 그 출발점은 모델을 나누기 전에 “무엇이 함께 바뀌는가, 그리고 왜인가”를 묻는 습관이다.</p>
-        <div className="article-note"><strong>저장소 내 추가 자료</strong><p>
-          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/strategic-ddd.md" target="_blank" rel="noreferrer">docs/architecture/strategic-ddd.md</a>(Subdomain, Bounded Context, Context Map) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a>(Bounded Context가 정해진 뒤 Aggregate/Entity/Value Object 경계를 정하는 기준)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/strategic-ddd.md" target="_blank" rel="noreferrer">docs/architecture/strategic-ddd.md</a>(같은 백엔드 설계(DDD, CQRS, Outbox)를 5개 언어로 나란히 구현해 둔 내 예제 프로젝트의 Subdomain, Bounded Context, Context Map 정리) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/tactical-ddd.md" target="_blank" rel="noreferrer">docs/architecture/tactical-ddd.md</a>(Bounded Context가 정해진 뒤 Aggregate, Entity, Value Object 경계를 정하는 기준)
         </p></div>
       </>
     ),

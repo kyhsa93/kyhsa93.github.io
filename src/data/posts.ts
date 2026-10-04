@@ -172,12 +172,12 @@ export const posts: PostMeta[] = [
   {
     slug: 'repository-naming-convention',
     title: {
-      en: 'The Naming Rule That Caught Real Bugs',
-      ko: '실제 버그를 잡아낸 네이밍 규칙',
+      en: 'Three Names for Every Repository, and Why the Rule Still Drifted',
+      ko: 'Repository 메서드 이름은 셋이면 된다, 그런데도 규칙이 어긋난 이유',
     },
     summary: {
-      en: 'How a boring find/save/delete naming convention, once automated, immediately found violations nobody had noticed across three different codebases.',
-      ko: '지루하기 짝이 없는 find/save/delete 네이밍 컨벤션을 검사로 자동화했더니, 코드베이스 3곳에서 아무도 몰랐던 위반이 곧바로 나왔다.',
+      en: 'Every Repository operation fits find, save, and delete with a noun, and nothing else. Written only in prose, the rule drifted in four of five implementations of the same design. Once a check enforced it, the first run found three more violations nobody had noticed.',
+      ko: 'Repository의 연산은 명사를 붙인 find, save, delete 셋으로 충분하다. 글로만 적힌 이 규칙은 같은 설계를 구현한 5개 중 4곳에서 어긋나 있었다. 검사로 강제하자 첫 실행에서 아무도 몰랐던 위반 3건이 더 나왔다.',
     },
     date: '2026.07.21',
     tags: ['Repository Pattern', 'Conventions'],
@@ -428,8 +428,8 @@ export const posts: PostMeta[] = [
       ko: '문서와 코드가 사이좋게 함께 틀렸을 때',
     },
     summary: {
-      en: 'Three violations across five languages — a Query reading a write Repository, a domain class carrying JPA, a notification module in the wrong layer. Only one was actually a bug, and the other two reveal why dozens of prior audits never caught any of it.',
-      ko: '5개 언어에서 위반 세 가지가 나왔다. 쓰기용 Repository로 읽는 Query, JPA 애노테이션을 단 도메인 클래스, 엉뚱한 레이어에 놓인 notification 모듈이다. 진짜 버그는 하나뿐이었고, 나머지 둘을 보면 그 많은 감사가 왜 하나도 못 잡았는지 알 수 있다.',
+      en: 'An audit that checks code against its own docs cannot catch code and doc that are wrong together. Three violations (a Query reading a write Repository, a domain class carrying JPA, a notification module in the wrong layer) had passed dozens of prior audits. Only one was a bug, and the other two show why none of those audits could have caught them.',
+      ko: '코드가 자기 문서와 맞는지만 보는 감사는 둘이 함께 틀린 경우를 잡지 못한다. 쓰기용 Repository로 읽는 Query, JPA 애노테이션을 단 도메인 클래스, 엉뚱한 레이어에 놓인 notification 모듈이 그 많은 감사를 통과해 있었다. 진짜 버그는 하나뿐이었고, 나머지 둘을 보면 왜 어떤 감사도 이들을 잡을 수 없었는지 알 수 있다.',
     },
     date: '2026.07.12',
     tags: ['DDD', 'Architecture'],
@@ -568,8 +568,8 @@ export const posts: PostMeta[] = [
       ko: '발견 0건, 버그 80건',
     },
     summary: {
-      en: 'A path-existence checker reported zero findings before and after a three-language audit round that fixed roughly eighty real issues: stale code quotes, an evaluator that grades itself a perfect score for scanning nothing, and a generator still emitting a bug already fixed in the code it was modeled on.',
-      ko: '경로 존재 여부만 확인하는 체커는 3개 언어 감사 전후로 두 번 다 0건을 보고했다. 그 사이에 고친 문제는 약 80건이었다. 낡은 코드 인용, 파일을 하나도 보지 않고 만점을 주는 평가기, 본뜬 코드에서는 이미 고친 버그를 아직도 찍어 내는 생성기가 그 안에 있었다.',
+      en: 'Zero findings tells you what a check looked at, not what is there. A path-existence checker reported zero before and after a three-language audit that fixed roughly eighty real issues: stale code quotes, an evaluator that grades itself a perfect score for scanning nothing, and a generator still emitting a bug already fixed in the code it was modeled on.',
+      ko: '검사 결과 0건은 검사가 무엇을 봤는지만 알려 준다. 경로 존재 여부만 확인하는 체커는 3개 언어 감사 전후로 두 번 다 0건을 보고했다. 그 사이에 고친 문제는 약 80건이었다. 낡은 코드 인용, 파일을 하나도 보지 않고 만점을 주는 평가기, 본뜬 코드에서는 이미 고친 버그를 아직도 찍어 내는 생성기가 그 안에 있었다.',
     },
     date: '2026.08.04',
     tags: ['Tooling', 'Architecture'],

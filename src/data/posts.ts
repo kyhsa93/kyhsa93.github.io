@@ -131,7 +131,7 @@ export const posts: PostMeta[] = [
     slug: 'domain-services-across-aggregates',
     title: {
       en: "Domain Services: When a Rule Doesn't Belong to One Aggregate",
-      ko: 'Domain Service: 규칙이 한 Aggregate에 속하지 않을 때',
+      ko: 'Domain Service: 규칙이 하나의 Aggregate에 속하지 않을 때',
     },
     summary: {
       en: 'A real RefundEligibilityService example for logic that has to read two Aggregates at once.',
@@ -145,7 +145,7 @@ export const posts: PostMeta[] = [
     slug: 'talking-across-bounded-contexts',
     title: {
       en: 'Talking Across Bounded Contexts',
-      ko: 'Bounded Context 사이의 소통',
+      ko: 'Bounded Context 사이의 대화법',
     },
     summary: {
       en: 'Choosing between a synchronous Adapter and an asynchronous Integration Event, with a real compensating-transaction example.',
@@ -159,7 +159,7 @@ export const posts: PostMeta[] = [
     slug: 'cqrs-in-practice',
     title: {
       en: "CQRS in Practice: Why a Query Can't Use a Repository",
-      ko: '실전 CQRS: Query가 Repository를 쓸 수 없는 이유',
+      ko: 'CQRS 실전 적용기, Query가 Repository를 쓰면 안 되는 이유',
     },
     summary: {
       en: 'A real cross-language bug where a Query Handler used a write-capable Repository, and the docs agreed it was fine.',
@@ -176,8 +176,8 @@ export const posts: PostMeta[] = [
       ko: '실제 버그를 잡아낸 네이밍 규칙',
     },
     summary: {
-      en: 'How a boring find/save/delete naming convention, once automated, immediately found violations nobody had noticed across four different codebases.',
-      ko: '지루하기 짝이 없는 find/save/delete 네이밍 컨벤션을 검사로 자동화했더니, 코드베이스 4곳에서 아무도 몰랐던 위반이 곧바로 나왔다.',
+      en: 'How a boring find/save/delete naming convention, once automated, immediately found violations nobody had noticed across three different codebases.',
+      ko: '지루하기 짝이 없는 find/save/delete 네이밍 컨벤션을 검사로 자동화했더니, 코드베이스 3곳에서 아무도 몰랐던 위반이 곧바로 나왔다.',
     },
     date: '2026.07.21',
     tags: ['Repository Pattern', 'Conventions'],
@@ -204,8 +204,8 @@ export const posts: PostMeta[] = [
       ko: 'Observability는 나중에 덧붙이는 게 아니라 설계 결정이다',
     },
     summary: {
-      en: 'Log-level policy, structured logging, and propagating a Correlation ID through AsyncLocalStorage.',
-      ko: '로그 레벨 정책과 구조화된 로깅, AsyncLocalStorage로 Correlation ID를 전파하는 방법.',
+      en: 'Log-level policy, structured logging, and propagating a Correlation ID through SLF4J's MDC.',
+      ko: '로그 레벨 정책과 구조화된 로깅, SLF4J MDC로 Correlation ID를 전파하는 방법.',
     },
     date: '2026.07.22',
     tags: ['Observability', 'Operations'],
@@ -313,7 +313,7 @@ export const posts: PostMeta[] = [
     slug: 'finding-domain-boundaries',
     title: {
       en: 'How to Find Domain Boundaries',
-      ko: '도메인 경계를 찾는 방법',
+      ko: '도메인 경계를 찾는 법',
     },
     summary: {
       en: 'A record of the thought process for organizing complex requirements into Aggregates and Bounded Contexts.',
@@ -341,7 +341,7 @@ export const posts: PostMeta[] = [
     slug: 'containerized-development-experience',
     title: {
       en: 'Developer Experience in Containerized Environments',
-      ko: '컨테이너 환경에서의 개발자 경험',
+      ko: '컨테이너화된 환경의 개발자 경험',
     },
     summary: {
       en: 'How teams can build a reproducible environment from local development through deployment.',

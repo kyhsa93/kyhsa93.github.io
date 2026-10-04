@@ -171,7 +171,7 @@ return { answer, matchedCount: count }`}</code></pre>
         </table>
         <p>구현 방식은 언어마다 달랐다. 어디서는 쿼리 버스를 썼고 어디서는 평범한 서비스를 썼다. Kotlin에서는 패키지 프라이빗 규칙 때문에 작은 클래스 두 개를 다시 설계해야 했다. 그래도 <code>ownerId</code>는 인증된 호출자에게서만 받고 모델에게서는 받지 않는다는 가드레일은 한 번도 움직이지 않았다. 어떤 설계가 원칙인지, 원칙처럼 포장한 구현 디테일인지는 보통 여기서 갈린다. 원본과 전혀 다르게 돌아가는 언어로 다시 써도 살아남으면 원칙이다.</p>
         <div className="article-note"><strong>더 읽을거리</strong><p>
-          <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">사기꾼을 그대로 믿은 사기 탐지 신호</a>(이 기능의 가드레일이 나오게 된 기능 제거 이야기) · <a href="/posts/same-architecture-five-languages">같은 아키텍처, 다섯 개의 언어</a>(앞선 기능을 같은 방식으로 언어별 비교한 글) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a>(기준 구현의 코드를 그대로 담은 전체 문서)
+          <a href="/posts/the-fraud-signal-that-trusted-the-fraudster">사기꾼을 그대로 믿은 사기 탐지 신호</a>(이 기능의 가드레일이 나오게 된 기능 제거 이야기) · <a href="/posts/same-architecture-five-languages">같은 아키텍처를 5개 언어로</a>(앞선 기능을 같은 방식으로 언어별 비교한 글) · <a href="https://github.com/kyhsa93/backend-service-playbook/blob/main/docs/architecture/domain-service.md" target="_blank" rel="noreferrer">docs/architecture/domain-service.md</a>(기준 구현의 코드를 그대로 담은 전체 문서)
         </p></div>
       </>
     ),

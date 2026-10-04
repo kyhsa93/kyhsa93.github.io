@@ -107,7 +107,7 @@ export const posts: PostMeta[] = [
     },
     summary: {
       en: 'A structured-data RAG feature over an account\'s own transaction history, the guardrail that lets an LLM touch it safely, and how the same invariant survived five different languages\' own conventions.',
-      ko: '계좌 본인의 거래 내역을 다루는 구조화 데이터 RAG 기능과, LLM이 안전하게 관여하도록 만드는 가드레일, 그리고 그 불변식이 다섯 개 언어 각자의 관례 속에서도 살아남은 과정.',
+      ko: '계좌 주인이 자기 거래 내역을 말로 물어보는 구조화 데이터 RAG 기능을 만들었다. LLM이 끼어도 안전하도록 가드레일을 어디에 뒀는지, 그 불변식이 5개 언어의 서로 다른 관례 속에서 어떻게 그대로 남았는지 정리했다.',
     },
     date: '2026.07.26',
     tags: ['LLM', 'Comparative'],
@@ -568,8 +568,8 @@ export const posts: PostMeta[] = [
       ko: '발견 0건, 버그 80건',
     },
     summary: {
-      en: 'A path-existence checker reported zero findings before and after a three-language audit round that fixed roughly eighty real issues — stale code quotes, an evaluator that grades itself a perfect score for scanning nothing, and a generator still emitting a bug already fixed in the code it was modeled on.',
-      ko: '경로 존재 여부만 확인하는 체커는 3개 언어 감사 라운드 전후로 계속 발견 0건을 보고했지만, 그 라운드는 실제 문제 약 80건을 고쳤다 — 낡은 코드 인용, 아무것도 스캔하지 않고 스스로에게 만점을 주는 평가기, 그리고 자기가 본뜬 코드에서 이미 고쳐진 버그를 여전히 그대로 뱉어내는 생성기.',
+      en: 'A path-existence checker reported zero findings before and after a three-language audit round that fixed roughly eighty real issues: stale code quotes, an evaluator that grades itself a perfect score for scanning nothing, and a generator still emitting a bug already fixed in the code it was modeled on.',
+      ko: '경로 존재 여부만 확인하는 체커는 3개 언어 감사 전후로 두 번 다 0건을 보고했다. 그 사이에 고친 문제는 약 80건이었다. 낡은 코드 인용, 파일을 하나도 보지 않고 만점을 주는 평가기, 본뜬 코드에서는 이미 고친 버그를 아직도 찍어 내는 생성기가 그 안에 있었다.',
     },
     date: '2026.08.04',
     tags: ['Tooling', 'Architecture'],

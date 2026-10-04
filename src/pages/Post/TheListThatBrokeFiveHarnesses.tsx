@@ -11,13 +11,13 @@ const content = {
     kicker: 'Kubernetes · Tooling',
     title: (
       <>
-        The List<br /><em>That Broke Five Harnesses</em>
+        The List<br /><em>That Broke Five Checkers</em>
       </>
     ),
-    lede: "Every static check that reads a Kubernetes manifest assumes the same input shape: one or more YAML documents, separated by `---`. That assumption is correct for `kustomize build` and `helm template`. It's wrong for one of the most natural ways to dump live cluster state, and five separate tools had built the same blind spot into themselves without anyone noticing.",
+    lede: "Every static check that reads a Kubernetes manifest assumes the same input shape: one or more YAML documents, separated by `---`. That assumption is correct for `kustomize build` and `helm template`. It's wrong for one of the most natural ways to dump live cluster state, and five separate tools had built the same blind spot into themselves without anyone noticing. Fed that shape, none of them failed. Each reported no resources found, which looks exactly like a clean pass.",
     body: (
       <>
-        <p>A set of Kubernetes anti-pattern checkers (five of them, each reading manifests independently to catch a different category of mistake) had all been validated the same way: pipe rendered YAML in, confirm the right verdict comes out. `kustomize build`, `helm template`, a raw manifest file. All of it arrives as one or more `---`-separated documents, and every checker's loader was written, reasonably, to split on that separator and parse each chunk.</p>
+        <p>My example project catalogs common Kubernetes deployment mistakes, each paired with a check that finds it in a manifest. Five of those checkers, each reading manifests independently to catch a different category of mistake, had all been validated the same way: pipe rendered YAML in, confirm the right verdict comes out. `kustomize build`, `helm template`, a raw manifest file. All of it arrives as one or more `---`-separated documents, and every checker's loader was written, reasonably, to split on that separator and parse each chunk.</p>
         <h2>A Different Way to Ask Kubernetes for the Same Thing</h2>
         <p>Validating a check against a running cluster means asking the cluster itself what's live, not just what was declared. The natural way to do that for more than one resource at once is <code>kubectl get deployment app-a app-b -o yaml</code>: name several resources, get their full manifests back in one call instead of one request per resource.</p>
         <p><code>kubectl</code> does return full manifests. It just doesn't return them the way `kustomize` or `helm` would. Naming two or more resources in one <code>get</code> call wraps the result in a single document: <code>kind: List</code>, with every requested resource nested under an <code>items:</code> array. No <code>---</code> separator anywhere, because there's only one top-level document to begin with.</p>
@@ -30,7 +30,7 @@ const content = {
         <h2>What Changed</h2>
         <p>The fix isn't clever: check whether the top-level parsed document has <code>kind: List</code>, and if so, treat its <code>items</code> array as the document stream instead of the document itself. Cheap, a few lines, and it means a loader now accepts every shape the tools it gets fed can produce, not just the shape that happened to be the one used to build the test fixtures.</p>
         <div className="article-note"><strong>Further reading</strong><p>
-          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a> — where this surfaced, validating a Kubernetes anti-pattern harness against a real Argo CD-managed cluster instead of just rendered fixtures
+          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a> (my example project that catalogs common Kubernetes deployment mistakes, each with a checker that finds it in a manifest; this surfaced while validating those checkers against a real Argo CD-managed cluster instead of just rendered fixtures)
         </p></div>
       </>
     ),
@@ -39,13 +39,13 @@ const content = {
     kicker: 'Kubernetes · Tooling',
     title: (
       <>
-        하네스 5개를<br /><em>한꺼번에 무너뜨린 List</em>
+        검사기 5개를<br /><em>한꺼번에 무너뜨린 List</em>
       </>
     ),
-    lede: 'Kubernetes 매니페스트를 읽는 정적 검사기는 모두 같은 입력 모양을 가정한다. `---`로 구분한 YAML 문서가 하나 이상 들어온다는 가정이다. `kustomize build`나 `helm template` 출력이라면 맞다. 하지만 살아 있는 클러스터 상태를 덤프하는 가장 자연스러운 방법 하나에서는 틀린다. 서로 다른 도구 5개가 아무도 모르는 사이 같은 사각지대를 똑같이 품고 있었다.',
+    lede: 'Kubernetes 매니페스트를 읽는 정적 검사기는 모두 같은 입력 모양을 가정한다. `---`로 구분한 YAML 문서가 하나 이상 들어온다는 가정이다. `kustomize build`나 `helm template` 출력이라면 맞다. 하지만 살아 있는 클러스터 상태를 덤프하는 가장 자연스러운 방법 하나에서는 틀린다. 서로 다른 도구 5개가 아무도 모르는 사이 같은 사각지대를 똑같이 품고 있었다. 그 모양을 받은 도구는 하나도 실패하지 않았다. 모두 "발견된 리소스 없음"이라고 답했고, 그건 깨끗한 통과와 똑같아 보인다.',
     body: (
       <>
-        <p>Kubernetes 안티패턴 검사기 5개가 있다. 각자 매니페스트를 따로 읽고, 서로 다른 종류의 실수를 잡는다. 이 검사기들은 모두 같은 방식으로 검증해 왔다. 렌더링한 YAML을 넣고 올바른 판정이 나오는지 확인하는 식이다. `kustomize build`, `helm template`, 손으로 쓴 매니페스트 파일은 모두 `---`로 구분한 문서 하나 이상으로 들어온다. 그래서 모든 검사기의 로더는 그 구분자로 잘라 조각마다 파싱하도록 짜여 있었다. 그렇게 짠 것 자체는 무리가 없었다.</p>
+        <p>내 예제 프로젝트는 Kubernetes 배포 실수를 유형별로 모으고, 실수마다 매니페스트에서 그것을 찾아내는 검사기를 붙여 둔다. 그중 검사기 5개는 각자 매니페스트를 따로 읽고, 서로 다른 종류의 실수를 잡는다. 이 검사기들은 모두 같은 방식으로 검증해 왔다. 렌더링한 YAML을 넣고 올바른 판정이 나오는지 확인하는 식이다. `kustomize build`, `helm template`, 손으로 쓴 매니페스트 파일은 모두 `---`로 구분한 문서 하나 이상으로 들어온다. 그래서 모든 검사기의 로더는 그 구분자로 잘라 조각마다 파싱하도록 짜여 있었다. 그렇게 짠 것 자체는 무리가 없었다.</p>
         <h2>같은 걸 Kubernetes에 다르게 묻기</h2>
         <p>실행 중인 클러스터에 대고 검사를 검증하려면, 선언해 둔 내용 말고 지금 떠 있는 것을 클러스터에 직접 물어봐야 한다. 리소스 여러 개를 한 번에 물어보는 자연스러운 방법은 <code>kubectl get deployment app-a app-b -o yaml</code>이다. 리소스 이름을 여러 개 대면, 리소스마다 따로 요청하지 않고 호출 한 번으로 전체 매니페스트를 받는다.</p>
         <p><code>kubectl</code>은 전체 매니페스트를 돌려주긴 한다. 다만 `kustomize`나 `helm`과는 돌려주는 모양이 다르다. <code>get</code> 호출 하나에 리소스를 2개 이상 대면 결과가 문서 하나로 감싸진다. 최상위가 <code>kind: List</code>이고, 요청한 리소스는 모두 <code>items:</code> 배열 안에 들어간다. <code>---</code> 구분자는 어디에도 없다. 최상위 문서가 처음부터 하나뿐이기 때문이다.</p>
@@ -59,8 +59,8 @@ const content = {
         <div className="article-note"><strong>이 버그를 일반화하면</strong><p>특정 문서 경계를 가정하고 Kubernetes YAML을 파싱하는 도구는, 그 경계를 만들어 내는 도구로 시험해 본 범위까지만 정확하다. <code>kustomize build</code>, <code>helm template</code>, 리소스 하나짜리 <code>kubectl get -o yaml</code>은 모두 <code>---</code>로 구분한 문서를 낸다. <code>kubectl get</code> 한 번에 리소스를 2개 이상 대면 그렇지 않다. 픽스처를 전부 라이브 클러스터가 아니라 렌더링한 파일로 만들었다면, 테스트에서 이 모양을 한 번도 만나지 않기 쉽다.</p></div>
         <h2>무엇을 바꿨나</h2>
         <p>수정은 대단할 게 없다. 파싱한 최상위 문서가 <code>kind: List</code>인지 보고, 맞으면 문서 자체 대신 그 <code>items</code> 배열을 문서 스트림으로 다룬다. 몇 줄이면 되고 비용도 거의 없다. 이제 로더는 테스트 픽스처를 만들 때 마침 쓴 모양만 받는 게 아니다. 실제로 들어올 도구들이 낼 수 있는 모양은 모두 받는다.</p>
-        <div className="article-note"><strong>더 읽을거리</strong><p>
-          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a>(렌더링한 픽스처 대신 Argo CD가 관리하는 실제 클러스터에 대고 Kubernetes 안티패턴 하네스를 검증하다가 이 문제가 드러난 곳)
+        <div className="article-note"><strong>더 볼 자료</strong><p>
+          <a href="https://github.com/kyhsa93/k8s-playbook" target="_blank" rel="noreferrer">kyhsa93/k8s-playbook</a>(Kubernetes 배포 실수를 유형별로 모으고 실수마다 검사기를 붙여 둔 내 예제 프로젝트. 렌더링한 픽스처 대신 Argo CD가 관리하는 실제 클러스터에 대고 그 검사기들을 검증하다가 이 문제가 드러났다)
         </p></div>
       </>
     ),

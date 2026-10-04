@@ -606,12 +606,12 @@ export const posts: PostMeta[] = [
   {
     slug: 'the-list-that-broke-five-harnesses',
     title: {
-      en: 'The List That Broke Five Harnesses',
-      ko: '하네스 5개를 한꺼번에 무너뜨린 List',
+      en: 'The List That Broke Five Checkers',
+      ko: '검사기 5개를 한꺼번에 무너뜨린 List',
     },
     summary: {
-      en: "Every Kubernetes anti-pattern checker in a five-check harness assumed `---`-separated documents. Naming more than one resource in a single `kubectl get -o yaml` call wraps the result in `kind: List` instead, and every checker found zero resources to flag without a word, which looked identical to a clean pass.",
-      ko: '검사기 5개로 된 Kubernetes 안티패턴 하네스가 모두 `---`로 구분한 문서를 가정하고 있었다. `kubectl get -o yaml` 한 번에 리소스를 2개 이상 대면 결과가 `kind: List`로 감싸진다. 그러자 모든 검사기가 아무 말 없이 리소스를 0개 찾았고, 겉보기에는 깨끗한 통과와 똑같았다.',
+      en: "Five Kubernetes anti-pattern checkers all assumed `---`-separated documents. Naming more than one resource in a single `kubectl get -o yaml` call wraps the result in `kind: List` instead, and every checker found zero resources to flag without a word, which looked identical to a clean pass.",
+      ko: 'Kubernetes 안티패턴 검사기 5개가 모두 `---`로 구분한 문서를 가정하고 있었다. `kubectl get -o yaml` 한 번에 리소스를 2개 이상 대면 결과가 `kind: List`로 감싸진다. 그러자 모든 검사기가 아무 말 없이 리소스를 0개 찾았고, 겉보기에는 깨끗한 통과와 똑같았다.',
     },
     date: '2026.08.08',
     tags: ['Kubernetes', 'Tooling'],
@@ -644,8 +644,8 @@ export const posts: PostMeta[] = [
       ko: '영원히 100점을 받을 수 없는 벤치마크',
     },
     summary: {
-      en: 'A scoring harness covers nineteen categories of Kubernetes deployment mistake. One of them, drift, can only exist after a manifest has already been applied, which an authoring benchmark structurally cannot produce or avoid. The honest fix was a permanent, documented ceiling, not a future version.',
-      ko: '채점 하네스가 Kubernetes 배포 실수 19개 카테고리를 다룬다. 그중 drift는 매니페스트를 적용한 뒤에야 생길 수 있어서, 작성 벤치마크로는 구조상 일으킬 수도 막을 수도 없다. 그래서 다음 버전을 기약하지 않고, 받을 수 있는 최고점을 영구히 문서에 적었다.',
+      en: 'A score that adds up many checks can be missing one because nobody built it yet, or because the thing being scored can never show it. A checker covering nineteen categories of Kubernetes deployment mistake hit the second kind: drift can only exist after a manifest has already been applied, which an authoring benchmark structurally cannot produce or avoid. The honest fix was a permanent, documented ceiling, not a future version.',
+      ko: '여러 검사를 더한 점수에서 검사 하나가 빠졌다면, 아직 안 만들었거나 채점 대상이 영영 보여 줄 수 없는 경우다. Kubernetes 배포 실수 19개 카테고리를 채점하는 검사기에서 drift가 그 뒤쪽 경우였다. drift는 매니페스트를 적용한 뒤에야 생길 수 있어서, 작성 벤치마크로는 구조상 일으킬 수도 막을 수도 없다. 그래서 다음 버전을 기약하지 않고, 받을 수 있는 최고점을 영구히 문서에 적었다.',
     },
     date: '2026.08.08',
     tags: ['Kubernetes', 'Benchmark'],
@@ -659,8 +659,8 @@ export const posts: PostMeta[] = [
       ko: '동점인 점수, 서로 다른 두 종류의 잘못',
     },
     summary: {
-      en: "Two models scored an identical 9/9 on a Kubernetes manifest-authoring task, independently reproduced. Reading what each one wrote found a self-defeating NetworkPolicy in one and a promotion pipeline referencing a resource that doesn't exist in the other, two unrelated defects invisible to a tied harness score.",
-      ko: '두 모델이 Kubernetes 매니페스트 작성 과제에서 똑같이 9/9를 받았고, 따로 다시 돌려 봐도 같았다. 그런데 각자 쓴 파일을 읽어 보니 한쪽은 NetworkPolicy가 스스로를 무력화하고 있었고, 다른 쪽은 프로모션 파이프라인이 있지도 않은 리소스를 참조하고 있었다. 동점인 하네스 점수로는 보이지 않는, 서로 관계없는 결함 2개였다.',
+      en: "Two models scored an identical 9/9 on a Kubernetes manifest-authoring task, independently reproduced. Reading what each one wrote found a self-defeating NetworkPolicy in one and a promotion pipeline referencing a resource that doesn't exist in the other, two unrelated defects that checks for a resource's presence couldn't see.",
+      ko: '두 모델이 Kubernetes 매니페스트 작성 과제에서 똑같이 9/9를 받았고, 따로 다시 돌려 봐도 같았다. 그런데 각자 쓴 파일을 읽어 보니 한쪽은 NetworkPolicy가 스스로를 무력화하고 있었고, 다른 쪽은 프로모션 파이프라인이 있지도 않은 리소스를 참조하고 있었다. 리소스가 있는지만 보는 검사로는 보이지 않는, 서로 관계없는 결함 2개였다.',
     },
     date: '2026.08.08',
     tags: ['Kubernetes', 'AI Agents'],

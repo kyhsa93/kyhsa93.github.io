@@ -256,12 +256,12 @@ export const posts: PostMeta[] = [
   {
     slug: 'compliance-as-code',
     title: {
-      en: 'Compliance as Code: Building a Harness That Enforces Architecture',
-      ko: '컴플라이언스를 코드로, 아키텍처를 강제하는 하네스 만들기',
+      en: 'Compliance as Code: What an Architecture Checker Catches, and What It Keeps Missing',
+      ko: '컴플라이언스를 코드로, 아키텍처 검사기가 잡는 것과 계속 놓치는 것',
     },
     summary: {
-      en: 'What a harness rule is and is not allowed to assume, and the failure modes even careful audits miss.',
-      ko: '하네스 규칙이 가정해도 되는 것과 안 되는 것을 정리했다. 꼼꼼한 감사로도 놓치는 실패 유형도 함께 다룬다.',
+      en: 'Automated architecture checks reliably catch code in the wrong place. Three kinds of drift still get past them: a wrong name inside the right file, code that is wrong together with its own doc, and disagreement that only exists between implementations.',
+      ko: '아키텍처를 자동으로 검사하면 엉뚱한 자리에 들어간 코드는 잘 잡힌다. 그래도 맞는 파일 안의 틀린 이름, 문서와 함께 틀린 코드, 구현 사이에만 있는 불일치는 계속 빠져나갔다.',
     },
     date: '2026.07.22',
     tags: ['Tooling', 'Architecture'],
@@ -466,12 +466,12 @@ export const posts: PostMeta[] = [
   {
     slug: 'the-doc-said-done-half-of-it-wasnt',
     title: {
-      en: 'The Doc Said "Done." Half of It Wasn\'t.',
-      ko: '문서는 "끝났다"고 했다. 절반만 끝나 있었다.',
+      en: 'The Doc Said "Done": When to Stop Adding Checks',
+      ko: '문서는 "끝났다"고 했다, 검사는 언제까지 늘려야 하나',
     },
     summary: {
-      en: "A repository-naming fix that only reached the write-side interface, the work of turning that gap into permanent harness rules, and a yield curve (three or four real bugs per batch of rules, then two, then zero) that was itself the most useful result.",
-      ko: 'Repository 네이밍 수정이 쓰기 쪽 인터페이스에만 들어가 있었다. 그 빈틈을 하네스 규칙으로 바꿔 나가는 동안 버그는 3~4건씩 나오다가 2건, 0건으로 줄었다. 이 수확 곡선이 가장 쓸모 있는 결과였다.',
+      en: "Turning each audit finding into an automated rule raises a question: how many rules are enough? Starting from a naming fix that reached only the write-side interface, each batch of new rules found three or four real bugs, then two, then zero. That flat yield curve was the answer.",
+      ko: '감사에서 찾은 것을 자동 검사 규칙으로 바꿔 나가면, 규칙을 몇 개까지 만들어야 하나. 쓰기 쪽 인터페이스에만 들어간 네이밍 수정에서 시작해 규칙을 더할 때마다 버그가 3~4건씩 나오다가 2건, 0건으로 줄었다. 평평해진 수확 곡선이 답이었다.',
     },
     date: '2026.07.20',
     tags: ['Conventions', 'Tooling'],

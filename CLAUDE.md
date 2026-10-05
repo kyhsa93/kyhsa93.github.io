@@ -36,9 +36,9 @@ This site runs Google AdSense. It was once flagged **"approved, but attention ne
 
 ## Group agents
 
-This repo is the home of the group-level agents that look after the blog and every site under `kyhsa93.github.io/` together: `group-ceo`, `group-cmo`, `group-cto`, `group-coo`, `group-clo`, `group-chro` in `.claude/agents/`. `~/.claude/agents` is a symlink to that directory, so they can be called from a session in any repo. They are written in Korean, like the repo teams they sit above.
+The group-level agents look after the blog and every site under `kyhsa93.github.io/` together: `group-ceo`, `group-cmo`, `group-cto`, `group-coo`, `group-clo`, `group-chro`. Their definitions and the roster live in the private repo `kyhsa93/agents` (`group/` and `README.md`, cloned at `~/workspace/agents`); `~/.claude/agents` is a symlink to `~/workspace/agents/group`, so they can be called from a session in any repo. They are written in Korean, like the repo teams they sit above.
 
 - They rule only on matters that cross repos. A repo with its own team (jipgye, abyss, karda, business-plan) decides its own matters; for the blog and the sites without a team, the group agents act as that team.
 - The `group-` prefix is required: a project agent with the same name hides a user-level one inside that project's sessions.
-- `group-chro` owns every agent definition file and the roster in `.claude/org.md`. Retired definitions move to `.claude/agents-retired/`; they are not deleted.
+- `group-chro` owns every agent definition file and the roster (`kyhsa93/agents` README). Retired group definitions move to that repo's `retired/`; they are not deleted.
 - `.claude/` is not part of the Pages artifact (only `build/client` is uploaded), so nothing here is published.

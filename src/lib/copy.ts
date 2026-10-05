@@ -205,7 +205,7 @@ export const uiCopy: Record<Locale, UiCopy> = {
       kicker: 'Legal',
       heading: 'Privacy Policy',
       intro:
-        "This is a personal blog. It doesn't require an account and doesn't collect personal information through any form. It does use Google Analytics 4 to measure visits and Google AdSense to show ads, as described below. In your browser's local storage it keeps only two small preferences: your light/dark theme choice and your response to the cookie-consent banner below.",
+        "This is a personal blog. It doesn't require an account and doesn't collect personal information through any form. It does use Google Analytics 4 to measure visits and Google AdSense to show ads, as described below. On the blog pages, your browser's local storage keeps only two small preferences: your light/dark theme choice and your response to the cookie-consent banner below. Some sub-projects keep what you enter in your browser's local storage so it survives a reload: /toddler-milestone-checklist/ (child profile name, birth date, sex, checklist answers, growth log), /fove/ (see its own policy), and the games /abyss/, /karda/ and /ascii-doom/ (saves and settings). None of that is sent to a server, and clearing your browser data deletes it.",
       advertisingHeading: 'Advertising (Google AdSense)',
       advertisingBody1:
         'This site shows ads served by Google AdSense. The AdSense script is loaded on the blog pages regardless of the banner, and Google and its partners may use cookies and similar technologies to serve ads based on your prior visits to this or other websites. You can opt out of personalized advertising by visiting',
@@ -214,11 +214,11 @@ export const uiCopy: Record<Locale, UiCopy> = {
         '. On the blog pages you can also decline the cookie banner — declining stops ad units from being shown, but the AdSense script itself and Google Analytics still load. The banner applies to the blog pages only. Among the sub-projects on this domain, /jipgye/ and /fove/ load AdSense: /jipgye/ loads it without a banner, and /fove/ has its own consent banner and privacy policy (/fove/privacy-policy). /toddler-milestone-checklist/ and /housing-subsidy-radar/ load Google Analytics only, and /abyss/, /karda/ and /ascii-doom/ load neither.',
       cookiesHeading: 'Cookies and Local Storage',
       cookiesBody:
-        "This site uses Google Analytics 4 on the blog pages and on the sub-projects /jipgye/, /fove/, /toddler-milestone-checklist/ and /housing-subsidy-radar/. It records which pages are viewed, how the visit arrived (referrer), the approximate region, device and browser type, and on some sub-project pages events such as searches or clicks. Google Analytics sets its own cookies (such as _ga) to tell repeat visits apart. Beyond Google Analytics and the AdSense scripts described above, this site itself sets no tracking cookies. Your consent choice, once made, is remembered in your browser's local storage so the banner doesn't reappear on every page — clearing your browser data resets it.",
+        "This site uses Google Analytics 4 on the blog pages and on the sub-projects /jipgye/, /fove/, /toddler-milestone-checklist/ and /housing-subsidy-radar/. It records which pages are viewed, how the visit arrived (referrer), the approximate region, device and browser type, and on some sub-project pages events such as clicks and filter choices. On /jipgye/ these events include the amounts you enter (such as cash on hand, budget or loan amount) and the district and floor area you pick; for the search words you type, only their length and whether they contain a digit are sent, never the words themselves. None of this is tied to your name or account. On /fove/ they include only the event name, the day's calendar pillar, the result type and score, not your birth details or names. Google Analytics sets its own cookies (such as _ga) to tell repeat visits apart. Beyond Google Analytics and the AdSense scripts described above, this site itself sets no tracking cookies. Your consent choice, once made, is remembered in your browser's local storage so the banner doesn't reappear on every page — clearing your browser data resets it.",
       thirdPartiesHeading: 'Third Parties',
       thirdPartiesBody1: 'This site is hosted on GitHub Pages. Visit statistics are collected by Google Analytics 4. Ads are served by Google AdSense, subject to',
       googlePolicyLink: "Google's own advertising policy",
-      thirdPartiesBody2: '. No third-party analytics or tracking services other than Google Analytics 4 and Google AdSense are used.',
+      thirdPartiesBody2: ". No third-party analytics or tracking services other than Google Analytics 4 and Google AdSense are used. The blog and /fove/ load fonts from Google Fonts, which receives a normal web request (including your IP address) but sets no cookies. In /ascii-doom/ two-player mode, the connection text you copy to the other player can include your IP address; it goes only to the person you send it to.",
       contactHeading: 'Contact',
       contactBody: 'Questions about this policy can be raised via',
     },
@@ -322,7 +322,7 @@ export const uiCopy: Record<Locale, UiCopy> = {
       kicker: 'Legal',
       heading: '개인정보처리방침',
       intro:
-        '이 사이트는 개인 블로그입니다. 계정이 필요하지 않으며, 어떤 폼을 통해서도 개인정보를 수집하지 않습니다. 다만 아래에 적은 대로 방문 측정에 Google Analytics 4를, 광고 표시에 Google AdSense를 사용합니다. 브라우저의 로컬 스토리지에는 라이트/다크 테마 선택과 아래 쿠키 동의 배너에 대한 응답, 이 두 가지 작은 값만 저장됩니다.',
+        '이 사이트는 개인 블로그입니다. 계정이 필요하지 않으며, 어떤 폼을 통해서도 개인정보를 수집하지 않습니다. 다만 아래에 적은 대로 방문 측정에 Google Analytics 4를, 광고 표시에 Google AdSense를 사용합니다. 블로그 페이지가 브라우저의 로컬 스토리지에 저장하는 것은 라이트/다크 테마 선택과 아래 쿠키 동의 배너에 대한 응답, 이 두 가지뿐입니다. 일부 하위 프로젝트는 입력한 내용이 다시 열어도 남도록 브라우저의 로컬 스토리지에 저장합니다. /toddler-milestone-checklist/는 아이 프로필 이름·생년월일·성별·체크 응답·성장 기록을, /fove/는 자체 방침에 적힌 값을, 게임 /abyss/, /karda/, /ascii-doom/은 저장 기록과 설정을 저장합니다. 이 값들은 서버로 보내지 않으며, 브라우저 데이터를 지우면 함께 지워집니다.',
       advertisingHeading: '광고 (Google AdSense)',
       advertisingBody1:
         '이 사이트는 Google AdSense를 통해 광고를 표시합니다. AdSense 스크립트는 배너 응답과 관계없이 블로그 페이지에서 로드되며, Google과 파트너사는 이 사이트나 다른 사이트를 방문한 기록을 바탕으로 쿠키 및 유사 기술을 사용해 광고를 제공할 수 있습니다. 다음 페이지를 방문해 맞춤 광고를 거부할 수 있습니다:',
@@ -331,11 +331,11 @@ export const uiCopy: Record<Locale, UiCopy> = {
         '. 블로그 페이지에서는 쿠키 배너에서 거부를 선택할 수도 있으며, 이 경우 광고 단위가 표시되지 않습니다. 다만 AdSense 스크립트 자체와 Google Analytics는 거부와 관계없이 로드됩니다. 이 배너는 블로그 페이지에만 적용됩니다. 이 도메인의 하위 프로젝트 중 AdSense를 로드하는 곳은 /jipgye/와 /fove/입니다. /jipgye/는 배너 없이 로드하고, /fove/는 자체 동의 배너와 개인정보처리방침(/fove/privacy-policy)을 따로 둡니다. /toddler-milestone-checklist/와 /housing-subsidy-radar/는 Google Analytics만 로드하고, /abyss/, /karda/, /ascii-doom/은 둘 다 로드하지 않습니다.',
       cookiesHeading: '쿠키 및 로컬 스토리지',
       cookiesBody:
-        '이 사이트는 블로그 페이지와 하위 프로젝트 /jipgye/, /fove/, /toddler-milestone-checklist/, /housing-subsidy-radar/에서 Google Analytics 4를 사용합니다. 어떤 페이지를 봤는지, 어디서 들어왔는지(리퍼러), 대략적인 지역, 기기와 브라우저 종류, 일부 하위 프로젝트 페이지에서는 검색·클릭 같은 이벤트가 기록됩니다. Google Analytics는 재방문을 구분하기 위해 자체 쿠키(_ga 등)를 설정합니다. Google Analytics와 위에서 설명한 AdSense 스크립트 외에, 이 사이트 자체는 추적 쿠키를 설정하지 않습니다. 한 번 선택한 동의 여부는 브라우저의 로컬 스토리지에 저장되어 매 페이지마다 배너가 다시 표시되지 않으며, 브라우저 데이터를 삭제하면 초기화됩니다.',
+        '이 사이트는 블로그 페이지와 하위 프로젝트 /jipgye/, /fove/, /toddler-milestone-checklist/, /housing-subsidy-radar/에서 Google Analytics 4를 사용합니다. 어떤 페이지를 봤는지, 어디서 들어왔는지(리퍼러), 대략적인 지역, 기기와 브라우저 종류, 일부 하위 프로젝트 페이지에서는 클릭·필터 선택 같은 이벤트가 기록됩니다. /jipgye/에서는 입력한 금액(보유 현금·예산·대출 금액 등)과 고른 자치구·면적이 이벤트에 포함됩니다. 입력한 검색어는 글자 수와 숫자 포함 여부만 보내고 원문은 보내지 않습니다. 이름이나 계정과는 연결되지 않습니다. /fove/에서는 이벤트 이름, 그날의 일진, 결과 종류, 점수만 보내며 생년월일·이름은 보내지 않습니다. Google Analytics는 재방문을 구분하기 위해 자체 쿠키(_ga 등)를 설정합니다. Google Analytics와 위에서 설명한 AdSense 스크립트 외에, 이 사이트 자체는 추적 쿠키를 설정하지 않습니다. 한 번 선택한 동의 여부는 브라우저의 로컬 스토리지에 저장되어 매 페이지마다 배너가 다시 표시되지 않으며, 브라우저 데이터를 삭제하면 초기화됩니다.',
       thirdPartiesHeading: '제3자',
       thirdPartiesBody1: '이 사이트는 GitHub Pages에서 호스팅됩니다. 방문 통계는 Google Analytics 4가 수집합니다. 광고는 Google AdSense가 제공하며, 다음 정책을 따릅니다:',
       googlePolicyLink: 'Google 광고 정책',
-      thirdPartiesBody2: '. Google Analytics 4와 Google AdSense 외에 다른 제3자 분석이나 추적 서비스는 사용하지 않습니다.',
+      thirdPartiesBody2: '. Google Analytics 4와 Google AdSense 외에 다른 제3자 분석이나 추적 서비스는 사용하지 않습니다. 블로그와 /fove/는 글꼴을 Google Fonts에서 받으며, 이때 Google은 일반 웹 요청(IP 주소 포함)을 받지만 쿠키는 설정하지 않습니다. /ascii-doom/ 2인 플레이에서 상대에게 복사해 보내는 연결 문자열에는 IP 주소가 들어갈 수 있으며, 직접 보낸 상대에게만 전달됩니다.',
       contactHeading: '문의',
       contactBody: '이 방침에 대한 문의는 다음을 통해 남길 수 있습니다:',
     },

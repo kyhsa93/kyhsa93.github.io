@@ -325,14 +325,14 @@ ${u.changefreq ? `    <changefreq>${u.changefreq}</changefreq>\n` : ''}    <prio
     .filter((url): url is string => Boolean(url?.startsWith(SITE_URL)))
     .map(canonicalizeUrl);
 
-  const digestSubPages = JIPGYE_PAGES.map((file) => `${SITE_URL}/jipgye/${file}`);
+  const jipgyeSubPages = JIPGYE_PAGES.map((file) => `${SITE_URL}/jipgye/${file}`);
 
-  const projectSubPages = digestSubPages;
+  const projectSubPages = jipgyeSubPages;
 
   const dailyUpdated = new Set(
     [
       `${SITE_URL}/jipgye/`,
-      ...digestSubPages,
+      ...jipgyeSubPages,
       `${SITE_URL}/housing-subsidy-radar/`,
     ].map(canonicalizeUrl)
   );

@@ -71,4 +71,12 @@ export const sideProjects: SideProject[] = [
     },
     url: 'https://kyhsa93.github.io/karda/',
   },
+  {
+    title: 'Abyss',
+    description: {
+      en: 'Single-player multiplayer: raid bosses and battlegrounds played alone in the browser, with AI party members and no server.',
+      ko: '혼자 하는 멀티플레이 게임입니다. 레이드 보스와 전장을 AI 파티원과 함께 브라우저에서 혼자 합니다. 서버가 없습니다.',
+    },
+    url: 'https://kyhsa93.github.io/abyss/',
+  },
 ];

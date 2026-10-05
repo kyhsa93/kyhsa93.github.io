@@ -66,8 +66,8 @@ export const sideProjects: SideProject[] = [
   {
     title: '카르다 전선 (Karda)',
     description: {
-      en: 'A 3D conquest game in the browser. Bots fill both armies; you take the capture points on foot or in an attack helicopter. One map and a quick conquest mode so far, with no server and no sign-up.',
-      ko: '브라우저에서 하는 3D 점령전입니다. 양쪽 병력은 봇이 맡고, 플레이어는 보병이나 공격 헬기로 출격해 거점을 빼앗습니다. 지금은 맵 하나의 빠른 점령전을 할 수 있고, 서버도 가입도 없습니다.',
+      en: 'A 3D conquest game in the browser. Bots fill both armies; you take the capture points on foot or in an attack helicopter (coalition side only for now). One map and a quick conquest mode so far, with no server and no sign-up.',
+      ko: '브라우저에서 하는 3D 점령전입니다. 양쪽 병력은 봇이 맡고, 플레이어는 보병이나 공격 헬기(지금은 연합군만)로 출격해 거점을 빼앗습니다. 지금은 맵 하나의 빠른 점령전을 할 수 있고, 서버도 가입도 없습니다.',
     },
     url: 'https://kyhsa93.github.io/karda/',
   },

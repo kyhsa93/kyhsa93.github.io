@@ -1,32 +1,22 @@
-# React + TypeScript + Vite
+# kyhsa93.github.io
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Notes from a backend engineer, in English and Korean (`/ko/`). The site also hosts the side-project list (`src/data/sideProjects.ts`).
 
-Currently, two official plugins are available:
+Site: https://kyhsa93.github.io/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+React Router 7 with prerendering, built by Vite. Posts live in `src/data/posts.ts`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Build and deploy
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm ci
+npm run build   # tsc -b --noEmit && react-router build && tsx scripts/postbuild.ts (sitemap, OG images)
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+`.github/workflows/deploy.yml` builds and publishes to GitHub Pages.
+
+## Adding a static route
+
+Add it to **both** `react-router.config.ts` (`prerender`) and `scripts/postbuild.ts` (`staticEntries`). With only one, the page silently 404s or drops out of the sitemap.

@@ -167,6 +167,10 @@ const contentRoutes = [
     'posts/a-rule-evans-never-wrote',
     'pages/Post/ARuleEvansNeverWrote.tsx',
   ),
+  route(
+    'posts/register-the-forecast-before-the-answer',
+    'pages/Post/RegisterTheForecastBeforeTheAnswer.tsx',
+  ),
 ];
 
 export default [

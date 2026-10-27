@@ -34,6 +34,21 @@ export interface PostMeta {
 
 export const posts: PostMeta[] = [
   {
+    slug: 'register-the-forecast-before-the-answer',
+    title: {
+      en: 'Register the Forecast Before You See the Answer',
+      ko: '답을 보기 전에 전망을 등록한다',
+    },
+    summary: {
+      en: 'A forecast is only worth reading if you can see where it missed. Three rules make that possible: write the forecast down three months before the answer arrives and never edit it, commit the scoring rules before the first score exists, and leave a cell blank when the sample is too small to say anything.',
+      ko: '전망은 틀린 자리가 보일 때만 읽을 가치가 있다. 그렇게 만드는 규칙은 셋이다. 답이 나오기 석 달 전에 적어 두고 고치지 않는다, 채점 규칙을 첫 숫자보다 먼저 커밋한다, 표본이 모자란 칸은 비운다.',
+    },
+    date: '2026.10.27',
+    tags: ['Data', 'Methodology'],
+    readMinutes: 6,
+    project: { name: '집계', url: 'https://kyhsa93.github.io/jipgye/' },
+  },
+  {
     slug: 'one-container-per-agent',
     title: {
       en: 'One Container per AI Agent',

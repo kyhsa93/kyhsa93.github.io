@@ -275,14 +275,10 @@ const JIPGYE_PAGES = [
   'budget-18eok.html',
   'budget-19eok.html',
   'budget-20eok.html',
-  // rates.html은 여기 없다. 상품군 탭 넷 가운데 예금을 먼저 그리는 파일이라
-  // deposit-rates.html과 본문이 글자까지 같고, 둘 다 색인에 두면 검색엔진에는
-  // 완전히 같은 페이지 두 장이다. 내비게이션이 닿는 자리로는 그대로 살아 있고
-  // 페이지 자체에 noindex가 붙었다. 옛 주소는 아래 LEGACY_EXTRA_PAGES가 받는다.
-  'deposit-rates.html',
-  'saving-rates.html',
-  'mortgage-rates.html',
-  'rent-loan-rates.html',
+  // 금리 다섯 장(rates·deposit-rates·saving-rates·mortgage-rates·rent-loan-rates)은
+  // 여기 없다. 집계가 금리 기능을 접으면서 다섯 장 모두 noindex 종료 안내 장이 됐다
+  // (jipgye#582·#599). noindex 페이지를 사이트맵에 두면 크롤러에게 서로 다른 말을
+  // 두 번 하는 셈이다. 옛 주소는 아래 LEGACY_EXTRA_PAGES가 그대로 받는다.
   // 뉴스 네 장은 여기 없다. 색인에서 뺐기 때문이다 — 남의 기사 제목과 그 AI 요약은
   // 우리가 만든 것이 아니고, 애드센스가 "가치가 별로 없는 콘텐츠"로 반려한 사이트에서
   // 가장 변호하기 어려운 자산이 그것이다. 페이지 자체에 noindex가 붙어 있으니
@@ -392,6 +388,11 @@ ${postEntries}
 const LEGACY_DIR = 'econ-realestate-digest';
 const LEGACY_EXTRA_PAGES = [
   'rates.html',
+  // 금리 네 장: 사이트맵(JIPGYE_PAGES)에서는 뺐지만 옛 주소로 들어오는 사람은 받는다.
+  'deposit-rates.html',
+  'saving-rates.html',
+  'mortgage-rates.html',
+  'rent-loan-rates.html',
   'news.html',
   'realestate-news.html',
   'stock-news.html',
